@@ -4,10 +4,20 @@ import login from './modules/login'
 import home from './modules/home'
 import auth from './modules/auth'
 import agent from './modules/agent'
+import member from './modules/member'
+import product from './modules/product'
+import orderSearch from './modules/orderSearch'
 
 /* 菜单栏的路由 */
 // 固定菜单
-export const fixedRoutes = [...home, ...auth, ...agent]
+export const fixedRoutes = [
+  ...home,
+  ...auth,
+  ...agent,
+  ...member,
+  ...product,
+  ...orderSearch,
+]
 // 动态菜单
 export const asyncRoutes = []
 const router = createRouter({

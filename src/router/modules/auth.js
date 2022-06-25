@@ -6,7 +6,7 @@ export default [
   {
     path: '/auth',
     component: Layout,
-    name: 'Auth',
+    name: 'AuthIndex',
     meta: {
       title: '授權管理',
     },

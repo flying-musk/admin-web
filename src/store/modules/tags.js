@@ -1,4 +1,4 @@
-import { getItem, setItem, removeItem } from '@/utils/storage' //getItem和setItem是封装的操作localStorage的方法
+import { getItem, setItem, removeItem } from '@/utils/storage' //getItem 和setItem 是封装的操作 localStorage 的方法
 
 const TAGLIST = 'VEA-TAGLIST'
 
@@ -30,7 +30,6 @@ const mutations = {
       state.tagList.splice(state.activePosition + 1, 0, target)
     }
 
-    // 保存到localStorage
     setItem(TAGLIST, state.tagList)
   },
   ADD_CACHE_LIST: (state, tag) => {
@@ -42,7 +41,6 @@ const mutations = {
 
   DEL_TAG_LIST: (state, tag) => {
     state.tagList = state.tagList.filter(v => v.path !== tag.path)
-    // 保存到localStorage
     setItem(TAGLIST, state.tagList)
   },
   DEL_CACHE_LIST: (state, tag) => {
@@ -53,7 +51,6 @@ const mutations = {
     state.tagList = state.tagList.filter(
       v => !!v.meta.affix || v.path === tag.path
     )
-    // 保存到localStorage
     setItem(TAGLIST, state.tagList)
   },
   DEL_OTHER_CACHE_LIST: (state, tag) => {
@@ -64,7 +61,6 @@ const mutations = {
     state.tagList = state.tagList.filter(
       v => !!v.meta.affix || tags.every(tag => tag.path !== v.path)
     )
-    // 保存到localStorage
     setItem(TAGLIST, state.tagList)
   },
 
@@ -76,7 +72,6 @@ const mutations = {
 
   DEL_ALL_TAG_LIST: state => {
     state.tagList = state.tagList.filter(v => !!v.meta.affix)
-    // 保存到localStorage
     removeItem(TAGLIST)
   },
   DEL_ALL_CACHE_LIST: state => {
@@ -85,14 +80,12 @@ const mutations = {
   CLEAR_ALL_TAGS: state => {
     state.cacheList = []
     state.tagList = []
-    // 保存到localStorage
     removeItem(TAGLIST)
   },
   UPDATE_TAG_LIST: (state, tag) => {
     const index = state.tagList.findIndex(v => v.path === tag.path)
     if (index > -1) {
       state.tagList[index] = Object.assign({}, state.tagList[index], tag)
-      // 保存到localStorage
       setItem(TAGLIST, state.tagList)
     }
   },

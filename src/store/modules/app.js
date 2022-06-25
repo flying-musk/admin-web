@@ -16,7 +16,7 @@ export default {
   mutations: {
     setToken(state, data) {
       state.authorization = data
-      // 保存到localStorage
+      // 保存到 localStorage
       setItem(TOKEN, data)
     },
     clearToken(state) {
@@ -26,7 +26,7 @@ export default {
     },
     setCollapse(state, data) {
       state.sidebar.collapse = data
-      // 保存到localStorage
+      // 保存到 localStorage
       setItem(COLLAPSE, data)
     },
     clearCollapse(state) {
@@ -67,7 +67,6 @@ export default {
         return
       }
 
-      // 对密码加密
       const screenCode = password
 
       commit('setToken', {

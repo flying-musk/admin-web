@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '工作台',
     },
-    icon: 'el-icon-home',
+    icon: 'el-icon-house',
     children: [
       {
         path: '/',

@@ -1,4 +1,4 @@
-// auth.js
+// agent.js
 const Layout = () => import('@/layout/index.vue')
 const Agent = () => import('@/views/agent/index.vue')
 
@@ -6,7 +6,7 @@ export default [
   {
     path: '/agent',
     component: Layout,
-    name: 'Agent',
+    name: 'AgentIndex',
     meta: {
       title: '代理專區',
     },
