@@ -1,0 +1,11 @@
+/* theme color */
+$--colors: (
+  'primary': (
+    'base': $mainColor,
+  ),
+);
+
+/* change icon text !NEED! */
+$--font-path: 'element-plus/lib/theme-chalk/fonts';
+@import 'element-plus/packages/theme-chalk/src/reset';
+@import 'element-plus/packages/theme-chalk/src/index';
