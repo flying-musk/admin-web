@@ -18,7 +18,6 @@ export default [
         component: OrderSearch,
         meta: {
           title: '訂單查詢',
-          affix: true,
         },
       },
     ],

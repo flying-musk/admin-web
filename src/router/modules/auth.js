@@ -18,7 +18,6 @@ export default [
         component: Auth,
         meta: {
           title: '授權管理',
-          affix: true,
         },
       },
     ],

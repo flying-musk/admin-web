@@ -18,7 +18,6 @@ export default [
         component: Product,
         meta: {
           title: '產品管理',
-          affix: true,
         },
       },
     ],

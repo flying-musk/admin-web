@@ -18,7 +18,6 @@ export default [
         component: Agent,
         meta: {
           title: '代理專區',
-          affix: true,
         },
       },
     ],

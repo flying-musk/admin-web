@@ -26,7 +26,7 @@
       const store = useStore()
       const device = computed(() => store.state.app.device)
       const router = useRouter()
-      const route = router.currentRoute // 这里不使用useRoute获取当前路由，否则下面watch监听路由的时候会有警告
+      const route = router.currentRoute // 這裏不使用 useRoute 獲取當前路由，否則下面 watch 路由的會有警告
       const breadcrumbs = ref([])
       const defaultSettings = computed(() => store.state.layoutSettings)
       const isHorizontalMenu = computed(
@@ -34,7 +34,7 @@
       )
 
       const getBreadcrumbs = route => {
-        const home = [{ path: '/', meta: { title: '首页' } }]
+        const home = [{ path: '/', meta: { title: '首頁' } }]
         if (route.name === 'home') {
           return home
         } else {

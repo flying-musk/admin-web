@@ -18,7 +18,6 @@ export default [
         component: Member,
         meta: {
           title: '會員管理',
-          affix: true,
         },
       },
     ],

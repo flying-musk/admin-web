@@ -38,5 +38,5 @@ const router = createRouter({
     }
   },
 })
-console.log(fixedRoutes)
+
 export default router

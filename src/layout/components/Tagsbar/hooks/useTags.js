@@ -42,7 +42,7 @@ export const useTags = () => {
       }
     }
 
-    // 不在路由中的所有标签，需要删除
+    // 不在路由中的所有 tag，需要删除
     const noUseTags = tagList.value.filter(tag =>
       routes.value.every(route => route.name !== tag.name)
     )
@@ -88,7 +88,7 @@ export const useTags = () => {
   })
 
   watch(route, (newRoute, oldRoute) => {
-    saveActivePosition(oldRoute) // 保存标签的位置
+    saveActivePosition(oldRoute) // 保存 tag 的位置
     addTag()
     moveToCurrentTag()
   })
