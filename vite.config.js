@@ -1,36 +1,50 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { visualizer } from "rollup-plugin-visualizer";
+export default ({ mode }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) }
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: '@import "./src/assets/style/global-variables.scss";',
+  return defineConfig({
+    plugins: [vue(), visualizer()],
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
       },
     },
-  },
-  build: {
-    terserOptions: {
-      compress: {
-        keep_infinity: true,
-        drop_console: true,
-      },
-    },
-    brotliSize: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'element-plus': ['element-plus'],
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // additionalData: '@import "./src/assets/style/global-variables.scss";',
+          additionalData: `@use "./src/assets/style/global-variables.scss" as *;`,
         },
       },
     },
-  },
-})
+    proxy: {
+      '/api': {
+        target: process.env.VITE_APP_WEB_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+    // base: '/admin/',
+    build: {
+      // outDir: 'pub_html/admin',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          keep_infinity: true,
+          drop_console: true,
+        },
+      },
+      brotliSize: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'element-plus': ['element-plus'],
+          },
+        },
+      },
+    },
+  })
+}

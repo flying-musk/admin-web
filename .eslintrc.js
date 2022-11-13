@@ -12,6 +12,7 @@ module.exports = {
     ecmaVersion: 2020,
   },
   rules: {
+    // 'vue/script-setup-uses-vars': 'off',
     'no-console': 0,
     'no-use-before-define': 'off',
     'vue/no-unused-vars': 'warn',

@@ -1,0 +1,16 @@
+@import 'tailwind.scss';
+@import 'element-ui.scss';
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微軟雅黑', Arial, sans-serif;
+  font-weight: 400;
+//   font-size: $fontSizeBase;
+//   color: $defaultTextColor;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}

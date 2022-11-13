@@ -1,16 +1,19 @@
-$mainColor: #409eff;
+$mainColor: #5c6ac4;
 
 // sidebar
 $menuBg: #304156;
 $menuTextColor: #fff;
-$menuActiveTextColor: $mainColor;
-$menuActiveBg: none;
+// $menuActiveTextColor: $mainColor;
+$menuActiveTextColor: #fff;
+$menuActiveBg: $mainColor;
+// $menuActiveBg: none;
 $menuHover: #263445;
 $subMenuBg: #1f2d3d;
 $subMenuHover: #001528;
-$collapseMenuActiveBg: #1f2d3d;
+$collapseMenuActiveBg: $mainColor;
 $collapseMenuActiveColor: $menuTextColor;
-$collapseMenuActiveBorderColor: $mainColor;
+$collapseMenuActiveBorderColor: #34429c;
 $collapseMenuActiveBorderWidth: 2px;
 $arrowColor: #909399;
 $horizontalMenuHeight: 40px;
+$verticalMenuHeight: 48px;

@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '會員管理',
     },
-    icon: 'el-icon-user',
+    icon: 'User',
     children: [
       {
         path: '/member',

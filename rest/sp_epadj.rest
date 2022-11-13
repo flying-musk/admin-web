@@ -1,0 +1,27 @@
+# sp_epadj set_single 設定單筆扣補
+@hostname = https://mlg3.wulidev.com
+POST {{hostname}}/api/sys/sp_epadj.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"set_single",
+    "mbid":108907,
+    "dtype":1,
+    "amount":100,
+    "remark":"some text !!!!",
+    "iscfm":0
+}
+
+
+###
+# sp_epadj deduct_list 取得最近 n 天的 扣補調整清單
+POST {{hostname}}/api/sys/sp_epadj.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"deduct_list",
+    "days": 7
+}
+

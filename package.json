@@ -5,27 +5,29 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "report": "vite build --mode development",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^0.27.2",
-    "vuex": "^4.0.0",
     "vue": "^3.2.25",
-    "vue-router": "^4.0.16"
+    "vue-recaptcha": "^2.0.3",
+    "vue-router": "^4.0.16",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.1",
-    "vite": "^2.9.2",
-    "vite-plugin-svg-icons": "^0.4.0",
     "autoprefixer": "^10.4.7",
-    "dart-sass": "^1.25.0",
+    "element-plus": "^2.2.13",
     "eslint": "^8.15.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "lodash-es": "^4.17.21",
     "postcss": "^8.4.13",
     "prettier": "^2.6.2",
+    "rollup-plugin-visualizer": "^5.8.3",
     "sass": "^1.51.0",
     "tailwindcss": "^3.0.24",
-    "element-plus": "^1.0.2-beta.71"
+    "vite": "^2.9.2"
   }
 }

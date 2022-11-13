@@ -25,7 +25,7 @@
             @click.prevent.stop="closeTag(tag)" />
         </div>
       </router-link>
-    </el-scrollbar>
+  </el-scrollbar>
   </div>
   <ul
     v-show="visible"

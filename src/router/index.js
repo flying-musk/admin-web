@@ -7,6 +7,7 @@ import agent from './modules/agent'
 import member from './modules/member'
 import product from './modules/product'
 import orderSearch from './modules/orderSearch'
+import specialSetting from './modules/specialSetting'
 
 /* 菜单栏的路由 */
 // 固定菜单
@@ -17,6 +18,7 @@ export const fixedRoutes = [
   ...member,
   ...product,
   ...orderSearch,
+  ...specialSetting,
 ]
 // 动态菜单
 export const asyncRoutes = []

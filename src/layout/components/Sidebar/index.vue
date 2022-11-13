@@ -1,7 +1,8 @@
 <template>
   <div
     class="left"
-    :class="{ collapse: collapse, mobile: device === 'mobile' }">
+    :class="{ 'isCollapse': collapse, mobile: device === 'mobile' }"
+    >
     <logo />
     <menus :collapse="collapse" />
   </div>
@@ -43,13 +44,14 @@
 
 <style lang="scss" scoped>
   .left {
-    width: 210px;
+    width: 180px;
+    height: 100%;
     background: $menuBg;
-    transition: all 0.3s;
+    transition: all 0.3s ease-in-out;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    &.collapse {
+    &.isCollapse {
       width: 64px;
       ::v-deep(.brand .title) {
         display: none;
@@ -70,7 +72,7 @@
         background: rgba(0, 0, 0, 0.3);
         z-index: 9;
       }
-      &.collapse {
+      &.isCollapse {
         transform: translateX(-100%);
         & + .mask {
           display: none;
