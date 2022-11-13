@@ -1,0 +1,11 @@
+# login
+@hostname = https://mlg3.wulidev.com
+POST {{hostname}}/api/login.php
+Content-Type: application/json
+
+{
+    "cat": "sysuser",
+    "id": "cksunny",
+    "pwd": "xqq8yvh"
+}
+

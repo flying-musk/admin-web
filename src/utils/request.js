@@ -4,16 +4,17 @@ import store from '@/store'
 import router from '@/router'
 
 const service = axios.create({
-  baseURL: '/',
+  baseURL: import.meta.env.VITE_APP_WEB_URL,
   timeout: 10000,
-  withCredentials: true,
+  // withCredentials: true,
 })
 
 service.interceptors.request.use(
   config => {
     const { authorization } = store.state.app
     if (authorization) {
-      config.headers.Authorization = `Bearer ${authorization.token}`
+      config.headers.Authorization = `${authorization}`
+      // config.headers.Authorization = `Bearer ${authorization.token}`
     }
     return config
   },

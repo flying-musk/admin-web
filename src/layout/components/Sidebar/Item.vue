@@ -1,6 +1,7 @@
 <template>
-  <i v-if="isElementIcon" :class="`icon ${icon}`" />
-  <svg-icon class="icon" v-else-if="!!icon" :name="icon" />
+  <el-icon>
+  <component :is="icon"></component>
+   </el-icon>
   <span>{{ title }}</span>
 </template>
 

@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '產品管理',
     },
-    icon: 'el-icon-menu',
+    icon: 'Menu',
     children: [
       {
         path: '/product',

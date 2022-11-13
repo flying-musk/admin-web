@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '授權管理',
     },
-    icon: 'el-icon-lock',
+    icon: 'Lock',
     children: [
       {
         path: '/auth',

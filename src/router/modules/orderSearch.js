@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '訂單查詢',
     },
-    icon: 'el-icon-document-checked',
+    icon: 'DocumentChecked',
     children: [
       {
         path: '/orderSearch',

@@ -10,7 +10,7 @@ export default [
     meta: {
       title: '代理專區',
     },
-    icon: 'el-icon-document',
+    icon: 'Document',
     children: [
       {
         path: '/agent',

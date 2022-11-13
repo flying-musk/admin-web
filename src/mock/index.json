@@ -1,0 +1,54 @@
+{
+    "deduct_list": [
+        {
+            "member_id": 108907,
+            "pos": "原點位",
+            "name": "Jing Li",
+            "amt_in": "0.00",
+            "amt_out": "100.00",
+            "commit": "2022-11-08 03:54:45",
+            "remark": "Buy a bottle of oil at $65 for activation repeat sale (at 2020/29 week )",
+            "ep_id": 0
+        },
+        {
+            "member_id": 108907,
+            "pos": "B",
+            "name": "Jing Li",
+            "amt_in": "100.00",
+            "amt_out": "0.00",
+            "commit": "2022-11-08 03:54:45",
+            "remark": "Buy a bottle of oil at $65 for activation repeat sale (at 2018/49,2019/7,9,11,17,27,29,33,39 week . total of $585)",
+            "ep_id": 1
+        },
+        {
+            "member_id": 1089207,
+            "pos": "A",
+            "name": "Jing Li",
+            "amt_in": "100.00",
+            "amt_out": "0.00",
+            "commit": "2022-11-08 03:54:45",
+            "remark": "some text !!!!",
+            "ep_id": 2
+        },
+        {
+            "member_id": 1089037,
+            "pos": "原點位",
+            "name": "Jing Li",
+            "amt_in": "100.00",
+            "amt_out": "0.00",
+            "commit": "2022-11-08 03:54:45",
+            "remark": "some text !!!!",
+            "ep_id": 3
+        },
+        {
+            "member_id": 1081907,
+            "pos": "原點位",
+            "name": "Jing Li",
+            "amt_in": "100.00",
+            "amt_out": "0.00",
+            "commit": "2022-11-08 03:54:45",
+            "remark": "some text !!!!",
+            "ep_id": 4
+        }
+    ]
+}

@@ -2,15 +2,28 @@ import { ref } from 'vue'
 
 export const useScrollbar = tagsItem => {
   const scrollContainer = ref(null)
+  const scrollLeft = ref(0)
+
+  const doScroll = val => {
+    scrollLeft.value = val
+    scrollContainer.value.setScrollLeft(scrollLeft.value)
+  }
 
   const handleScroll = e => {
+    const $wrap = scrollContainer.value.wrap$
+    if ($wrap.offsetWidth + scrollLeft.value > $wrap.children[0].scrollWidth) {
+      doScroll($wrap.children[0].scrollWidth - $wrap.offsetWidth)
+      return
+    } else if (scrollLeft.value < 0) {
+      doScroll(0)
+      return
+    }
     const eventDelta = e.wheelDelta || -e.deltaY
-    scrollContainer.value.wrap.scrollLeft -= eventDelta / 4
+    doScroll(scrollLeft.value - eventDelta / 4)
   }
 
   const moveToTarget = currentTag => {
-    const containerWidth = scrollContainer.value.scrollbar.offsetWidth
-    const scrollWrapper = scrollContainer.value.wrap
+    const $wrap = scrollContainer.value.wrap$
     const tagList = tagsItem.value
 
     let firstTag = null
@@ -21,15 +34,15 @@ export const useScrollbar = tagsItem => {
       lastTag = tagList[tagList.length - 1]
     }
     if (firstTag === currentTag) {
-      scrollWrapper.scrollLeft = 0
+      doScroll(0)
     } else if (lastTag === currentTag) {
-      scrollWrapper.scrollLeft = scrollWrapper.scrollWidth - containerWidth
+      doScroll($wrap.children[0].scrollWidth - $wrap.offsetWidth)
     } else {
       const el = currentTag.$el.nextElementSibling
-      scrollWrapper.scrollLeft =
-        el.offsetLeft + el.offsetWidth > containerWidth
-          ? el.offsetLeft - el.offsetWidth
-          : 0
+
+      el.offsetLeft + el.offsetWidth > $wrap.offsetWidth
+        ? doScroll(el.offsetLeft - el.offsetWidth)
+        : doScroll(0)
     }
   }
 

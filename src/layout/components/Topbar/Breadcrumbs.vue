@@ -1,6 +1,6 @@
 <template>
   <el-breadcrumb
-    separator-class="el-icon-arrow-right"
+    separator-icon="ArrowRight"
     class="breadcrumb"
     :class="{
       mobile: device === 'mobile',
@@ -20,7 +20,6 @@
   import { defineComponent, computed, ref, onBeforeMount, watch } from 'vue'
   import { useRouter } from 'vue-router'
   import { useStore } from 'vuex'
-
   export default defineComponent({
     setup(props, { emit }) {
       const store = useStore()
@@ -80,9 +79,7 @@
     ::v-deep(.is-link) {
       font-weight: normal;
     }
-    ::v-deep(.el-breadcrumb__item) {
-      float: none;
-    }
+ 
     .no_link {
       ::v-deep(.el-breadcrumb__inner) {
         color: #97a8be !important;
