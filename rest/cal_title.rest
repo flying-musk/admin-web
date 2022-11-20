@@ -1,0 +1,35 @@
+# cal_title cal_yrmo 月份計算
+@hostname = https://mlg3.wulidev.com
+@role = sys
+@action = cal_title
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"cal_yrmo",
+    "yrmo":"2019-04",
+    "iscfm":0
+
+}
+
+
+###
+# sp_epadj get_promo_rec 取得晉升計算清單
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"get_promo_rec"
+}
+
+###
+# sp_epadj del_promo_rec 刪除晉升計算日期
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"del_promo_rec"
+}

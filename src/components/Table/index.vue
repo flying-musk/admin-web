@@ -6,7 +6,8 @@
       class="default-table"
       stripe
       border
-      max-height="550"
+      default-expand-all
+      max-height="500"
       ref="refTable"
       :header-cell-style="mainTableStyle.header"
       :row-style="mainTableStyle.row"
@@ -19,6 +20,7 @@
         width="35"
         fixed="left"
         :index="handleIndex" />
+     <slot name="custom"></slot>
       <el-table-column
         v-for="{
           prop,
@@ -41,7 +43,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <section class="flex justify-end pt-3">
+    <section class="flex justify-end pt-3" v-if="total > 0">
       <el-pagination
         v-model:current-page="currentPage"
         background
