@@ -72,7 +72,7 @@
           type="primary"
           class="w-full"
           auto-insert-space
-          @click="actions.handleSetDeduct">
+          @click="actions.handleSubmit">
           {{ btnText }}
         </el-button>
       </el-form>
@@ -127,7 +127,7 @@ const actions = {
    * @param {number}  dtype   1(扣款) or 2(補錢)
    * @param {number}  iscfm   null(未確認) or 1(確認)
    */
-  handleSetDeduct: (iscfm = 0) => {
+  handleSubmit: (iscfm = 0) => {
     refForm.value.validate(async valid => {
       if (valid) {
         state.model.iscfm = iscfm
@@ -221,7 +221,7 @@ const actions = {
                 showCancelButton: true,
               })
               .then(() => {
-                actions.handleSetDeduct(1)
+                actions.handleSubmit(1)
               })
           }
         } else {

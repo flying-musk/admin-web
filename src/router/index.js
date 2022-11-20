@@ -8,6 +8,7 @@ import member from './modules/member'
 import product from './modules/product'
 import orderSearch from './modules/orderSearch'
 import specialSetting from './modules/specialSetting'
+import calTitle from './modules/calTitle'
 
 /* 菜单栏的路由 */
 // 固定菜单
@@ -19,6 +20,7 @@ export const fixedRoutes = [
   ...product,
   ...orderSearch,
   ...specialSetting,
+  ...calTitle
 ]
 // 动态菜单
 export const asyncRoutes = []
