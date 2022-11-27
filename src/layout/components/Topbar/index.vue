@@ -9,89 +9,91 @@
       <breadcrumbs v-if="isShowBreadcrumbs" />
     </div>
     <div class="action">
+      <ChangeTokenDropdown />
       <userinfo />
     </div>
   </div>
 </template>
 <script>
-  import { defineComponent, computed } from 'vue'
-  import Logo from '@/layout/components/Sidebar/Logo.vue'
-  import Hamburger from './Hamburger.vue'
-  import Breadcrumbs from './Breadcrumbs.vue'
-  import Userinfo from './Userinfo.vue'
-  import { useStore } from 'vuex'
+import { defineComponent, computed } from 'vue'
+import Logo from '@/layout/components/Sidebar/Logo.vue'
+import Hamburger from './Hamburger.vue'
+import Breadcrumbs from './Breadcrumbs.vue'
+import ChangeTokenDropdown from '@/components/Dropdown/ChangeTokenDropdown.vue'
+import Userinfo from './Userinfo.vue'
+import { useStore } from 'vuex'
 
-  export default defineComponent({
-    components: {
-      Logo,
-      Hamburger,
-      Breadcrumbs,
-      Userinfo,
-    },
-    setup() {
-      const store = useStore()
-      const defaultSettings = computed(() => store.state.layoutSettings)
+export default defineComponent({
+  components: {
+    Logo,
+    Hamburger,
+    Breadcrumbs,
+    Userinfo,
+    ChangeTokenDropdown,
+  },
+  setup() {
+    const store = useStore()
+    const defaultSettings = computed(() => store.state.layoutSettings)
 
-      const device = computed(() => store.state.app.device)
+    const device = computed(() => store.state.app.device)
 
-      const isHorizontalMenu = computed(
-        () => defaultSettings.value.menus.mode === 'horizontal'
-      )
+    const isHorizontalMenu = computed(
+      () => defaultSettings.value.menus.mode === 'horizontal'
+    )
 
-      const isShowLogo = computed(
-        () => isHorizontalMenu.value || device.value === 'mobile'
-      )
+    const isShowLogo = computed(
+      () => isHorizontalMenu.value || device.value === 'mobile'
+    )
 
-      const isShowHamburger = computed(() => !isHorizontalMenu.value)
+    const isShowHamburger = computed(() => !isHorizontalMenu.value)
 
-      const isShowBreadcrumbs = computed(
-        () =>
-          defaultSettings.value.breadcrumbs.isShow && !isHorizontalMenu.value
-      )
+    const isShowBreadcrumbs = computed(
+      () => defaultSettings.value.breadcrumbs.isShow && !isHorizontalMenu.value
+    )
 
-      return {
-        device,
-        isHorizontalMenu,
-        isShowLogo,
-        isShowHamburger,
-        isShowBreadcrumbs,
-      }
-    },
-  })
+    return {
+      device,
+      isHorizontalMenu,
+      isShowLogo,
+      isShowHamburger,
+      isShowBreadcrumbs,
+    }
+  },
+})
 </script>
 <style lang="scss" scoped>
-  .header {
-    height: 48px;
-    border-bottom: 1px solid #e0e4ef;
+.header {
+  height: 48px;
+  border-bottom: 1px solid #e0e4ef;
+  display: flex;
+  justify-content: space-between;
+  &.no-border {
+    border: none;
+  }
+  .navigation {
     display: flex;
-    justify-content: space-between;
-    &.no-border {
-      border: none;
-    }
-    .navigation {
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-    .action {
-      display: flex;
-      align-items: center;
-    }
+    align-items: center;
+    overflow: hidden;
   }
-  .mobile {
-    padding-right: 0;
-    ::v-deep(.logo) {
-      max-width: 24px;
-      max-height: 24px;
-    }
-    ::v-deep(.title) {
-      display: none;
-    }
+  .action {
+    display: flex;
+    align-items: center;
   }
-  .show-title {
-    ::v-deep(.title) {
-      display: block;
-      color: #333;
-    }
+}
+.mobile {
+  padding-right: 0;
+  ::v-deep(.logo) {
+    max-width: 24px;
+    max-height: 24px;
   }
+  ::v-deep(.title) {
+    display: none;
+  }
+}
+.show-title {
+  ::v-deep(.title) {
+    display: block;
+    color: #333;
+  }
+}
 </style>

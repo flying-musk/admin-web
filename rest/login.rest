@@ -4,7 +4,7 @@ POST {{hostname}}/api/login.php
 Content-Type: application/json
 
 {
-    "cat": "sysuser",
+    "cat": "agent",
     "id": "cksunny",
     "pwd": "xqq8yvh"
 }

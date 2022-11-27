@@ -33,12 +33,47 @@
   padding: 6px 10px;
 }
 
+.form {
+  .el-input__wrapper {
+    background-color: $inputBackgroundColor;
+    border: none;
+    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+  }
+
+  .el-input__wrapper.is-focus,
+  .el-cascader .el-input.is-focus .el-input__wrapper {
+    background-color: rgb(244, 242, 250);
+  }
+}
+
+.el-radio.is-bordered {
+  padding: 0 8px;
+  --el-border-radius-base: 10px;
+  .el-radio__input {
+    display: none;
+  }
+
+  .el-radio__label {
+    display:flex;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    width: 100%;
+  }
+}
+
+
 .heigh-light {
-  color: #5c6ac4;
+  color: $mainColor;
 }
 
 .increase {
-  color:dodgerblue
+  color: dodgerblue
 }
 
 .decrease {

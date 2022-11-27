@@ -1,0 +1,35 @@
+
+@hostname = https://mlg3.wulidev.com
+@action = changeToken
+
+
+### 取得 我管轄的 代理資料
+POST https://mlg3.wulidev.com/api/changeToken.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA1NTI0NDR9.x7HfaIIZiFnfjuz3zD4SfCqto4ljBg7SlkF65ixlgEU
+
+{
+    "action":"getsubagent"
+}
+
+
+### 管理帳號登入會員界面
+POST {{hostname}}/api/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NzA1NTA1ODJ9.JARL2dyxkBeICoUANtTgee-nsRwnP6SCr550kDik7oc
+
+{
+    "action":"member",
+    "id":108907
+}
+
+### 管理帳號登入代理界面
+POST {{hostname}}/api/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA1NzkzNjJ9.9o0Bn9vGhD8XHJnM_TRwt8W6DPO4tWVNxzlyJC_ETjE
+
+{
+    "action":"agent",
+    "id":1
+}
+

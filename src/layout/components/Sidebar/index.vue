@@ -31,6 +31,7 @@
 
       onBeforeMount(async () => {
         await store.dispatch('menu/generateMenus')
+        await store.dispatch('variables/getVariables')
       })
 
       return {
