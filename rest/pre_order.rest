@@ -1,0 +1,55 @@
+# pre_order listbydate 列出 preorder 清单
+@hostname = https://mlg3.wulidev.com
+@role = agent
+@action = pre_order
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+
+{
+    "action":"listbydate",
+    "begin":"2022-10-16",
+    "end":"2022-11-16",
+    "cond":"cancelled"
+}
+
+###
+# pre_order listbyid 列出 preorder 清单
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+
+{
+    "action":"listbyid",
+    "id":1
+}
+###
+# pre_order new  清单
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+
+{
+    "action":"new",
+    "mbid":1,
+    "order_mbid":1
+}
+###
+# sp_epadj get_promo_rec 取得晉升計算清單
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+
+{
+    "action":"get_promo_rec"
+}
+
+###
+# sp_epadj del_promo_rec 刪除晉升計算日期
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+
+{
+    "action":"del_promo_rec"
+}

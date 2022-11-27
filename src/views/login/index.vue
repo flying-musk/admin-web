@@ -1,7 +1,9 @@
 <template>
   <div class="login">
     <el-form class="form" :model="model" :rules="rules" ref="loginForm">
-      <h1 class="title">管理界面 以及 代理商界面</h1>
+      <h1 class="title">
+        <!-- 管理界面 以及 代理商界面  -->
+        {{ title }}界面</h1>
       <el-form-item prop="id">
         <el-input
           class="text"
@@ -63,7 +65,6 @@ export default defineComponent({
       model: {
         id: 'cksunny',
         pwd: 'xqq8yvh',
-        cat: 'sysuser',
       },
       rules: {
         id: [{ required: true, message: '請輸入帳號', trigger: 'blur' }],
@@ -78,6 +79,9 @@ export default defineComponent({
         ],
       },
       loading: false,
+      title: computed(() =>
+        import.meta.env.VITE_BBT_ROLE === 'agent' ? '代理商' : '管理'
+      ),
       btnText: computed(() => (state.loading ? '登入中...' : '登入')),
       loginForm: ref(null),
       submit: () => {
@@ -103,6 +107,7 @@ export default defineComponent({
                 router.push('/')
               }
               store.dispatch('app/setToken', msg)
+
             } else {
               proxy.$message({
                 type: 'error',
@@ -122,6 +127,15 @@ export default defineComponent({
 })
 </script>
 
+<style lang="scss">
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-transition: 'color 9999s ease-out, background-color 9999s ease-out';
+  -webkit-transition-delay: 9999s;
+}
+</style>
 <style lang="scss" scoped>
 .login {
   transition: transform 1s;
@@ -144,11 +158,11 @@ export default defineComponent({
     }
     .text {
       font-size: 16px;
-      :deep(.el-input__wrapper){
+      :deep(.el-input__wrapper) {
         background: rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.1);
         color: #fff;
-         height: 48px;
+        height: 48px;
         line-height: 48px;
         &::placeholder {
           color: rgba(255, 255, 255, 0.2);

@@ -3,9 +3,24 @@
     <el-row :gutter="8" class="h-full">
       <el-col
         :span="24"
-        :sm="state.showSetting ? 16 : 24"
-        :md="state.showSetting ? 16 : 24"
-        :lg="state.showSetting ? 18 : 24"
+        :sm="
+          !isEmpty(state.dateOptions) &&
+          state.selectedDate === state.dateOptions[0]
+            ? 16
+            : 24
+        "
+        :md="
+          !isEmpty(state.dateOptions) &&
+          state.selectedDate === state.dateOptions[0]
+            ? 16
+            : 24
+        "
+        :lg="
+          !isEmpty(state.dateOptions) &&
+          state.selectedDate === state.dateOptions[0]
+            ? 18
+            : 24
+        "
         class="table-animation">
         <!-- 晉升計算清單 -->
         <div
@@ -20,8 +35,7 @@
                 <el-radio-button
                   v-for="(date, i) in state.dateOptions"
                   :key="i"
-                  :label="date"
-                  >
+                  :label="date">
                   {{ formatMonth(date) }}
                   <span
                     class="font-normal"
@@ -49,7 +63,7 @@
           </header>
           {{ formatData?.pvjson }}
           <!-- 晉升計算清單 -->
-          <el-table :data="formatData" size="small">
+          <el-table :data="formatData" size="small" v-loading="state.loading">
             <el-table-column
               type="index"
               align="center"
@@ -160,7 +174,15 @@
           </BasicTable>
         </div>
       </el-col>
-      <el-col :span="24" :sm="8" :md="8" :lg="6">
+      <el-col
+        :span="24"
+        :sm="8"
+        :md="8"
+        :lg="6"
+        v-show="
+          !isEmpty(state.dateOptions) &&
+          state.selectedDate === state.dateOptions[0]
+        ">
         <SetCalTitleCard
           :yrmo="formatNextMonth(state.dateOptions[0] || '')"
           @on-refresh="actions.handleGetCalTitle" />
@@ -170,7 +192,7 @@
 </template>
 
 <script setup>
-import { GetCalTitle } from '@/api/cal_title'
+import { CalTitleApiHandler } from '@/api/cal_title'
 import { reactive, onMounted, getCurrentInstance, computed } from 'vue'
 import BasicTable from '@/components/Table/index.vue'
 import DeleteButton from '@/components/Button/DeleteButton.vue'
@@ -242,59 +264,11 @@ const actions = {
    * @param {string}  action  get_promo_rec
    */
   handleGetCalTitle: async () => {
-    const fake = {
-      '2019-05-01': [
-        {
-          mbid: '108907',
-          name: 'Jing Li(原)',
-          phone: '1-9176673205',
-          class: 'PREM',
-          star: '5',
-          title: 'dir',
-          pvjson: {
-            '2019-02': '26326',
-            '2019-03': '15126',
-            '2019-04': '5672',
-          },
-        },
-      ],
-      '2019-03-27': [
-        {
-          mbid: '108934',
-          name: 'Jak Ki(原)',
-          phone: '1-9176673205',
-          class: 'PREM',
-          star: '5',
-          title: 'dir',
-          pvjson: {
-            '2019-02': '213',
-            '2019-03': '33333',
-            '2019-04': '5671232',
-          },
-        },
-        {
-          mbid: '333123',
-          name: 'Jak Fy(A)',
-          phone: '1-9176673205',
-          class: 'PREM',
-          star: '5',
-          title: 'dir',
-          pvjson: {
-            '2019-02': '31231',
-            '2019-03': '4545',
-            '2019-04': '56322',
-          },
-        },
-      ],
-      '2019-02-27': [],
-      '2019-01-30': [],
-    }
-
     state.loading = true
     const params = {
       action: 'get_promo_rec',
     }
-    const { code, data, msg } = await GetCalTitle(params)
+    const { code, data, msg } = await CalTitleApiHandler(params)
     if (code === 1) {
       state.dateOptions = Object.keys(data)
       state.list = data
@@ -422,7 +396,7 @@ const actions = {
       action: 'del_promo_rec',
       countdate: state.selectedDate,
     }
-    const { code, data, msg } = await GetCalTitle(params)
+    const { code, data, msg } = await CalTitleApiHandler(params)
     proxy.$message({
       type: 'error',
       message: msg,
@@ -461,10 +435,8 @@ const actions = {
   flex-direction: row;
   flex-wrap: nowrap;
   overflow-x: scroll;
-  &::-webkit-scrollbar {
-    display: none;
-  }
   margin-right: 12px;
+  padding-bottom: 3px;
 }
 </style>
 
@@ -473,8 +445,8 @@ const actions = {
   color: $mainColor;
 }
 .table-animation {
-  transition: all 0.5s ease-in;
-  transition-delay: 0.5s;
+  // transition: all 0.5s ease-in;
+  // transition-delay: 0.5s;
 }
 // slide-fade
 .slide-fade-enter-active {
@@ -484,20 +456,19 @@ const actions = {
 
 .slide-fade-leave-active {
   animation: slide-out 1s ease-out forwards;
-  opacity: 0;
-  transition: opacity 1s;
+  // transition: opacity 1s;
   -webkit-animation: slide-out 1s ease-out forwards;
 }
 
 @keyframes slide-in {
   from {
-    transition: opacity 1.5s;
+    // transition: opacity 1.5s;
     transform: translateX(30px);
     -webkit-transform: translateX(30px);
     -moz-transform: translateX(30px);
     -ms-transform: translateX(30px);
     -o-transform: translateX(30px);
-    opacity: 0;
+    // opacity: 0;
   }
   to {
     transform: translateX(0);
@@ -505,7 +476,7 @@ const actions = {
     -moz-transform: translateX(0);
     -ms-transform: translateX(0);
     -o-transform: translateX(0);
-    opacity: 1;
+    // opacity: 1;
   }
 }
 

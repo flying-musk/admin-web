@@ -16,66 +16,14 @@
         cursor-pointer
       "
       @click="state.isCollapse = !state.isCollapse">
-      <h3 class="flex-1">設定單筆扣補</h3>
+      <h3 class="flex-1">新增預收訂單</h3>
       <el-icon>
         <ArrowUp v-show="state.isCollapse" />
         <ArrowDown v-show="!state.isCollapse" />
       </el-icon>
     </header>
     <div v-show="state.isCollapse">
-      <el-form
-        class="form p-2 mt-2"
-        :model="state.model"
-        :rules="state.rules"
-        size="small"
-        label-width="70"
-        label-position="left"
-        hide-required-asterisk
-        scroll-to-error
-        ref="refForm">
-        <el-form-item label="會員編號" prop="mbid">
-          <el-input
-            class="text"
-            v-model="state.model.mbid"
-            prefix-icon="User"
-            clearable
-            placeholder="請輸入會員編號" />
-        </el-form-item>
-        <el-form-item label="修正類型" prop="dtype">
-          <el-radio-group v-model="state.model.dtype" size="small">
-            <el-radio :label="1">扣款</el-radio>
-            <el-radio :label="2">補錢</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="扣捕金額" prop="amount">
-          <el-input
-            class="text"
-            v-number
-            v-model="state.model.amount"
-            prefix-icon="Coin"
-            clearable
-            placeholder="請輸入扣捕金額" />
-        </el-form-item>
-
-        <el-form-item label="備註" prop="remark">
-          <el-input
-            v-model="state.model.remark"
-            :autosize="{ minRows: 2, maxRows: 5 }"
-            placeholder="請輸入備註"
-            resize="none"
-            type="textarea" />
-        </el-form-item>
-
-        <el-button
-          :loading="state.loading"
-          size="default"
-          type="primary"
-          class="w-full"
-          auto-insert-space
-          @click="actions.handleSubmit">
-          {{ btnText }}
-        </el-button>
-      </el-form>
+      <CreatePreOrderForm />
     </div>
   </div>
 </template>
@@ -83,6 +31,7 @@
 <script setup>
 import { ref, reactive, computed, getCurrentInstance, h } from 'vue'
 import SubTitle from '@/components/Title/SubTitle.vue'
+import CreatePreOrderForm from '@/components/Form/CreatePreOrderForm.vue'
 import { SetDeduct } from '@/api/sp_epadj'
 import { ArrowDown } from '@element-plus/icons-vue'
 const { proxy } = getCurrentInstance()
@@ -92,26 +41,15 @@ const state = reactive({
   loading: false,
   isCollapse: true,
   model: {
-    action: 'set_single',
+    action: 'new',
     mbid: '',
-    amount: null,
-    remark: '',
-    dtype: 1,
-    iscfm: 0,
+    order_mbid: null,
+    data: {},
   },
-  // model: {
-  //   action: 'set_single',
-  //   mbid: '108907',
-  //   amount: 10003,
-  //   remark:
-  //     'qweqweiqopwiep iwopeiqopweiqopwei pipoqweiopqwiepqwie pqwei qpowe iqpowe iqpowie pqwioqpiepqwei oqpwei ',
-  //   dtype: 1,
-  //   iscfm: 0,
-  // },
   rules: {
     mbid: [{ required: true, message: '', trigger: 'blur' }],
     amount: [{ required: true, message: '', trigger: 'blur' }],
-    dtype: [{ required: true, message: '', trigger: 'blur' }],
+    isMember: [{ required: true, message: '', trigger: 'blur' }],
     remark: [{ required: true, message: '', trigger: 'blur' }],
   },
 })
@@ -119,12 +57,12 @@ const btnText = computed(() => (state.loading ? '確認中...' : '確認'))
 
 const actions = {
   /**
-   * @description 設定單筆扣補
+   * @description 新增預收訂單
    * @param {string}  action  set_single
    * @param {number}  mbid    會員編號
    * @param {number}  amount  金額
    * @param {string}  remark  備註
-   * @param {number}  dtype   1(扣款) or 2(補錢)
+   * @param {number}  isMember   1(扣款) or 2(補錢)
    * @param {number}  iscfm   null(未確認) or 1(確認)
    */
   handleSubmit: (iscfm = 0) => {
@@ -183,14 +121,14 @@ const actions = {
                         'p',
                         null,
                         `${
-                          data.dtype === 1 ? '要扣款的金額' : '要補錢的金額'
+                          data.isMember === 1 ? '要扣款的金額' : '要補錢的金額'
                         }：`
                       ),
                       h(
                         'p',
                         {
                           style: `color: ${
-                            data.dtype === 1 ? 'tomato' : 'cadetblue'
+                            data.isMember === 1 ? 'tomato' : 'cadetblue'
                           }`,
                         },
                         Number(data.amount).toLocaleString('zh-CN', {
@@ -203,7 +141,7 @@ const actions = {
                       h(
                         'p',
                         null,
-                        data.dtype === 1
+                        data.isMember === 1
                           ? (
                               Number(data.bal) - Number(data.amount)
                             ).toLocaleString('zh-CN', {

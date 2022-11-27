@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "dev:agent": "vite --mode agent",
     "build": "vite build",
     "report": "vite build --mode development",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "dayjs": "^1.11.6",
     "vue": "^3.2.25",
     "vue-recaptcha": "^2.0.3",
     "vue-router": "^4.0.16",

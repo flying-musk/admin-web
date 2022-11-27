@@ -52,6 +52,8 @@ export default {
       commit('tags/CLEAR_ALL_TAGS', '', { root: true })
       // 清空menus
       commit('menu/SET_MENUS', [], { root: true })
+      // 清空 variables
+      commit('variables/clearVariables', '', { root: true })
     },
     setScreenCode({ commit, state }, password) {
       const authorization = toRaw(state.authorization)
