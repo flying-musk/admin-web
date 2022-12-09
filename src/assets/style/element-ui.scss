@@ -15,10 +15,12 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
-
 .el-table--small th,
 .el-table--small td {
   padding: 0;
+}
+.el-table--small .el-table__cell{
+  padding: 1px 0!important;
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td {
@@ -26,7 +28,7 @@
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover {
-  box-shadow: 0px 0px 3px #5971f7;
+  box-shadow: inset 0 0 0 0 #5971f7;
 }
 
 .el-radio-button--small .el-radio-button__inner {
@@ -35,36 +37,126 @@
 
 .form {
   .el-input__wrapper {
-    background-color: $inputBackgroundColor;
     border: none;
-    box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
+    // box-shadow: none;
+    // background-color: $inputBackgroundColor;
+    // border: 1px solid rgb(0 0 0 / 0.05);
+    box-shadow: inset 0 0 0 0 rgb(0 0 0 / 0.1);
   }
 
-  .el-input__wrapper.is-focus,
-  .el-cascader .el-input.is-focus .el-input__wrapper {
-    background-color: rgb(244, 242, 250);
+  .el-form-item__label {
+    color: $inputPlaceholderColor;
+    margin-bottom: 2px !important;
+    font-size: 12px !important;
+  }
+
+  .el-input__inner::placeholder {
+    color: $inputPlaceholderColor;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  /* google */
+  .el-input__inner::-webkit-input-placeholder {
+    color: $inputPlaceholderColor;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  /* firefox */
+  .el-input__inner:-moz-placeholder {
+    color: $inputPlaceholderColor;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  /*ie*/
+  .el-input__inner:-ms-input-placeholder {
+    color: $inputPlaceholderColor;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+  }
+
+  .el-radio.is-bordered {
+    background: #fff;
+  }
+
+  .el-radio.is-bordered:hover,
+  .el-input__wrapper:hover {
+    box-shadow: 0 0 3px 1px #5971f7;
+  }
+
+  .el-radio.is-bordered.is-checked,
+  .el-input__wrapper.is-checked {
+    background: #e2e8ff;
+    border-color: $mainColor;
+  }
+
+  .el-radio.is-bordered .el-radio__input.is-checked+.el-radio__label {
+    color: $mainColor;
+  }
+}
+
+.hide-err-form {
+  .el-form-item {
+    padding-bottom: 6px;
+    margin-bottom: 0 !important;
+  }
+}
+
+.previewDialog.el-dialog {
+  background-color: #fbfcfe;
+
+  .el-dialog__header {
+    display: none;
+  }
+
+  .el-dialog__body {
+    padding: 0;
+  }
+
+  .dj-dialog-content {
+    padding: 0;
+    overflow: unset;
+  }
+}
+
+.el-radio-group {
+  .el-radio {
+    margin-right: 8px;
   }
 }
 
 .el-radio.is-bordered {
-  padding: 0 8px;
-  --el-border-radius-base: 10px;
+  padding: 0 4px;
+  --el-border-radius-base: 3px;
+
   .el-radio__input {
     display: none;
   }
 
   .el-radio__label {
-    display:flex;
+    display: flex;
     justify-content: center;
     text-align: center;
     justify-items: center;
     width: 100%;
   }
+}
+
+.el-drawer__header {
+  color: #252525 !important;
+  letter-spacing: .1em;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  padding-bottom: 6px !important;
+  padding-top: 6px !important;
+  padding-left: 8px !important;
+}
+
+.el-drawer__body {
+  padding: 0 !important;
+  background-color: #f3f7fe;
 }
 
 

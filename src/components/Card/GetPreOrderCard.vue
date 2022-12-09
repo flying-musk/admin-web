@@ -28,8 +28,7 @@
         :model="state.model"
         :rules="state.rules"
         size="small"
-        label-width="100"
-        label-position="left"
+        label-position="top"
         hide-required-asterisk
         scroll-to-error
         ref="refForm">
@@ -43,7 +42,7 @@
         </el-form-item>
         <el-button
           :loading="state.loading"
-          size="default"
+          size="small"
           type="primary"
           class="w-full"
           plain
@@ -54,10 +53,7 @@
       </el-form>
     </div>
     <el-dialog v-model="state.dialogVisible" title="查詢預收訂單" center>
-      <el-descriptions
-        :column="2"
-        size="small"
-        border>
+      <el-descriptions :column="2" size="small" border>
         <el-descriptions-item
           v-for="(item, i) in Object.entries(state.data)"
           :key="i">
@@ -78,7 +74,9 @@
           value: `${item[1]}`,
         }" /> -->
       <template #footer>
-          <el-button class="w-full" @click="state.dialogVisible = false">關閉</el-button>
+        <el-button class="w-full" @click="state.dialogVisible = false"
+          >關閉</el-button
+        >
       </template>
     </el-dialog>
   </div>
@@ -119,7 +117,7 @@ const actions = {
     refForm.value.validate(async valid => {
       if (valid) {
         state.loading = true
-        const { code, data, msg } = await GetPreOrder(state.model)
+        const { code, data, msg } = await PreOrderApiHandler(state.model)
         if (code > 0) {
           state.data = data
           state.dialogVisible = true

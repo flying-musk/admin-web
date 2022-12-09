@@ -1,4 +1,5 @@
 import { fixedRoutes } from '@/router'
+import { asyncRoutes } from '@/router'
 
 // const hasPermission = (role, route) => {
 //   if (!!route.meta && !!route.meta.roles && !route.meta.roles.includes(role)) {
@@ -74,7 +75,8 @@ export default {
   },
   actions: {
     async generateMenus({ commit }) {
-      const menus = getFilterMenus(fixedRoutes)
+      const newArr = fixedRoutes.concat(asyncRoutes)
+      const menus = getFilterMenus(newArr)
       commit('SET_MENUS', menus)
     },
   },

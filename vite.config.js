@@ -27,9 +27,9 @@ export default ({ mode }) => {
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
-    // base: '/admin/',
+    base: process.env.VITE_OUTPUT_URL,
     build: {
-      // outDir: 'pub_html/admin',
+      outDir: `pub_html${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
       terserOptions: {
         compress: {

@@ -175,7 +175,7 @@
       v-model="state.dialogVisible"
       :fullscreen="true"
       center
-      class="previewDialog">
+      class="previewDialog p-3">
       <el-row :gutter="12">
         <el-col :span="24" :sm="18">
           <div>
@@ -655,15 +655,6 @@ const actions = {
 }
 </script>
 <style lang="scss">
-.previewDialog.el-dialog {
-  .el-dialog__header {
-    display: none;
-  }
-  .dj-dialog-content {
-    padding: 0;
-    overflow: unset;
-  }
-}
 .cal-table {
   .el-table__body tr.current-row > td {
     background-color: #7888F4  !important;

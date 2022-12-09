@@ -15,17 +15,15 @@ import preOrder from './modules/preOrder'
 // 固定菜单
 export const fixedRoutes = [
   ...home,
-  ...auth,
-  ...agent,
-  ...member,
-  ...product,
-  ...orderSearch,
-  ...specialSetting,
-  ...calTitle,
-  ...preOrder
+  // ...auth,
+  // ...agent,
+  // ...member,
+  // ...product,
+  // ...orderSearch
 ]
 // 动态菜单
-export const asyncRoutes = []
+export const asyncRoutes = import.meta.env.VITE_BBT_ROLE === 'agent' ? [...preOrder] : [...specialSetting,
+...calTitle]
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -35,6 +33,7 @@ const router = createRouter({
     },
     ...login,
     ...fixedRoutes,
+    ...asyncRoutes
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

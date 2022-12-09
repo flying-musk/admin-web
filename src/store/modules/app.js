@@ -54,6 +54,9 @@ export default {
       commit('menu/SET_MENUS', [], { root: true })
       // 清空 variables
       commit('variables/clearVariables', '', { root: true })
+      // 清除角色信息
+      commit('changeRoleInfo/clearChangeRoleInfoList', '', { root: true }) // 清除角色信息
+      commit('changeRoleInfo/clearChangeRoleInfo', '', { root: true })
     },
     setScreenCode({ commit, state }, password) {
       const authorization = toRaw(state.authorization)

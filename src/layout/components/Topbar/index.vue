@@ -9,7 +9,7 @@
       <breadcrumbs v-if="isShowBreadcrumbs" />
     </div>
     <div class="action">
-      <ChangeTokenDropdown />
+      <ChangeTokenDropdown v-if="isAgent" />
       <userinfo />
     </div>
   </div>
@@ -51,12 +51,15 @@ export default defineComponent({
       () => defaultSettings.value.breadcrumbs.isShow && !isHorizontalMenu.value
     )
 
+    const isAgent = computed(() => import.meta.env.VITE_BBT_ROLE === 'agent')
+
     return {
       device,
       isHorizontalMenu,
       isShowLogo,
       isShowHamburger,
       isShowBreadcrumbs,
+      isAgent
     }
   },
 })
