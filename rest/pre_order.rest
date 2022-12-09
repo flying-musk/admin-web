@@ -4,52 +4,64 @@
 @action = pre_order
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
 
 {
     "action":"listbydate",
-    "begin":"2022-10-16",
-    "end":"2022-11-16",
-    "cond":"cancelled"
+    "begin":"2022-11-22",
+    "end": "2022-12-29",
+    "status":"cancelled"
 }
 
 ###
 # pre_order listbyid 列出 preorder 清单
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
 
 {
     "action":"listbyid",
-    "id":1
+    "id":32
 }
 ###
 # pre_order new  清单
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
 
 {
     "action":"new",
-    "mbid":1,
-    "order_mbid":1
+    "mbid":"354719",
+    "order_mbid":null,
+    "data":{}
 }
 ###
-# sp_epadj get_promo_rec 取得晉升計算清單
+# pre_order new  清单
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
 
 {
-    "action":"get_promo_rec"
+    "action":"getPreOrderNamebyPhone",
+    "phone":7742518836
 }
 
 ###
-# sp_epadj del_promo_rec 刪除晉升計算日期
+# pre_order edit  修改預收訂單
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzAxNjc0NDR9.qgV3EivCz7i5KFmrpq_PDiueYMeW1gk7Zr06EIjFNwQ
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
 
 {
-    "action":"del_promo_rec"
+    "action": "edit",
+    "preorderid": "34",
+    "data": {
+        "name": "we Lofoo",
+        "mbid": "354711",
+        "sex": "m",
+        "idtype": "Identity",
+        "idnumber": "O2220011112",
+        "birth": "2022-12-02",
+        "email": "ewr3d12@gmail.com"
+    }
 }

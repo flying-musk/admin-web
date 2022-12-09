@@ -1,38 +1,66 @@
 <template>
-  <el-dropdown split-button type="primary">
-    切換代理 {{changeRoleInfo}}
+  <el-dropdown>
+    <el-button plain>
+      <div class="flex items-center gap-x-3">
+        <p v-if="!isEmpty(changeRoleInfo)">
+          {{ changeRoleInfo?.agname }}｜{{ changeRoleInfo?.mbname }}
+        </p>
+        <p v-else>切換代理</p>
+        <el-icon><ArrowDownBold /></el-icon>
+      </div>
+    </el-button>
     <template #dropdown>
-      <div
-        v-for="subAgent in state.subAgentList"
-        :key="subAgent.mbid"
-        class="py-2 border-b hover:bg-gray-50 min-w-fit px-3 cursor-pointer">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-x-3 w-full lg:min-w-[240px]">
+      <div class="p-1" v-if="!isEmpty(changeRoleInfoList)">
+        <p class="text-xs border-b text-gray-500 tracking-widest pb-1">
+          切換代理
+        </p>
+        <div
+          v-for="subAgent in changeRoleInfoList"
+          :key="subAgent.mbid"
+          class="py-2 border-b hover:bg-gray-50 min-w-fit px-3">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-x-3 w-full lg:min-w-[240px]">
+              <div
+                class="
+                  h-10
+                  w-10
+                  bg-primary-50
+                  rounded-full
+                  flex
+                  justify-center
+                  items-center
+                  text-white text-lg
+                ">
+                {{ subAgent.mbname.substring(0, 1) }}
+              </div>
+              <div class="flex flex-col">
+                <p class="text-md">
+                  {{ subAgent.mbname }}
+                </p>
+                <p class="text-gray-500">
+                  {{ subAgent.agname }} <span class="text-gray-300">｜</span>
+                  {{ subAgent.agid }}
+                </p>
+              </div>
+            </div>
             <div
+              v-if="subAgent.mbid == changeRoleInfo?.mbid"
               class="
-                h-10
-                w-10
-                bg-primary-50
-                rounded-full
-                flex
-                justify-center
-                items-center
-                text-white text-xl
+                min-w-fit
+                px-1
+                text-primary-500
+                tracking-wide
+                cursor-default
               ">
-              {{ subAgent.mbname.substring(0, 1) }}
+              當前代理
             </div>
-            <div class="flex flex-col">
-              <p class="text-lg">
-                {{ subAgent.mbname }}
-              </p>
-              <p class="text-gray-500">
-                {{ subAgent.agname }} <span class="text-gray-300">｜</span> {{ subAgent.agid }}
-              </p>
-            </div>
+            <el-button
+              v-else
+              @click="actions.handleChangeToken(subAgent)"
+              type="primary">
+              切換
+            </el-button>
           </div>
-          <el-button @click="actions.handleChangeToken(subAgent)" bg text>
-            切換
-          </el-button>
         </div>
       </div>
     </template>
@@ -43,6 +71,9 @@
 import { reactive, computed, onMounted, getCurrentInstance } from 'vue'
 import { ChangeTokenApiHandler } from '@/api/change_token'
 import { useStore } from 'vuex'
+import { ArrowDownBold } from '@element-plus/icons-vue'
+import { isEmpty } from 'lodash-es'
+
 const { proxy } = getCurrentInstance()
 const store = useStore()
 const state = reactive({
@@ -55,9 +86,11 @@ const state = reactive({
     name: '',
     id: '',
   },
-  subAgentList: [],
 })
 
+const changeRoleInfoList = computed(
+  () => store.state.changeRoleInfo.changeRoleInfoList
+)
 const changeRoleInfo = computed(() => store.state.changeRoleInfo.changeRoleInfo)
 
 onMounted(() => {
@@ -70,13 +103,15 @@ const actions = {
    * @param {string}  action  getsubagent
    */
   handleSubagentList: async () => {
+    if (!!changeRoleInfoList.value) return
+    console.log(changeRoleInfoList.value)
     state.loading = true
     const params = {
       action: 'getsubagent',
     }
     const { code, data, msg } = await ChangeTokenApiHandler(params)
     if (code === 1) {
-      state.subAgentList = data
+      store.commit('changeRoleInfo/setChangeRoleInfoList', data)
     } else {
       proxy.$message({
         type: 'error',
@@ -99,8 +134,11 @@ const actions = {
     }
     const { code, token, info, msg } = await ChangeTokenApiHandler(params)
     if (code === 1) {
-      store.commit('changeRoleInfo/setChangeRoleInfo', agent)
       store.dispatch('app/setToken', token)
+      store.commit('changeRoleInfo/setChangeRoleInfo', agent)
+      setTimeout(() => {
+        window.location.reload()
+      }, 300)
     } else {
       proxy.$message({
         type: 'error',

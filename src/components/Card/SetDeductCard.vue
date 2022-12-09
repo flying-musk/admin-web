@@ -136,7 +136,7 @@ const actions = {
         if (code > 0) {
           if (iscfm === 1) {
             proxy.$message({
-              dangerouslyUseHTMLString: true,
+              
               type: 'success',
               message: msg,
             })

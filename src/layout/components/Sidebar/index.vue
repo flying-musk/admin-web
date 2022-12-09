@@ -1,6 +1,6 @@
 <template>
   <div
-    class="left"
+    class="left z-10"
     :class="{ 'isCollapse': collapse, mobile: device === 'mobile' }"
     >
     <logo />
