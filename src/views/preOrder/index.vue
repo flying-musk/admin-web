@@ -933,7 +933,7 @@ const actions = {
   handlePreOrderEdit: async () => {
     const {
       id,
-      order_mbid,
+      ordermbid,
       dateadd,
       ttlamt,
       date_cancelled,
@@ -984,7 +984,7 @@ const actions = {
     const params = {
       action: 'edit',
       preorderid: id,
-      data: {
+      data: pickBy({
         name: has_name ? format_name : null,
         rcvname: has_rcvname ? format_rcvname : null,
         add: has_add ? format_add : null,
@@ -993,7 +993,7 @@ const actions = {
         umbid: posType == 'phone' ? (has_umbid ? format_umbid : null) : umbid,
         smbid: posType == 'phone' ? (has_smbid ? format_smbid : null) : smbid,
         ...rest,
-      },
+      }),
     }
     if (!!rmbid) {
       proxy.$message({
