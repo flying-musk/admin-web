@@ -34,11 +34,11 @@ export default ({ mode }) => {
         rewrite: path => path.replace(/^\/api/, ''),
       },
     },
-    base: process.env.VITE_OUTPUT_URL,
+    base: process.env.VITE_OUTPUT_BASE_URL,
     build: {
       outDir: `dist${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
-      chunkSizeWarningLimit: 1000,
+      chunkSizeWarningLimit: 5000,
       terserOptions: {
         compress: {
           keep_infinity: true,
