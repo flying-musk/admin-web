@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto p-3">
+  <div class="mx-auto p-3 max-w-[800px]">
     <el-form
       ref="refForm"
       :model="editData"
@@ -85,8 +85,37 @@
             <div v-if="editData.posType == 'mbid'">
               <el-form-item label="推薦人編號" prop="rmbid" class="w-full">
                 <el-input v-model="editData.rmbid" />
+                <!-- <el-input v-model="editData.rmbid"
+                @input="actions.handleGetRecord(editData.rmbid, false)"
+                 /> -->
               </el-form-item>
-
+              <div
+                v-if="!isEmpty(state.memberOptions)"
+                class="flex overflow-x-auto gap-x-3">
+                <div
+                  v-for="member in state.memberOptions"
+                  :key="member.name"
+                  class="
+                    border
+                    rounded
+                    flex flex-col
+                    p-3
+                    gap-y-1
+                    cursor-pointer
+                    tracking-wider
+                  "
+                  :class="{
+                    'border-primary-500': editData.rmbid == member.mbid,
+                  }"
+                  @click="editData.rmbid = member.mbid">
+                  <p>
+                    {{ member.name }}
+                  </p>
+                  <small class="font-light">
+                    {{ member.mbid }}
+                  </small>
+                </div>
+              </div>
               <el-form-item label="安置人編號" prop="umbid" class="w-full">
                 <el-input v-model="editData.umbid" />
               </el-form-item>
@@ -172,6 +201,19 @@
                     clearable />
                 </el-form-item>
               </div>
+              <el-form-item label="線號" prop="leg" class="w-full">
+                <el-radio-group v-model="editData.leg" class="flex w-full">
+                  <el-radio
+                    class="min-w-full sm:min-w-[85px] my-1 lg:my-0"
+                    v-for="leg in state.legOptions"
+                    :key="leg.value"
+                    :label="leg.value"
+                    border
+                    @click.prevent="actions.handleRadioClick('leg', leg.value)"
+                    >{{ leg.label }}</el-radio
+                  >
+                </el-radio-group>
+              </el-form-item>
             </div>
           </div>
         </div>
@@ -204,6 +246,13 @@
           </div>
 
           <div class="ml-3 pl-[2em] border-l">
+            <el-form-item label="訂購人會員編號" prop="order_mbid" class="flex-1">
+                <el-input
+                  class="text"
+                  v-model="editData.order_mbid"
+                  clearable
+                  placeholder="請輸入訂購人會員編號" />
+              </el-form-item>
             <div class="flex flex-row gap-x-3">
               <el-form-item label="訂購人名字" prop="first_name" class="flex-1">
                 <el-input
@@ -258,38 +307,8 @@
                 class="text"
                 v-model.trim="editData.phone"
                 prefix-icon="Phone"
-                clearable
-                @input="actions.handleGetRecord(editData.phone, false)" />
+                clearable />
             </el-form-item>
-
-            <div
-              v-if="!isEmpty(state.memberOptions)"
-              class="flex overflow-x-auto gap-x-3">
-              <div
-                v-for="member in state.memberOptions"
-                :key="member.name"
-                class="
-                  border
-                  rounded
-                  flex flex-col
-                  p-3
-                  gap-y-1
-                  cursor-pointer
-                  tracking-wider
-                "
-                :class="{
-                  'border-primary-500': editData.mbid == member.mbid,
-                }"
-                @click="editData.mbid = member.mbid">
-                <p>
-                  {{ member.name }}
-                </p>
-                <small class="font-light">
-                  {{ member.mbid }}
-                </small>
-              </div>
-            </div>
-
             <el-form-item label="訂購人證照別" prop="idtype">
               <el-radio-group v-model="editData.idtype" class="flex w-full">
                 <el-radio
@@ -304,7 +323,10 @@
               </el-radio-group>
             </el-form-item>
 
-            <el-form-item label="訂購人證號" prop="idnumber" v-if="!isEmpty(editData.idtype)">
+            <el-form-item
+              label="訂購人證號"
+              prop="idnumber"
+              v-if="!isEmpty(editData.idtype)">
               <el-input
                 class="text"
                 v-model="editData.idnumber"
@@ -321,9 +343,9 @@
                 style="width: 100%" />
             </el-form-item>
 
-            <el-form-item label="訂購人 E-mail" prop="rcvemail">
+            <el-form-item label="訂購人 E-mail" prop="email">
               <el-input
-                v-model="editData.rcvemail"
+                v-model="editData.email"
                 placeholder="ex.abc123456@gmail.com" />
             </el-form-item>
             <div class="flex gap-x-3">
@@ -393,7 +415,7 @@
             </div>
           </div>
 
-          <div class="ml-3 pl-[2em] border-l">
+          <div class="ml-3 pl-[2em] border-l" v-show="!sameAddrHandler">
             <div class="flex flex-row gap-x-3">
               <el-form-item
                 label="收貨人名字"
@@ -424,45 +446,45 @@
                 clearable />
             </el-form-item>
 
-            <el-form-item label="收貨人 E-mail" prop="email">
+            <el-form-item label="收貨人 E-mail" prop="rcvemail">
               <el-input
-                v-model="editData.email"
+                v-model="editData.rcvemail"
                 placeholder="ex.abc123456@gmail.com" />
             </el-form-item>
-            <div v-if="!sameAddrHandler">
+            <div>
               <div class="flex gap-x-3">
-              <el-form-item label="區域編號" class="flex-shrink">
-                <el-input
-                  v-model="state.zipCode2"
-                  autocomplete="off"
-                  @input="actions.handleZipCode2"
-                  placeholder="ex.12302" />
-                <p
-                  v-show="hasAddress2"
-                  class="text-red-400 text-xs tracking-wider">
-                  無此區域編號
-                </p>
-              </el-form-item>
-              <el-form-item
-                label="區域"
-                class="flex-grow"
-                v-if="!isEmpty(postcodeRecOptions)">
-                <el-select v-model="selectedPostcodeRec" class="w-full">
-                  <el-option
-                    v-for="(item, index) in postcodeRecOptions"
-                    :key="item + index"
-                    :label="item"
-                    :value="item" />
-                </el-select>
-              </el-form-item>
-            </div>
+                <el-form-item label="區域編號" class="flex-shrink">
+                  <el-input
+                    v-model="state.zipCode2"
+                    autocomplete="off"
+                    @input="actions.handleZipCode2"
+                    placeholder="ex.12302" />
+                  <p
+                    v-show="hasAddress2"
+                    class="text-red-400 text-xs tracking-wider">
+                    無此區域編號
+                  </p>
+                </el-form-item>
+                <el-form-item
+                  label="區域"
+                  class="flex-grow"
+                  v-if="!isEmpty(postcodeRecOptions)">
+                  <el-select v-model="selectedPostcodeRec" class="w-full">
+                    <el-option
+                      v-for="(item, index) in postcodeRecOptions"
+                      :key="item + index"
+                      :label="item"
+                      :value="item" />
+                  </el-select>
+                </el-form-item>
+              </div>
 
-            <el-form-item label="收貨人完整地址" prop="rcvadd2">
-              <el-input
-                v-model="editData.rcvadd2"
-                autocomplete="off"
-                placeholder="ex.xx弄xx巷xx號" />
-            </el-form-item>
+              <el-form-item label="收貨人完整地址" prop="shipadd2">
+                <el-input
+                  v-model="editData.shipadd2"
+                  autocomplete="off"
+                  placeholder="ex.xx弄xx巷xx號" />
+              </el-form-item>
             </div>
           </div>
         </div>
@@ -473,7 +495,7 @@
 
 <script setup>
 import { PreOrderApiHandler } from '@/api/pre_order'
-import { ref, reactive, computed, getCurrentInstance } from 'vue'
+import { ref, reactive, computed, getCurrentInstance, watch } from 'vue'
 import { useVariables } from '@/hooks/useVariables'
 import { isEmpty } from 'lodash-es'
 import ScrollToTop from '@/components/Button/ScrollToTop.vue'
@@ -493,7 +515,6 @@ const emit = defineEmits(['on-refresh', 'update:editData'])
 const state = reactive({
   loading: false,
   dialogVisible: false,
-  idtypeOptions: variables?.idtype || [],
   memberOptions: [],
   legOptions: [
     {
@@ -526,8 +547,7 @@ const state = reactive({
   sameAddr: '',
   posType: 'mbid',
 })
-// const formattedAddress = computed(() => store.getters.formattedAddress)
-// const formattedAddress2 = computed(() => store.getters.formattedAddress2)
+
 const hasAddress = computed(() => store.getters.hasAddress)
 const hasAddress2 = computed(() => store.getters.hasAddress2)
 const postcodeOptions = computed(() => store.getters.postcodeOptions)
@@ -537,10 +557,14 @@ const sameAddrHandler = computed({
   get: () => state.sameAddr,
   set(v) {
     if (v) {
-      props.editData.add2 = ''
-      props.editData.shipadd1 = ''
-      props.editData.shipadd2 = ''
-      state.zipCode2 = null
+      props.editData.first_rcvname = props.editData.first_name
+      props.editData.last_rcvname = props.editData.last_name
+      props.editData.rcvphone = props.editData.phone
+      props.editData.rcvemail = props.editData.email
+      props.editData.shipadd = props.editData.add
+      props.editData.shipadd1 = props.editData.add1
+      props.editData.shipadd2 = props.editData.add2
+      props.editData.zipCode2 = props.editData.zipCode
     }
     state.sameAddr = v
   },
@@ -556,10 +580,34 @@ const selectedPostcodeRec = computed({
   get: () => state.postcode2,
   set(v) {
     state.postcode2 = v
-    props.editData.add2 = `${state.zipCode2} ${state.postcode2}`
+    props.editData.shipadd1 = `${state.zipCode2} ${state.postcode2}`
   },
 })
 
+watch(
+  () => props.editData.add1,
+  (add1, prevAdd1) => {
+    const zipCode = add1?.split(' ')[0]
+    const postcode = add1?.split(zipCode)[1]
+    if (!isEmpty(zipCode) && !isEmpty(postcode)) {
+      state.zipCode = zipCode
+      actions.handleZipCode()
+      state.postcode = postcode
+    }
+  }
+)
+watch(
+  () => props.editData.shipadd1,
+  (shipadd1, prevShipadd1) => {
+    const zipCode2 = shipadd1?.split(' ')[0]
+    const postcode2 = shipadd1?.split(zipCode2)[1]
+    if (!isEmpty(zipCode2) && !isEmpty(postcode2)) {
+      state.zipCode2 = zipCode2
+      actions.handleZipCode2()
+      state.postcode2 = postcode2
+    }
+  }
+)
 const actions = {
   handleRadioClick: (label, val) => {
     val === props.editData[label]
@@ -571,6 +619,7 @@ const actions = {
    * @param {string}  action  new
    * @param {number}  mbid    送單人會員編號
    * @param {number}  order_mbid  訂購人會員編號
+   * @param {object}  data  點位、訂購人、收貨人資料
    */
   handleSubmit: () => {
     refForm.value.validate(async valid => {
@@ -687,12 +736,11 @@ const actions = {
 /**
  * @description 表單驗證
  */
- const handleValidForm = () => {
-  return refForm.value.validate((valid) => {
+const handleValidForm = () => {
+  return refForm.value.validate(valid => {
     return valid
   })
 }
 
 defineExpose({ handleValidForm })
-
 </script>

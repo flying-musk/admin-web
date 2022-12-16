@@ -542,9 +542,14 @@ const sameAddrHandler = computed({
   get: () => state.sameAddr,
   set(v) {
     if (v) {
-      state.model.shipadd1 = ''
-      state.model.shipadd2 = ''
-      state.zipCode2 = null
+      state.model.first_rcvname = state.model.first_name
+      state.model.last_rcvname = state.model.last_name
+      state.model.rcvphone = state.model.phone
+      state.model.rcvemail = state.model.email
+      state.model.shipadd = state.model.add
+      state.model.shipadd1 = state.model.add1
+      state.model.shipadd2 = state.model.add2
+      state.zipCode2 =  state.model.zipCode
     }
     state.sameAddr = v
   },

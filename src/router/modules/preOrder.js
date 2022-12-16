@@ -2,6 +2,7 @@
 const Layout = () => import('@/layout/index.vue')
 const PreOrder = () => import('@/views/preOrder/index.vue')
 const PreOrderMange = () => import('@/views/preOrder/manage.vue')
+const PreOrderDetail = () => import('@/views/preOrder/detail.vue')
 
 export default [
   {
@@ -27,7 +28,16 @@ export default [
         hidden:true,
         component: PreOrderMange,
         meta: {
-          title: '新增訂單管理',
+          title: '新增預收訂單',
+        },
+      },
+      {
+        path: '/preOrder/:id',
+        name: 'preOrderDetail',
+        hidden:true,
+        component: PreOrderDetail,
+        meta: {
+          title: '預收訂單詳情',
         },
       },
     ],
