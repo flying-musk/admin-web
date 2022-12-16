@@ -38,6 +38,7 @@ export default ({ mode }) => {
     build: {
       outDir: `pub_html${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
+      chunkSizeWarningLimit: 1000,
       terserOptions: {
         compress: {
           keep_infinity: true,
