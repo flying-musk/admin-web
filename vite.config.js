@@ -36,7 +36,7 @@ export default ({ mode }) => {
     },
     base: process.env.VITE_OUTPUT_URL,
     build: {
-      outDir: `pub_html${process.env.VITE_OUTPUT_URL}`,
+      outDir: `dist${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
       chunkSizeWarningLimit: 1000,
       terserOptions: {

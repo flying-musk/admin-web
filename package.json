@@ -5,12 +5,17 @@
   "scripts": {
     "dev": "vite",
     "dev:agent": "vite --mode agent",
-    "build": "vite build",
     "report": "vite build --mode development",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:agent": "vite build --mode testAgent",
+    "build:admin": "vite build --mode development",
+    "build": "concurrently \"npm run build:prod:agent\" \"npm run build:prod:admin\"",
+    "build:prod:agent": "vite build --mode agent",
+    "build:prod:admin": "vite build"
   },
   "dependencies": {
     "axios": "^0.27.2",
+    "concurrently": "^7.6.0",
     "dayjs": "^1.11.6",
     "terser": "^5.16.1",
     "vue": "^3.2.25",
