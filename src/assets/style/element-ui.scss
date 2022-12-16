@@ -15,12 +15,14 @@
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
+
 .el-table--small th,
 .el-table--small td {
   padding: 0;
 }
-.el-table--small .el-table__cell{
-  padding: 1px 0!important;
+
+.el-table--small .el-table__cell {
+  padding: 1px 0 !important;
 }
 
 .el-table--enable-row-hover .el-table__body tr:hover>td {
@@ -41,7 +43,7 @@
     // box-shadow: none;
     // background-color: $inputBackgroundColor;
     // border: 1px solid rgb(0 0 0 / 0.05);
-    box-shadow: inset 0 0 0 0 rgb(0 0 0 / 0.1);
+    // box-shadow: inset 0 0 0 0 rgb(0 0 0 / 0.1);
   }
 
   .el-form-item__label {
@@ -104,20 +106,55 @@
   }
 }
 
+.adjustDialog.el-dialog,
 .previewDialog.el-dialog {
   background-color: #fbfcfe;
-
-  .el-dialog__header {
-    display: none;
-  }
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
 
   .el-dialog__body {
-    padding: 0;
+    padding: 0 8px;
+  }
+
+  .el-dialog__header {
+    padding: 6px 0;
+    margin: 0;
+    border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    -moz-border-radius: 3px 3px 0 0;
+    -ms-border-radius: 3px 3px 0 0;
+    -o-border-radius: 3px 3px 0 0;
+  }
+
+  .el-dialog__title {
+    font-size: 13px;
+  }
+
+  .el-dialog__headerbtn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .el-dialog__footer {
+    padding: 12px 0 6px 0;
   }
 
   .dj-dialog-content {
     padding: 0;
     overflow: unset;
+  }
+
+  .el-descriptions--small .el-descriptions__body .el-descriptions__table.is-bordered .el-descriptions__cell {
+    padding: 0px 8px;
+  }
+}
+
+.previewDialog.el-dialog {
+  .el-dialog__header {
+    display: none;
   }
 }
 
@@ -145,20 +182,30 @@
 }
 
 .el-drawer__header {
-  color: #252525 !important;
-  letter-spacing: .1em;
+
   margin-top: 3px !important;
   margin-bottom: 3px !important;
-  padding-bottom: 6px !important;
-  padding-top: 6px !important;
+  padding-bottom: 3px !important;
+  padding-top: 3px !important;
+  padding-left: 8px !important;
+
+  .el-drawer__title {
+    color: #252525 !important;
+  }
+}
+
+.el-drawer__footer {
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  padding-bottom: 3px !important;
+  padding-top: 3px !important;
   padding-left: 8px !important;
 }
 
 .el-drawer__body {
   padding: 0 !important;
-  background-color: #f3f7fe;
+  background-color: #f7f9fd;
 }
-
 
 .heigh-light {
   color: $mainColor;

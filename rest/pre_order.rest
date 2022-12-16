@@ -65,3 +65,17 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ
         "email": "ewr3d12@gmail.com"
     }
 }
+
+
+###
+# pre_order edit  刪除預收訂單檔案
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzIwMTg1NDl9.tSkjLD95X7vSWtXv3lzB7yTt8Fc5Lb0IbRtApAEw4mA
+
+{
+    "action": "del_up_files",
+    "filename": [
+        "58_16707881780_coupon-svgrepo-com.png"
+    ]
+}

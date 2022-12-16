@@ -14,12 +14,19 @@
         px-4
       ">
       <div class="flex items-center justify-end">
-        <el-button @click="router.go(-1)" bg text>下次再預訂</el-button>
+        <el-button @click="router.replace({ path: '/preOrder' })" bg text
+          >下次再預訂</el-button
+        >
         <el-button
           type="primary"
           v-loading="state.loading"
           @click="actions.handleSubmit">
-          確認預訂
+          <div class="flex items-center gap-x-1">
+            <p class="tracking-widest">新增預收訂單</p>
+            <el-icon>
+              <ArrowRightBold />
+            </el-icon>
+          </div>
         </el-button>
       </div>
     </footer>
@@ -54,6 +61,7 @@ const actions = {
     if (!isValid) return
     const {
       mbid,
+      order_mbid,
       name,
       first_name,
       last_name,
@@ -85,25 +93,25 @@ const actions = {
     const format_smbid = `${smbid_name} ${smbid_phone}`
     const format_name = `${first_name} ${last_name}`
     const format_rcvname = `${first_rcvname} ${last_rcvname}`
-    const has_name = !isEmpty(first_name)&&!isEmpty(last_name)
-    const has_rcvname = !isEmpty(first_rcvname)&&!isEmpty(last_rcvname)
-    const has_add = !isEmpty(add1)&&!isEmpty(add2)
-    const has_shipadd = !isEmpty(shipadd1)&&!isEmpty(shipadd2)
+    const has_name = !isEmpty(first_name) && !isEmpty(last_name)
+    const has_rcvname = !isEmpty(first_rcvname) && !isEmpty(last_rcvname)
+    const has_add = !isEmpty(add1) && !isEmpty(add2)
+    const has_shipadd = !isEmpty(shipadd1) && !isEmpty(shipadd2)
     const params = {
       action: 'new',
       mbid,
+      order_mbid,
       data: {
         name: has_name ? format_name : null,
         rcvname: has_rcvname ? format_rcvname : null,
         add: has_add ? format_add : null,
-        shipadd:has_shipadd ? format_shipAdd : null,
+        shipadd: has_shipadd ? format_shipAdd : null,
         rmbid: posType == 'mbid' ? rmbid : format_rmbid,
         umbid: posType == 'mbid' ? umbid : format_umbid,
         smbid: posType == 'mbid' ? smbid : format_smbid,
         ...rest,
       },
     }
-    console.log(params)
     state.loading = true
     const { code, data, msg } = await PreOrderApiHandler(params)
     state.loading = false
@@ -112,8 +120,9 @@ const actions = {
         type: 'success',
         message: msg,
       })
+      const pre_order_id = data.pre_order_id
       setTimeout(() => {
-        router.replace({ path: '/preOrder' })
+        router.replace({ path: `/preOrder/${pre_order_id}` })
       }, 100)
     } else {
       proxy.$message({

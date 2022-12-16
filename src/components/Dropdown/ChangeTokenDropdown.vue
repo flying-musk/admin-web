@@ -104,7 +104,6 @@ const actions = {
    */
   handleSubagentList: async () => {
     if (!!changeRoleInfoList.value) return
-    console.log(changeRoleInfoList.value)
     state.loading = true
     const params = {
       action: 'getsubagent',
@@ -112,6 +111,9 @@ const actions = {
     const { code, data, msg } = await ChangeTokenApiHandler(params)
     if (code === 1) {
       store.commit('changeRoleInfo/setChangeRoleInfoList', data)
+      if(!!changeRoleInfo.value) return
+      const defaultAgent = changeRoleInfoList.value[0]
+      actions.handleChangeToken(defaultAgent)
     } else {
       proxy.$message({
         type: 'error',
