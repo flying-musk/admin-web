@@ -82,7 +82,7 @@
 
 <script setup>
 import { ref, reactive, computed, getCurrentInstance, h } from 'vue'
-import SubTitle from '@/components/Title/SubTitle.vue'
+import SubTitle from '@/components/Text/SubTitle.vue'
 import { SetDeduct } from '@/api/sp_epadj'
 import { ArrowDown } from '@element-plus/icons-vue'
 const { proxy } = getCurrentInstance()
@@ -136,7 +136,6 @@ const actions = {
         if (code > 0) {
           if (iscfm === 1) {
             proxy.$message({
-              
               type: 'success',
               message: msg,
             })

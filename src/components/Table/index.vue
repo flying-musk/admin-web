@@ -7,7 +7,7 @@
       stripe
       border
       default-expand-all
-      max-height="500"
+      max-height="800"
       ref="refTable"
       :header-cell-style="mainTableStyle.header"
       :row-style="mainTableStyle.row"
@@ -20,7 +20,7 @@
         width="35"
         fixed="left"
         :index="handleIndex" />
-     <slot name="custom"></slot>
+      <slot name="custom"></slot>
       <el-table-column
         v-for="{
           prop,
@@ -37,6 +37,7 @@
         :align="align || 'left'"
         :width="width"
         :fixed="fixed"
+        :sort-orders="['descending', 'ascending']"
         :sortable="sortable || false">
         <template v-if="formatter" #default="scope">
           <slot v-if="formatter" :name="prop" :row="scope.row"></slot>
@@ -92,6 +93,8 @@ const handleCurrentChange = val => {
 }
 
 const handleIndex = index => {
+  const no_page = !props.take || !currentPage.value
+  if (no_page) return index + 1
   const take = props.take
   return (currentPage.value - 1) * take + index + 1
 }

@@ -1,0 +1,34 @@
+<template>
+  <div
+    class="
+      bg-white bg-opacity-60
+      w-16
+      h-16
+      border-2
+      rounded-full
+      flex
+      justify-center
+      items-center
+      border-green-500
+      shadow
+    ">
+    <div
+      class="
+        border-2
+        w-14
+        h-14
+        border-green-500
+        rounded-full
+        flex flex-col
+        justify-center
+        items-center
+        rotate-12
+        text-sm
+        font-bold
+        text-green-600
+        tracking-wider
+      ">
+      已完成
+    </div>
+  </div>
+</template>

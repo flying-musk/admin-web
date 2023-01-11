@@ -27,6 +27,10 @@ export default ({ mode }) => {
         },
       },
     },
+    server: {
+      host: '0.0.0.0',
+      port: 3003,
+    },
     proxy: {
       '/api': {
         target: process.env.VITE_APP_WEB_URL,

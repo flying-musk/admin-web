@@ -10,28 +10,33 @@
       </div>
     </el-button>
     <template #dropdown>
-      <div class="p-1" v-if="!isEmpty(changeRoleInfoList)">
+      <div
+        class="p-1 min-w-[240px] md:min-w-fit"
+        v-if="!isEmpty(changeRoleInfoList)">
         <p class="text-xs border-b text-gray-500 tracking-widest pb-1">
           切換代理
         </p>
         <div
           v-for="subAgent in changeRoleInfoList"
           :key="subAgent.mbid"
-          class="py-2 border-b hover:bg-gray-50 min-w-fit px-3">
+          class="px-1 py-2 border-b last:border-b-0 hover:bg-gray-50 min-w-fit ">
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-x-3 w-full lg:min-w-[240px]">
               <div
                 class="
-                  h-10
-                  w-10
+                  w-8
+                  h-8
+                  flex
                   bg-primary-50
                   rounded-full
-                  flex
                   justify-center
                   items-center
-                  text-white text-lg
+                  text-white text-center
+                  lg:text-lg
                 ">
-                {{ subAgent.mbname.substring(0, 1) }}
+                <p>
+                  {{ subAgent.mbname.substring(0, 1) }}
+                </p>
               </div>
               <div class="flex flex-col">
                 <p class="text-md">
@@ -82,10 +87,6 @@ const state = reactive({
     action: null,
     id: null,
   },
-  currentSelected: {
-    name: '',
-    id: '',
-  },
 })
 
 const changeRoleInfoList = computed(
@@ -111,7 +112,7 @@ const actions = {
     const { code, data, msg } = await ChangeTokenApiHandler(params)
     if (code === 1) {
       store.commit('changeRoleInfo/setChangeRoleInfoList', data)
-      if(!!changeRoleInfo.value) return
+      if (!!changeRoleInfo.value) return
       const defaultAgent = changeRoleInfoList.value[0]
       actions.handleChangeToken(defaultAgent)
     } else {

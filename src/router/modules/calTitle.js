@@ -1,6 +1,6 @@
 // calTitle.js
 const Layout = () => import('@/layout/index.vue')
-const CalTitle = () => import('@/views/calTitle/index.vue')
+const CalTitle = () => import('@/views/CalTitle/index.vue')
 
 export default [
   {

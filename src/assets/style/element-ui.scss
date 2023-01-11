@@ -218,3 +218,49 @@
 .decrease {
   color: tomato;
 }
+
+.create-dialog.el-dialog {
+  .el-dialog__body {
+    padding: 0;
+  }
+
+  .el-dialog__header {
+    display: none;
+  }
+
+  .el-dialog__footer {
+    padding: 3px;
+    padding-bottom: 6px;
+  }
+
+}
+
+.el-input.is-disabled .el-input__wrapper {
+  --el-disabled-bg-color: none;
+  box-shadow: none !important;
+  --el-disabled-text-color: #5d5c5c;
+}
+.el-radio.is-disabled {
+  border: none;
+}
+.el-radio__input.is-disabled.is-checked .el-radio__inner {
+  background-color: white;
+  border-color: $mainColor !important;
+}
+.el-radio__input.is-checked.is-disabled .el-radio__inner::after {
+  background-color: $mainColor !important;
+}
+.el-radio__input.is-disabled + span.el-radio__label {
+    color: #5d5c5c;
+}
+.el-radio__input.is-disabled.is-checked + span.el-radio__label {
+    color: $mainColor;
+}
+
+.el-page-header__breadcrumb {
+   margin-bottom: 6px !important;
+}
+
+.el-page-header__main {
+  margin-top: 6px !important;
+}
