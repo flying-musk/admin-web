@@ -1,7 +1,7 @@
 <template>
   <div class="brand">
     <img class="logo" src="~@/assets/logo.svg" @click="goHome" />
-    <!-- <div class="title">國際{{ formatTitle }}平台</div> -->
+    <div class="title">國際{{ formatTitle }}平台</div>
   </div>
 </template>
 <script>

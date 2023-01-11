@@ -143,12 +143,32 @@
             </p>
           </div>
           <div class="border" v-show="state.show">
-            <small class="border-l-2 border-primary-500 pl-1"
-              >品項共 {{ state?.selectedSubList.length }} 筆</small
-            >
+            <div class="flex items-center divide-x-2 py-1 shadow bg-white">
+              <small class="border-l-2 border-primary-500 px-2"
+                >品項共 {{ state?.selectedSubList.length }} 筆</small
+              >
+              <div class="flex justify-end gap-x-3 tracking-wider text-xs pl-2">
+                <p>
+                  總PV：<span class="text-primary-500 font-bold">{{
+                    totalPV
+                  }}</span>
+                </p>
+                <p>
+                  總金額：<span class="text-primary-500 font-bold">{{
+                    totalAmount
+                  }}</span>
+                </p>
+              </div>
+            </div>
             <SelectedSubProduct
               :selected="state.selectedSubList"
               :type2name="type2name" />
+            <p
+              class="flex shadow bg-gray-100 items-center justify-center gap-x-1 text-xs p-1"
+              @click="state.show = false">
+              <span>收合</span>
+              <el-icon> <ArrowUp /></el-icon>
+            </p>
           </div>
         </div>
         <div class="flex flex-col w-full relative bottom-0">
@@ -239,7 +259,17 @@ const formatTypeTitle = computed(() => (price = 0, paystatus = null) => {
   if (!paystatus) return '未收款'
   return paystatus
 })
+const totalPV = computed(() => {
+  return state.selectedSubList
+    .reduce((acc, item) => Number(acc) + Number(item?.pv), 0)
+    .toLocaleString()
+})
 
+const totalAmount = computed(() => {
+  return state.selectedSubList
+    .reduce((acc, item) => Number(acc) + Number(item?.amount), 0)
+    .toLocaleString()
+})
 const actions = {
   handleFetchSubProduct: async () => {
     const params = {
