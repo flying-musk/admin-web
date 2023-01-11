@@ -1,14 +1,12 @@
 <template>
-  <div class="home">home</div>
+  <div class="home">home
+    <CardDetailMainSection />
+
+  </div>
 </template>
 
-<script>
-  import { defineComponent } from 'vue'
-
-  export default defineComponent({
-    name: 'home',
-    setup() {},
-  })
+<script setup>
+  import CardDetailMainSection from '@/components/Card/CardDetailMainSection.vue'
 </script>
 
 <style lang="scss" scoped>

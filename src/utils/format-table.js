@@ -27,7 +27,7 @@ export function tableStyle() {
         }
       },
       tableColClassName: ({ row, column }) => {
-        if (column.property === 'name') {
+        if (column.property === 'id') {
           return 'heigh-light'
         }
       },

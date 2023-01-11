@@ -291,7 +291,7 @@
             <el-form-item label="訂購人所在國家" prop="ccode">
               <el-radio-group v-model="editData.ccode" class="flex w-full">
                 <el-radio
-                  class="min-w-full sm:min-w-[85px] my-1 lg:my-0"
+                 class="min-w-full sm:min-w-[85px] my-1 lg:my-0" 
                   v-for="(ccode, i) in Object.entries(variables.ccodename)"
                   :key="i"
                   :label="ccode[0]"

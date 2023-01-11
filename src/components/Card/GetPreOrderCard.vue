@@ -84,7 +84,7 @@
 
 <script setup>
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
-import SubTitle from '@/components/Title/SubTitle.vue'
+import SubTitle from '@/components/Text/SubTitle.vue'
 import { PreOrderApiHandler } from '@/api/pre_order'
 import { ArrowDown } from '@element-plus/icons-vue'
 import CardTwoCol from '@/components/Card/CardTwoCol.vue'

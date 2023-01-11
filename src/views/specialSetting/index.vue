@@ -1,8 +1,5 @@
 <template>
-  <div
-    id="special-setting"
-    class="specialSetting h-full reactive"
-   >
+  <div id="special-setting" class="specialSetting h-full reactive">
     <el-row :gutter="8" class="h-full">
       <el-col
         :span="24"
@@ -155,7 +152,7 @@ import { GetDeductList } from '@/api/sp_epadj'
 import { reactive, onMounted, getCurrentInstance, computed } from 'vue'
 import BasicTable from '@/components/Table/index.vue'
 import PosCard from '@/components/Card/PosCard.vue'
-import SubTitle from '@/components/Title/SubTitle.vue'
+import SubTitle from '@/components/Text/SubTitle.vue'
 import ScrollToTop from '@/components/Button/ScrollToTop.vue'
 import SetDeductCard from '@/components/Card/SetDeductCard.vue'
 import { uniqWith, isEqual } from 'lodash-es'

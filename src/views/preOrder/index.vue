@@ -1,663 +1,202 @@
 <template>
-  <div id="pre-order" class="specialSetting h-full reactive">
-    <el-row :gutter="8" class="h-full">
-      <el-col :span="24" class="table-animation">
-        <div class="md:hidden pb-8 w-full space-y-3">
-          <!-- 新增預收訂單 -->
-          <SetPreOrderCard @on-refresh="actions.handlePreOrderList(true)" />
-        </div>
-        <!-- 預收訂單 -->
-        <div
-          class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
-          <header class="flex items-center justify-between">
-            <div class="flex items-center gap-x-1">
-              <SubTitle title="預收訂單" class="min-w-fit" />
-              <h3 class="text-gray-700 font-light text-sm tracking-widest">
-                <span class="text-gray-300">｜</span>
-                共
-                <span class="text-primary-500 font-medium">{{
-                  state.pagination.total
-                }}</span>
-                筆
-              </h3>
-              <el-select
-                v-model="state.selectedDate"
-                value-key="value"
-                placeholder="天數"
-                size="small"
-                class="max-w-[130px] select-date px-3"
-                @change="actions.handlePreOrderList">
-                <template #prefix>最近</template>
-                <el-option
-                  v-for="i in 31"
-                  :key="i"
-                  :label="`${i} 天`"
-                  :value="i" />
-              </el-select>
-            </div>
-
-            <div class="hidden md:block">
-              <router-link to="preOrder/create">
-                <el-button type="primary"> 新增預收訂單 </el-button>
-              </router-link>
-            </div>
-          </header>
-
-          <!-- 預收訂單 filter -->
-          <div class="flex flex-col md:flex-row md:justify-between gap-y-3">
-            <div class="flex flex-col md:flex-row gap-3 items-center">
-              <el-select
-                v-if="false"
-                v-model="state.search"
-                value-key="value"
-                placeholder="會員編號"
-                clearable
-                filterable
-                class="w-full md:w-fit">
-                <el-option
-                  v-for="item in state.searchOptions"
-                  :key="item.member_id"
-                  :label="item.member_id"
-                  :value="item.member_id">
-                  <div class="flex justify-between">
-                    <span>{{ item.member_id }}</span>
-                    <span>{{ item.name }}</span>
-                  </div>
-                </el-option>
-              </el-select>
-            </div>
+  <div id="pre-order" class="h-full">
+    <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
+      <!-- header -->
+      <header class="flex items-center justify-between">
+        <TitleWithCount title="預收訂單" :total="state.pagination.total">
+          <div class="hidden md:block">
+            <SelectDate
+              v-model:selectedDate="state.selectedDate"
+              @on-change="actions.handlePreOrderList" />
           </div>
-          <el-tabs
-            v-model="state.selectedStatus"
-            @tab-click="actions.handleTabClick">
-            <el-tab-pane
-              v-for="status in state.statusOptions"
-              :key="status.label"
-              :label="status.label"
-              :name="status.value">
-              <!-- table  -->
-              <el-table
-                :data="formatPaginationTableData"
-                v-loading="state.loading"
-                stripe
-                ref="refTable"
-                size="small"
-                row-key="id"
-                :expand-row-keys="state.expands"
-                @expand-change="actions.expandChange">
-                <el-table-column
-                  type="index"
-                  align="center"
-                  width="35"
-                  fixed="left"
-                  :index="actions.handleIndex" />
-                <el-table-column type="expand">
-                  <template #default="props">
-                    <el-tabs tab-position="left" class="sub-tabs">
-                      <el-tab-pane label="訂單產品">
-                        <div
-                          class="pt-2 pb-4"
-                          v-show="state.selectedStatus == 'null'">
-                          <el-table
-                            size="small"
-                            stripe
-                            :data="state.productOptions">
-                            <el-table-column label="購買類型" fixed="left">
-                              <el-table-column
-                                label="類型"
-                                prop="name"
-                                width="120">
-                                <template #default="{ row }">
-                                  <div
-                                    class="flex items-center justify-between">
-                                    <p class="text-primary-500">
-                                      {{ row.name }}
-                                    </p>
-                                    <el-icon
-                                      v-show="row.isSelected"
-                                      color="#5971f7"
-                                      size="large"
-                                      ><SuccessFilled
-                                    /></el-icon>
-                                  </div>
-                                </template>
-                              </el-table-column>
-                              <el-table-column
-                                label="價格"
-                                prop="amount"
-                                width="60"
-                                align="right">
-                                <template #default="{ row }">
-                                  <p>
-                                    {{ Number(row.amount).toLocaleString() }}
-                                  </p>
-                                </template>
-                              </el-table-column>
-                              <el-table-column
-                                label="套裝名稱"
-                                prop="packagesel"
-                                width="100" />
-                            </el-table-column>
-                            <el-table-column label="送貨資訊">
-                              <el-table-column
-                                label="出貨日期"
-                                prop="shipdate"
-                                width="100" />
-                              <el-table-column
-                                label="快遞公司"
-                                prop="express_co"
-                                width="100" />
-                              <el-table-column
-                                label="快遞單號"
-                                prop="trackno"
-                                width="200" />
-                            </el-table-column>
-                            <el-table-column label="套裝組合" v-if="false">
-                              <el-table-column label="套裝內容">
-                                <el-table-column
-                                  v-for="packageItem in Object.keys(
-                                    state.productOptions[0].packages
-                                  )"
-                                  :key="packageItem"
-                                  :label="packageItem"
-                                  :prop="packageItem"
-                                  align="right"
-                                  width="70">
-                                </el-table-column>
-                              </el-table-column>
-                              <el-table-column label="共同內容">
-                                <el-table-column
-                                  v-for="(common_pd, i) in state.common_pd"
-                                  :key="i"
-                                  align="right"
-                                  width="70"
-                                  :label="common_pd"
-                                  :prop="common_pd" />
-                              </el-table-column>
-                            </el-table-column>
-                            <el-table-column
-                              label="操作"
-                              align="center"
-                              width="100"
-                              fixed="right">
-                              <template #default="{ row }">
-                                <button
-                                  v-show="!row.isSelected"
-                                  class="
-                                    cursor-pointer
-                                    hover:opacity-70
-                                    text-primary-500
-                                  "
-                                  @click="
-                                    actions.handleAddSubProduct(
-                                      props.row.id,
-                                      props.row.mbid,
-                                      row
-                                    )
-                                  ">
-                                  加入訂單
-                                </button>
+        </TitleWithCount>
 
-                                <div v-show="row.isSelected">
-                                  <el-popover
-                                    placement="right"
-                                    width="300"
-                                    trigger="click">
-                                    <template #reference>
-                                      <button
-                                        class="
-                                          cursor-pointer
-                                          hover:opacity-70
-                                          text-gray-500
-                                        "
-                                        @click="
-                                          state.editModel = {
-                                            trackno: row.trackno,
-                                            express_co: row.express_co || 'UPS',
-                                            shipdate: row.shipdate,
-                                          }
-                                        ">
-                                        修改
-                                      </button>
-                                    </template>
-                                    <el-divider content-position="center">
-                                      <p>修改物流資料</p>
-                                    </el-divider>
-                                    <el-form
-                                      class="form"
-                                      label-position="top"
-                                      :model="state.editModel">
-                                      <el-form-item
-                                        label="出貨日期"
-                                        prop="shipdate">
-                                        <el-date-picker
-                                          v-model="state.editModel.shipdate"
-                                          type="date"
-                                          :teleported="false"
-                                          :clearable="
-                                            !!state.editModel.shipdate
-                                              ? false
-                                              : true
-                                          "
-                                          placeholder="請選擇出貨日期"
-                                          value-format="YYYY-MM-DD"
-                                          style="width: 100%" />
-                                      </el-form-item>
-                                      <el-form-item
-                                        label="快遞公司"
-                                        prop="express_co">
-                                        <el-radio-group
-                                          v-model="state.editModel.express_co"
-                                          size="small">
-                                          <el-radio label="UPS">UPS</el-radio>
-                                          <el-radio label="FEDEX"
-                                            >FEDEX</el-radio
-                                          >
-                                          <el-radio label="POST">POST</el-radio>
-                                        </el-radio-group>
-                                      </el-form-item>
-                                      <el-form-item
-                                        label="快遞單號"
-                                        prop="trackno">
-                                        <el-input
-                                          class="text"
-                                          v-model="state.editModel.trackno"
-                                          clearable
-                                          placeholder="請輸入 trackno" />
-                                      </el-form-item>
-                                      <el-button
-                                        type="primary"
-                                        class="w-full"
-                                        auto-insert-space
-                                        @click="
-                                          actions.handleEditSubProduct(
-                                            props.row.id,
-                                            row.sub_id
-                                          )
-                                        "
-                                        >修改</el-button
-                                      >
-                                    </el-form>
-                                  </el-popover>
-                                  /
-                                  <button
-                                    class="
-                                      cursor-pointer
-                                      hover:opacity-70
-                                      text-gray-500
-                                    "
-                                    @click="
-                                      actions.handleDeleteSubProduct(
-                                        props.row.id,
-                                        row.sub_id
-                                      )
-                                    ">
-                                    取消
-                                  </button>
-                                </div>
-                              </template>
-                            </el-table-column>
-                          </el-table>
-                        </div>
-                        <div
-                          class="pt-2 pb-4"
-                          v-show="state.selectedStatus != 'null'">
-                          <el-table
-                            size="small"
-                            stripe
-                            :data="state.selectedSubList">
-                            <el-table-column label="購買類型" fixed="left">
-                              <el-table-column
-                                label="類型"
-                                prop="name"
-                                width="80">
-                                <template #default="{ row }">
-                                  <p class="text-primary-500">
-                                    {{ state.type2name[row.type] }}
-                                  </p>
-                                </template>
-                              </el-table-column>
-                              <el-table-column
-                                label="價格"
-                                prop="amount"
-                                width="80"
-                                align="right">
-                                <template #default="{ row }">
-                                  <p>
-                                    {{ Number(row.amount).toLocaleString() }}
-                                  </p>
-                                </template>
-                              </el-table-column>
-                              <el-table-column
-                                label="PV"
-                                prop="pv"
-                                width="80"
-                                align="right">
-                                <template #default="{ row }">
-                                  <p>
-                                    {{ Number(row.pv).toLocaleString() }}
-                                  </p>
-                                </template>
-                              </el-table-column>
-                              <el-table-column
-                                label="套裝名稱"
-                                prop="package"
-                                width="100" />
-                            </el-table-column>
-                            <el-table-column label="送貨資訊">
-                              <el-table-column
-                                label="出貨日期"
-                                prop="shipdate"
-                                width="100" />
-                              <el-table-column
-                                label="快遞公司"
-                                prop="express_co"
-                                width="100" />
-                              <el-table-column
-                                label="快遞單號"
-                                prop="trackno"
-                                width="200" />
-                            </el-table-column>
-                          </el-table></div
-                      ></el-tab-pane>
-                      <el-tab-pane label="訂購資料">
-                        <div class="grid grid-cols-2 gap-x-3 font-light py-2">
-                          <div>
-                            <h3 class="pb-1 border-b text-gray-700">訂購人資料</h3>
-                            <CardTwoCol
-                              :item="{
-                                label: '姓名',
-                                value: props.row.name,
-                              }" />
-
-                            <CardTwoCol
-                              :item="{
-                                label: '手機',
-                                value: props.row.phone,
-                              }" />
-
-                            <CardTwoCol
-                              :item="{
-                                label: '信箱',
-                                value: props.row.email,
-                              }" />
-                            <CardTwoCol
-                              :item="{
-                                label: '生日',
-                                value: props.row.birth,
-                              }" />
-                            <CardTwoCol
-                              :item="{
-                                label: '地址',
-                                value: `${props.row.add1}${props.row.add2}`,
-                              }" />
-                          </div>
-                          <div>
-                            <h3 class="pb-1 border-b text-gray-700">收貨人資料</h3>
-                            <CardTwoCol
-                              :item="{
-                                label: '姓名',
-                                value: props.row.rcvname,
-                              }" />
-
-                            <CardTwoCol
-                              :item="{
-                                label: '手機',
-                                value: props.row.rcvphone,
-                              }" />
-
-                            <CardTwoCol
-                              :item="{
-                                label: '信箱',
-                                value: props.row.rcvemail,
-                              }" />
-                            <CardTwoCol
-                              :item="{
-                                label: '地址',
-                                value: `${props.row.shipadd1}${props.row.shipadd2}`,
-                              }" />
-                          </div>
-                          <div></div>
-                        </div>
-                      </el-tab-pane>
-                      <el-tab-pane label="付款資料">
-                        <div class="grid grid-cols-2 font-light py-2">
-                          <CardTwoCol
-                            :item="{
-                              label: '付款狀態',
-                              value: props.row.paystatus,
-                            }" />
-
-                          <CardTwoCol
-                            :item="{
-                              label: '付款日期',
-                              value: props.row.payrcvday,
-                            }" />
-
-                          <CardTwoCol
-                            :item="{
-                              label: '付款詳情',
-                              value: props.row.paydetail,
-                            }" />
-                          <CardTwoCol
-                            :item="{
-                              label: '備註',
-                              value: props.row.remark,
-                            }" />
-                        </div>
-                      </el-tab-pane>
-                      <el-tab-pane label="點位資料">
-                        <div class="grid grid-cols-2 font-light py-2">
-                          <CardTwoCol
-                            :item="{
-                              label: '訂購人編號',
-                              value: props.row.order_mbid,
-                            }" />
-                          <CardTwoCol
-                            :item="{
-                              label: '推薦人編號',
-                              value: props.row.rmbid,
-                            }" />
-                          <CardTwoCol
-                            :item="{
-                              label: '安置人編號',
-                              value: props.row.umbid,
-                            }" />
-                          <CardTwoCol
-                            :item="{
-                              label: '培訓人編號',
-                              value: props.row.smbid,
-                            }" />
-                          <CardTwoCol
-                            :item="{
-                              label: '線位',
-                              value: ' ',
-                            }">
-                            <el-tag
-                              :type="props.row.leg == 1 ? 'danger' : 'success'"
-                              effect="plain"
-                              round
-                              size="small"
-                              v-show="!!props.row.leg">
-                              <p class="tracking-widest">
-                                {{ props.row.leg == 1 ? '左線' : '右線' }}
-                              </p>
-                            </el-tag>
-                          </CardTwoCol>
-                        </div>
-                      </el-tab-pane>
-                      <el-tab-pane label="附件">
-                        <div class="py-2">
-                          <UploadFile
-                            v-model:list="state.editSubFiles"
-                            title="附件"
-                            :id="props.row.id"
-                            @on-change="actions.handleSubFileUpdate" />
-                        </div>
-                      </el-tab-pane>
-                    </el-tabs>
-                    <div
-                      v-if="false"
-                      class="
-                        flex flex-col
-                        gap-y-2
-                        w-full
-                        justify-between
-                        rounded
-                        bg-[#f3f7fe]
-                        p-2
-                      ">
-                      <div class="flex gap-x-3"></div>
-                    </div>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="mbid" label="送單人會員編號">
-                  <template #default="{ row }">
-                    <p
-                      class="text-primary-500 cursor-pointer"
-                      @click="actions.handlePushDetail(row.id)">
-                      {{ row.mbid }}
-                    </p>
-                  </template>
-                </el-table-column>
-                <el-table-column label="訂購人資料">
-                  <el-table-column prop="name" label="姓名" />
-                  <el-table-column prop="phone" label="電話" />
-                </el-table-column>
-                <el-table-column label="收貨人資料">
-                  <el-table-column prop="rcvname" label="姓名" />
-                  <el-table-column prop="rcvphone" label="電話" />
-                </el-table-column>
-                <el-table-column label="處理日期">
-                  <el-table-column
-                    prop="dateadd"
-                    label="入單日期"
-                    width="100" />
-                  <el-table-column
-                    v-if="state.selectedStatus == 'cancelled'"
-                    prop="date_cancelled"
-                    label="取消日期"
-                    width="130" />
-                  <el-table-column
-                    v-if="state.selectedStatus == 'completed'"
-                    prop="date_completed"
-                    label="完成日期"
-                    width="130" />
-                </el-table-column>
-                <el-table-column
-                  prop="ttlamt"
-                  label="金額"
-                  align="right"
-                  width="80">
-                  <template #default="{ row }">
-                    <p :class="{ 'text-green-500': Number(row.ttlamt > 0) }">
-                      {{ Number(row.ttlamt).toLocaleString() }}
-                    </p>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  label="操作"
-                  align="center"
-                  fixed="right"
-                  :width="state.selectedStatus == 'null' ? '120' : '80'">
-                  <template #default="{ row }">
-                    <div
-                      v-show="state.selectedStatus == 'null'"
-                      class="
-                        flex
-                        items-center
-                        gap-x-1
-                        text-xs text-gray-300
-                        cursor-default
-                      ">
-                      <button
-                        class="cursor-pointer hover:opacity-70 text-primary-500"
-                        @click="
-                          actions.handlePreOrderStatus(row.id, 'completed')
-                        ">
-                        完成
-                      </button>
-                      /
-                      <button
-                        class="cursor-pointer hover:opacity-70 text-gray-500"
-                        @click="
-                          actions.handlePreOrderStatus(row.id, 'cancelled')
-                        ">
-                        取消
-                      </button>
-                      /
-                      <button
-                        class="cursor-pointer hover:opacity-70 text-gray-500"
-                        @click="actions.handlePreOrderManage(true, row.id)">
-                        修改
-                      </button>
-                    </div>
-                    <div
-                      v-show="state.selectedStatus != 'null'"
-                      class="
-                        flex
-                        items-center
-                        gap-x-1
-                        text-xs text-gray-300
-                        cursor-default
-                      ">
-                      <el-popconfirm
-                        title="確定要恢復此訂單嗎?"
-                        width="200px"
-                        @confirm="
-                          actions.handlePreOrderStatus(
-                            row.id,
-                            state.selectedStatus,
-                            'reset_order'
-                          )
-                        ">
-                        <template #reference>
-                          <button
-                            class="
-                              cursor-pointer
-                              hover:opacity-70
-                              text-primary-500
-                            ">
-                            恢復
-                          </button>
-                        </template>
-                      </el-popconfirm>
-                      /
-                      <button
-                        class="cursor-pointer hover:opacity-70 text-gray-500"
-                        @click="actions.handlePushDetail(row.id)">
-                        查看
-                      </button>
-                    </div>
-                  </template>
-                </el-table-column>
-              </el-table>
-              <section
-                class="flex justify-end pt-3"
-                v-if="state.pagination.total > 0">
-                <el-pagination
-                  v-model:current-page="state.pagination.page"
-                  background
-                  small
-                  @current-change="actions.handleCurrentChange"
-                  layout="prev, pager, next"
-                  :page-size="state.pagination.take"
-                  :total="state.pagination.total" />
-              </section>
-            </el-tab-pane>
-          </el-tabs>
+        <div>
+          <!-- 新增預收單彈窗 -->
+          <CreatePreOrderDialog />
         </div>
-      </el-col>
-    </el-row>
-    <ScrollToTop @click.prevent="actions.handleScrollToTop" />
+      </header>
+
+      <div class="md:hidden">
+        <SelectDate
+          style="width: 100%"
+          v-model:selectedDate="state.selectedDate"
+          @on-change="actions.handlePreOrderList" />
+      </div>
+      <div class="hidden lg:flex justify-end" v-if="false">
+        <el-button size="small" type="primary">
+          <svg-icon name="list" class="w-4 h-4"></svg-icon>
+        </el-button>
+        <el-button size="small" disabled>
+          <svg-icon name="grid" class="w-4 h-4"></svg-icon>
+        </el-button>
+      </div>
+
+      <!-- list -->
+      <el-tabs
+        v-model="state.selectedStatus"
+        @tab-click="actions.handleTabClick">
+        <el-tab-pane
+          v-for="status in state.statusOptions"
+          :key="status.label"
+          :label="status.label"
+          :name="status.value">
+          <!-- list section [mobile] -->
+          <PreOrderCard
+            v-for="order in state.tableData"
+            :key="order.id"
+            :status="state.selectedStatus"
+            :order="order"
+            :type2name="state.type2name"
+            @change-status="actions.handlePreOrderStatus"
+            @go-detail="actions.handlePushDetail"
+            @on-edit="actions.handlePreOrderManage"
+            class="lg:hidden" />
+          <div
+            v-if="state?.tableData.length == 0 && !state.loading"
+            class="flex justify-center items-center">
+            <el-empty></el-empty>
+          </div>
+          <ScrollToTop
+            @click.prevent="actions.handleScrollToTop"
+            class="lg:hidden" />
+
+          <!-- list section [PC] -->
+          <BasicTable
+            class="hidden lg:block"
+            :table-data="formatPaginationTableData"
+            :columns="state.columns"
+            :loading="state.loading"
+            :total="state.pagination.total"
+            :take="state.pagination.take"
+            v-model:page="state.pagination.page">
+            <template #id="{ row }">
+              <p class="tracking-wider">#{{ row.id }}</p>
+            </template>
+            <template #name="{ row }">
+              <p class="tracking-wider">{{ row.name }} {{ row.phone }}</p>
+            </template>
+            <template #rcvname="{ row }">
+              <p class="tracking-wider">{{ row.rcvname }} {{ row.rcvphone }}</p>
+            </template>
+            <template #date_completed="{ row }">
+              <p
+                class="flex items-center gap-x-1"
+                :class="{
+                  ' text-green-500': state.selectedStatus == 'completed',
+                  ' text-orange-500': state.selectedStatus == 'cancelled',
+                }">
+                <el-icon>
+                  <SuccessFilled v-show="state.selectedStatus == 'completed'" />
+                  <CircleCloseFilled v-show="state.selectedStatus == 'cancelled'" />
+                </el-icon>
+                <span class="text-gray-500">
+                  {{ formatStatusDate(row) }}
+                </span>
+              </p>
+            </template>
+            <template #ttlamt="{ row }">
+              <p
+                class="text-right"
+                :class="{ 'text-primary-500': Number(row.ttlamt) > 0 }">
+                {{ Number(row.ttlamt).toLocaleString('zh-CN') }}
+              </p>
+            </template>
+            <template #action="{ row }">
+              <div
+                v-show="state.selectedStatus == 'null'"
+                class="
+                  flex
+                  items-center
+                  gap-x-1
+                  text-xs text-gray-300
+                  cursor-default
+                ">
+                <button
+                  class="cursor-pointer hover:opacity-70 text-primary-500"
+                  @click="
+                    actions.handlePreOrderStatus({
+                      id: row.id,
+                      type: 'completed',
+                    })
+                  ">
+                  完成
+                </button>
+                /
+                <button
+                  class="cursor-pointer hover:opacity-70 text-gray-500"
+                  @click="
+                    actions.handlePreOrderStatus({
+                      id: row.id,
+                      type: 'cancelled',
+                    })
+                  ">
+                  取消
+                </button>
+                /
+                <button
+                  class="cursor-pointer hover:opacity-70 text-gray-500"
+                  @click="
+                    actions.handlePreOrderManage({ visible: true, id: row.id })
+                  ">
+                  修改
+                </button>
+                /
+                <button
+                  class="cursor-pointer hover:opacity-70 text-gray-500"
+                  @click="actions.handlePushDetail(row.id)">
+                  詳情
+                </button>
+              </div>
+              <div
+                v-show="state.selectedStatus != 'null'"
+                class="
+                  flex
+                  items-center
+                  gap-x-1
+                  text-xs text-gray-300
+                  cursor-default
+                ">
+                <el-popconfirm
+                  title="確定要恢復此訂單嗎?"
+                  width="200px"
+                  @confirm="
+                    actions.handlePreOrderStatus({
+                      id: row.id,
+                      type: state.selectedStatus,
+                      action: 'reset_order',
+                    })
+                  ">
+                  <template #reference>
+                    <button
+                      class="cursor-pointer hover:opacity-70 text-primary-500">
+                      恢復
+                    </button>
+                  </template>
+                </el-popconfirm>
+                /
+                <button
+                  class="cursor-pointer hover:opacity-70 text-gray-500"
+                  @click="actions.handlePushDetail(row.id)">
+                  詳情
+                </button>
+              </div>
+            </template>
+          </BasicTable>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
 
     <el-drawer
       v-model="state.dialogEditVisible"
       :show-close="false"
       :size="formatDrawerWidth">
       <template #header="{ titleId, titleClass }">
-        <h4 :id="titleId" :class="titleClass" class="text-sm">
-          #{{ state.editProductModel.id }} 修改預收訂單
+        <h4 :id="titleId" :class="titleClass" class="text-xs">
+          修改預收訂單
+          <span class="text-primary-500 text-md">
+            #{{ state.editProductModel.id }}
+          </span>
         </h4>
         <router-link :to="`preOrder/${state.editProductModel.id}`">
           <div
@@ -683,64 +222,6 @@
         </div>
       </template>
     </el-drawer>
-    <el-dialog
-      v-model="state.dialogVisible"
-      :title="`修改 #${state.previewMbid} 子訂單內容`"
-      center
-      class="adjustDialog max-w-[500px]">
-      <el-descriptions :column="1" size="small" border v-if="state.previewData">
-        <el-descriptions-item
-          width="150px"
-          v-for="(item, i) in Object.entries(state.previewData)"
-          :label="state.titleMap[item[0]]"
-          :key="i">
-          <div v-if="item[0] == 'pds'">
-            <div
-              v-for="(pdItem, pdIndex) in Object.entries(state.previewData.pds)"
-              :key="pdIndex"
-              class="flex justify-between"
-              :class="{ 'bg-gray-50': pdIndex % 2 != 0 }">
-              <small class="min-w-fit text-center">
-                {{ pdItem[0] }}
-              </small>
-              <small>
-                {{ pdItem[1] }}
-              </small>
-            </div>
-          </div>
-          <div v-else class="text-right">
-            <p v-if="item[0] == 'type'">
-              {{ state.type2name[item[1]] }}
-            </p>
-            <p v-else>
-              {{ Number(item[1]).toLocaleString() }}
-            </p>
-          </div>
-        </el-descriptions-item>
-      </el-descriptions>
-      <template #footer>
-        <el-button
-          bg
-          text
-          @click="state.dialogVisible = false"
-          auto-insert-space
-          >取消</el-button
-        >
-        <el-button
-          type="primary"
-          auto-insert-space
-          @click="
-            actions.handleAddSubProduct(
-              state.confirmData.id,
-              state.confirmData.mbid,
-              state.confirmData.product,
-              state.confirmData.iscfm
-            )
-          "
-          >加入訂單</el-button
-        >
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -750,13 +231,16 @@ import { ReadJson } from '@/api/read_json'
 import { useRouter } from 'vue-router'
 import { ref, reactive, onMounted, getCurrentInstance, computed } from 'vue'
 import BasicTable from '@/components/Table/index.vue'
-import SubTitle from '@/components/Title/SubTitle.vue'
+import TitleWithCount from '@/components/Text/TitleWithCount.vue'
+import SelectDate from '@/components/Select/SelectDate.vue'
 import ScrollToTop from '@/components/Button/ScrollToTop.vue'
 import GetPreOrderCard from '@/components/Card/GetPreOrderCard.vue'
+import PreOrderCard from '@/components/Card/PreOrderCard.vue'
 import SetPreOrderCard from '@/components/Card/SetPreOrderCard.vue'
 import CardTwoCol from '@/components/Card/CardTwoCol.vue'
 import PreOrderForm from '@/components/Form/PreOrderForm.vue'
 import UploadFile from '@/components/Upload/UploadFile.vue'
+import CreatePreOrderDialog from '@/components/Dialog/CreatePreOrderDialog.vue'
 
 import { uniqWith, isEqual, pickBy, isEmpty, add } from 'lodash-es'
 import dayjs from 'dayjs'
@@ -816,6 +300,31 @@ const state = reactive({
   editProductModel: {},
   editModelFiles: [],
   editSubFiles: [],
+  columns: [
+    { label: '單號', prop: 'id', formatter: true, width: '60' },
+    { label: '送單人', prop: 'mbid', width: '120' },
+    { label: '訂購人', prop: 'name', formatter: true },
+    { label: '收貨人', prop: 'rcvname', formatter: true },
+    { label: '入單日期', prop: 'dateadd', width: '120' },
+    { label: '收款日期', prop: 'payrcvday', width: '120' },
+    {
+      label: '處理日期',
+      prop: 'date_completed',
+      formatter: true,
+      width: '200',
+    },
+    { label: '金額', prop: 'ttlamt', formatter: true, width: '120' },
+    { label: '操作', prop: 'action', formatter: true, width: '200' },
+  ],
+})
+const formatStatusDate = computed(() => row => {
+  const status = state.selectedStatus
+  const DateMap = {
+    null: '-',
+    completed: row.date_completed,
+    cancelled: row.date_cancelled,
+  }
+  return DateMap[status]
 })
 
 const formatPaginationTableData = computed(() => {
@@ -889,12 +398,12 @@ const actions = {
         return { member_id: item.member_id, name: item.name }
       })
       state.searchOptions = uniqWith(options, isEqual)
-      state.expands = []
-      if (state.tableData && state.tableData.length > 0) {
-        state.expands = [data[0].id]
-        actions.handleGetSubProducts(data[0].id)
-        actions.handleGetSubFiles(data[0].id)
-      }
+      // state.expands = []
+      // if (state.tableData && state.tableData.length > 0) {
+      //   state.expands = [data[0].id]
+      //   actions.handleGetSubProducts(data[0].id)
+      //   actions.handleGetSubFiles(data[0].id)
+      // }
     } else {
       proxy.$message({
         type: 'error',
@@ -912,14 +421,10 @@ const actions = {
    * @param {string}  id    狀態
    * @param {string}  type    狀態
    */
-  handlePreOrderStatus: async (id, type, action = 'set_order') => {
+  handlePreOrderStatus: async params => {
+    const { id, type, action = 'set_order' } = params
     state.loading = true
-    const params = {
-      action: action,
-      type: type,
-      id: id,
-    }
-    const { code, data, msg } = await PreOrderApiHandler(params)
+    const { code, data, msg } = await PreOrderApiHandler({ id, type, action })
     if (code === 1) {
       actions.handlePreOrderList()
     }
@@ -1038,14 +543,14 @@ const actions = {
     const take = state.pagination.take
     return (state.pagination.page - 1) * take + index + 1
   },
-  expandChange: row => {
-    if (row.id == state.expands[0]) {
-      state.expands = []
-    } else {
-      state.expands = [row.id]
-      actions.handleGetSubProducts(row.id, Number(row.ttlamt) > 0)
-    }
-  },
+  // expandChange: row => {
+  //   if (row.id == state.expands[0]) {
+  //     state.expands = []
+  //   } else {
+  //     state.expands = [row.id]
+  //     actions.handleGetSubProducts(row.id, Number(row.ttlamt) > 0)
+  //   }
+  // },
 
   handleGetSubProducts: async (id, hasProduct = true) => {
     const params = {
@@ -1150,7 +655,7 @@ const actions = {
       message: msg,
     })
   },
-  handlePreOrderManage: async (visible, id) => {
+  handlePreOrderManage: async ({ visible = false, id }) => {
     state.dialogEditVisible = visible
     if (visible) {
       const params = {
@@ -1278,66 +783,3 @@ const actions = {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.select-option :deep(.el-input__inner) {
-  color: $mainColor;
-}
-.table-animation {
-  transition: all 0.5s ease-in;
-  transition-delay: 0.5s;
-}
-// slide-fade
-.slide-fade-enter-active {
-  animation: slide-in 0.5s ease-in forwards;
-  -webkit-animation: slide-in 0.5s ease-in forwards;
-}
-
-.slide-fade-leave-active {
-  animation: slide-out 1s ease-out forwards;
-  opacity: 0;
-  transition: opacity 1s;
-  -webkit-animation: slide-out 1s ease-out forwards;
-}
-
-@keyframes slide-in {
-  from {
-    transition: opacity 1.5s;
-    transform: translateX(30px);
-    -webkit-transform: translateX(30px);
-    -moz-transform: translateX(30px);
-    -ms-transform: translateX(30px);
-    -o-transform: translateX(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-out {
-  from {
-    transform: translateX(0);
-    -webkit-transform: translateX(0);
-    -moz-transform: translateX(0);
-    -ms-transform: translateX(0);
-    -o-transform: translateX(0);
-  }
-  to {
-    transform: translateX(30px);
-    -webkit-transform: translateX(30px);
-    -moz-transform: translateX(30px);
-    -ms-transform: translateX(30px);
-    -o-transform: translateX(30px);
-  }
-}
-.sub-tabs :deep(.el-tabs__item) {
-  font-size: var(--el-font-size-extra-small) !important;
-  height: 36px;
-}
-</style>

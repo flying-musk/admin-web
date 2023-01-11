@@ -6,6 +6,7 @@ export default [
   {
     path: '/home',
     component: Layout,
+    redirect: { name: 'home' },
     name: 'Dashboard',
     meta: {
       title: '工作台',

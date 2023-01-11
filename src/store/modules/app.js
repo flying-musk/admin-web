@@ -1,6 +1,12 @@
 import { getItem, setItem, removeItem } from '@/utils/storage'
 import { toRaw } from 'vue'
-export const TOKEN = 'VEA-TOKEN'
+const RoleMap = {
+  admin: 'BBT-ADMIN',
+  agent: 'BBT-AGENT',
+  member: 'BBT-MEMBER',
+}
+const role = RoleMap[import.meta.env.VITE_BBT_ROLE]
+export const TOKEN = `${role}-TOKEN`
 const COLLAPSE = 'VEA-COLLAPSE'
 
 export default {

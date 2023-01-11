@@ -470,7 +470,7 @@
 
 <script setup>
 import { ref, reactive, computed, getCurrentInstance, watch } from 'vue'
-import SubTitle from '@/components/Title/SubTitle.vue'
+import SubTitle from '@/components/Text/SubTitle.vue'
 import { CalTitleApiHandler } from '@/api/cal_title'
 import { ArrowDown } from '@element-plus/icons-vue'
 import CardTwoCol from '@/components/Card/CardTwoCol.vue'

@@ -4,7 +4,7 @@
 @action = pre_order
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzQ1NTIyMzR9.XARfpGY_AWCpgDzcm2MZSfw3BJrS52QqMODb7KamAgE
 
 {
     "action":"listbydate",
@@ -27,7 +27,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJh
 # pre_order new  清单
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzQ1NTIyMzR9.XARfpGY_AWCpgDzcm2MZSfw3BJrS52QqMODb7KamAgE
 
 {
     "action":"new",
@@ -39,7 +39,7 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ
 # pre_order new  清单
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzQ1NTIyMzR9.XARfpGY_AWCpgDzcm2MZSfw3BJrS52QqMODb7KamAgE
 
 {
     "action":"getPreOrderNamebyPhone",
@@ -50,19 +50,13 @@ Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ
 # pre_order edit  修改預收訂單
 POST {{hostname}}/api/{{role}}/{{action}}.php
 Content-Type: application/json
-Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6MSwidGFibGUiOiJhZ2VudCIsImRibmFtZSI6bnVsbCwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzA3Njc3NTR9.ZwhkJs8T5gD_GwPLe1AExBOKGzY80YD7h9WfWsEpz0Q
+Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6IjAiLCJ0YWJsZSI6ImFnZW50Iiwic3lzdXNlciI6ImNrc3VubnkiLCJleHAiOjE2NzQyNzk3NzN9.6Zq-u5spXo1qd4oFVbEazWGwKv8KZ_PWVBBR1kf0RKE
 
 {
     "action": "edit",
-    "preorderid": "34",
+    "preorderid": "230",
     "data": {
-        "name": "we Lofoo",
-        "mbid": "354711",
-        "sex": "m",
-        "idtype": "Identity",
-        "idnumber": "O2220011112",
-        "birth": "2022-12-02",
-        "email": "ewr3d12@gmail.com"
+        "paydetail": "test test test test"
     }
 }
 
