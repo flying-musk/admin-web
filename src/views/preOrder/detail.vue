@@ -69,8 +69,14 @@
           </div>
         </div>
         <el-page-header @back="actions.handleGoBack" class="p-1">
+          <template #icon>
+            <el-icon :class="{ 'ml-3': !!props.id }">
+              <Back v-show="!props.id" />
+              <Refresh v-show="!!props.id" />
+            </el-icon>
+          </template>
           <template #title>
-            <p class="hidden sm:flex text-sm">返回</p>
+            <p v-show="!props.id" class="hidden sm:flex text-sm">返回</p>
           </template>
           <template #content>
             <div class="flex items-center text-primary-500 gap-x-2">
@@ -79,7 +85,7 @@
               </span>
               <span class="text-sm text-gray-700 tracking-wider">預收單 </span>
               <p class="text-sm font-bold tracking-wide">
-                #{{ route.params.id }}
+                #{{ route.params.id || id }}
               </p>
             </div>
           </template>
@@ -460,7 +466,12 @@ import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
 import PosInfoCard from '@/components/Card/PosInfoCard.vue'
 import PayInfoCard from '@/components/Card/PayInfoCard.vue'
 import CreatePreOrderSubDialog from '@/components/Dialog/CreatePreOrderSubDialog.vue'
-
+const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+  },
+})
 const { proxy } = getCurrentInstance()
 const { variables } = useVariables()
 const store = useStore()
@@ -499,7 +510,15 @@ const state = reactive({
   },
   refPopover: {},
 })
-
+watch(
+  () => props.id,
+  (id, prevId) => {
+    if (!!id && id != prevId) {
+      actions.handleGetProducts()
+      actions.handleFetchPreOrder()
+    }
+  }
+)
 watch(
   () => state.editProductModel.add1,
   (add1, prevAdd1) => {
@@ -525,7 +544,7 @@ watch(
   }
 )
 onMounted(() => {
-  const id = route.params.id
+  const id = route.params.id || props.id
   if (!id) {
     router.go(-1)
   } else {
@@ -583,7 +602,7 @@ const actions = {
    * @description 取得子訂單內容
    */
   handleFetchPreOrder: async (showLoading = true) => {
-    const id = route.params.id
+    const id = route.params.id || props.id
     const params = {
       action: 'listbyid',
       id: id,
@@ -916,6 +935,11 @@ const actions = {
     }
   },
   handleGoBack: () => {
+    if (!!props.id) {
+      actions.handleGetProducts()
+      actions.handleFetchPreOrder()
+      return
+    }
     if (window.history.state.back) {
       router.back()
     } else {

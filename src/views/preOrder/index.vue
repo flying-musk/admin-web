@@ -201,7 +201,7 @@
                 </div>
               </template>
             </BasicTable>
-            
+
             <!-- grid table -->
             <div
               class="grid grid-cols-3 border-2"
@@ -220,12 +220,25 @@
                 </div>
               </div>
               <div class="col-span-2 border">
-                <small>{{ state.selectedPreOrder.id }}</small>
-                <div class="h-[500px] overflow-y-auto">
-                  <!-- 訂購人、收貨人資料 -->
-                  <BookingInfoCard :info="state.selectedPreOrder" />
-                  <RcvInfoCard :info="state.selectedPreOrder" />
-                  <PayInfoCard :info="state.selectedPreOrder" />
+                <div
+                  class="
+                    flex
+                    h-[500px]
+                    justify-center
+                    items-center
+                    text-gray-500
+                    tracking-500
+                  "
+                  v-if="!state.selectedPreOrder.id"
+                  >
+                  <p>
+                    點選左側列單查看詳情
+                  </p>
+                  </div
+                >
+                <div class="h-[500px] overflow-y-auto" v-else>
+                  <!-- 詳情 -->
+                  <Detail :id="state.selectedPreOrder.id" />
                 </div>
               </div>
             </div>
@@ -291,6 +304,7 @@ import CreatePreOrderDialog from '@/components/Dialog/CreatePreOrderDialog.vue'
 import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
 import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
 import PayInfoCard from '@/components/Card/PayInfoCard.vue'
+import Detail from '@/views/PreOrder/detail.vue'
 
 import { uniqWith, isEqual, pickBy, isEmpty, add } from 'lodash-es'
 import dayjs from 'dayjs'
