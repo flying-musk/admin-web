@@ -206,39 +206,67 @@
             <div
               class="grid grid-cols-3 border-2"
               v-show="state.listType == 'grid'">
-              <div class="border-r-2 p-1">
-                <div class="h-[500px] overflow-y-auto">
+              <div class="border-r-2 p-1 relative">
+                <div class="h-[60vh] overflow-y-auto" v-loading="state.loading">
                   <PreOrderCard
                     :show-action="false"
                     @click="actions.handleSelectPreOrder(order)"
-                    class="cursor-pointer"
+                    class="cursor-pointer shadow"
                     v-for="order in state.tableData"
                     :key="order.id"
                     :status="state.selectedStatus"
                     :order="order"
                     :type2name="state.type2name" />
+
+                  <button
+                    @click.stop="actions.handleListScrollTop"
+                    v-show="!state.loading"
+                    class="
+                      bg-primary-500 bg-opacity-70
+                      z-[8]
+                      rounded-full
+                      w-[24px]
+                      h-[24px]
+                      sticky
+                      bottom-[3%]
+                      left-[3%]
+                      shadow-2xl
+                    ">
+                    <div class="flex justify-center items-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="#fff"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24">
+                        <path
+                          d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339 2.829-2.83-11.996-12.17z" />
+                      </svg>
+                    </div>
+                  </button>
                 </div>
               </div>
               <div class="col-span-2 border">
                 <div
                   class="
                     flex
-                    h-[500px]
+                    h-[60vh]
                     justify-center
                     items-center
                     text-gray-500
                     tracking-500
                   "
-                  v-if="!state.selectedPreOrder.id"
-                  >
-                  <p>
-                    點選左側列單查看詳情
-                  </p>
-                  </div
-                >
-                <div class="h-[500px] overflow-y-auto" v-else>
+                  v-show="!state.selectedPreOrder.id">
+                  <p>點選左側列單查看詳情</p>
+                </div>
+                <div
+                  class="h-[60vh] w-full overflow-y-auto"
+                  id="detailBox"
+                  v-show="!!state.selectedPreOrder.id">
                   <!-- 詳情 -->
-                  <Detail :id="state.selectedPreOrder.id" />
+                  <Detail
+                    v-if="!!state.selectedPreOrder.id"
+                    :id="state.selectedPreOrder.id" />
                 </div>
               </div>
             </div>
@@ -289,7 +317,14 @@
 import { PreOrderApiHandler } from '@/api/pre_order'
 import { ReadJson } from '@/api/read_json'
 import { useRouter } from 'vue-router'
-import { ref, reactive, onMounted, getCurrentInstance, computed } from 'vue'
+import {
+  ref,
+  reactive,
+  onMounted,
+  getCurrentInstance,
+  computed,
+  nextTick,
+} from 'vue'
 import BasicTable from '@/components/Table/index.vue'
 import TitleWithCount from '@/components/Text/TitleWithCount.vue'
 import SelectDate from '@/components/Select/SelectDate.vue'
@@ -313,7 +348,7 @@ const router = useRouter()
 const refTable = ref(null)
 const state = reactive({
   selectedPreOrder: {},
-  listType: 'table',
+  listType: 'grid',
   loading: false,
   showSetting: true,
   showSettingMobile: false,
@@ -847,9 +882,37 @@ const actions = {
   handleSubFileUpdate: list => {
     state.editSubFiles = list
   },
-
+  /**
+   * @description 列表 selected
+   */
   handleSelectPreOrder: product => {
     state.selectedPreOrder = product
+    actions.handleDetailScrollTop()
+  },
+
+  /**
+   * @description 列表 scroll
+   */
+  handleListScrollTop: () => {
+    nextTick(() => {
+      const list = document.getElementById('listBox')
+      if (!list) return
+      list.scrollIntoView(true)
+    })
+  },
+  /**
+   * @description 詳情 scroll
+   */
+  handleDetailScrollTop: () => {
+    nextTick(() => {
+      const detail = document.getElementById('detailBox')
+      if (!detail) return
+      const detailPage = document.getElementById('pre-order-detail')
+      console.log(detail)
+      console.log(detailPage)
+      detail.scrollIntoView(true)
+      detailPage.scrollIntoView(true)
+    })
   },
 }
 </script>

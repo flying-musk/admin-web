@@ -25,7 +25,7 @@
             w-full
             sm:justify-center
           ">
-          <small>預收單編號</small>
+          <small>單號</small>
           <p class="sm:text-xl sm:font-bold">#{{ order.id }}</p>
         </div>
         <p

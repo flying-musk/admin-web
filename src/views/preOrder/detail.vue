@@ -148,7 +148,6 @@
                 grid grid-cols-1
                 sm:grid-cols-2
                 md:gird-cols-3
-                lg:grid-cols-4
                 xl:grid-cols-5
                 gap-2
                 p-2
