@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-1 py-2 border-t border-b bg-white">
     <SubTitle title="收款資料" />
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 text-xs text-gray-500">
+    <div class="grid md:grid-cols-2 xl:grid-cols-3 text-xs text-gray-500">
       <CardTwoCol
         :item="{
           label: '收款狀態',
