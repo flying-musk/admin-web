@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white border  rounded space-y-2 py-2">
+  <div class="bg-white border rounded space-y-2 py-2">
     <SubTitle title="訂購人資料" />
     <div class="text-xs text-gray-500">
       <CardTwoCol
@@ -83,12 +83,14 @@ const props = defineProps({
 })
 const name = computed(() => {
   const hasName = !!props.info.first_name || !!props.info.last_name
-  return hasName ? `${props.info.first_name} ${props.info.last_name}` : '-'
+  return (
+    hasName ? `${props.info.first_name} ${props.info.last_name}`: props.info?.name? props.info?.name :  '-'
+  )
 })
 
 const ccodeTitle = computed(() => {
   const ccode = props.info?.ccode
-  if(!ccode) return
+  if (!ccode) return
   return variables.ccodename[ccode]
 })
 

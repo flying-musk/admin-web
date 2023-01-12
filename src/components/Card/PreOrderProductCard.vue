@@ -1,7 +1,6 @@
 <template>
   <div
-    class="flex flex-col border         shadow-md
-        rounded-md overflow-hidden mb-3"
+    class="flex flex-col border shadow-md rounded-md overflow-hidden mb-3"
     :class="
       actions.hasProduct(product?.type)
         ? 'bg-primary-50 bg-opacity-10'
@@ -80,8 +79,7 @@
                 flex
                 items-center
                 gap-x-1
-                bg-primary-50
-                bg-opacity-10
+                bg-primary-50 bg-opacity-10
                 text-primary-500 text-xs
                 p-1
                 rounded-t
@@ -99,7 +97,7 @@
             class="flex flex-col text-xs bg-white mb-1 rounded-b round-l border"
             v-show="product?.showDetails">
             <div class="flex flex-col sm:flex-row">
-              <div class="w-1/2 border-r">
+              <div class="lg:w-1/2 border-r">
                 <p class="bg-primary-50 text-white p-1">套裝內容</p>
                 <div class="p-1">
                   <div
@@ -130,6 +128,21 @@
                   </div>
                 </div>
               </div>
+              <p
+                class="
+                  flex
+                  shadow
+                  bg-gray-100
+                  items-center
+                  justify-center
+                  gap-x-1
+                  text-xs
+                  p-1
+                "
+                @click="product.showDetails = false">
+                <span>收合</span>
+                <el-icon> <ArrowUp /></el-icon>
+              </p>
             </div>
           </div>
         </div>
