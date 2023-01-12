@@ -23,11 +23,17 @@
           v-model:selectedDate="state.selectedDate"
           @on-change="actions.handlePreOrderList" />
       </div>
-      <div class="hidden lg:flex justify-end" v-if="false">
-        <el-button size="small" type="primary">
+      <div class="hidden lg:flex justify-end">
+        <el-button
+          size="small"
+          :type="state.listType == 'table' ? 'primary' : null"
+          @click="state.listType = 'table'">
           <svg-icon name="list" class="w-4 h-4"></svg-icon>
         </el-button>
-        <el-button size="small" disabled>
+        <el-button
+          size="small"
+          :type="state.listType == 'grid' ? 'primary' : null"
+          @click="state.listType = 'grid'">
           <svg-icon name="grid" class="w-4 h-4"></svg-icon>
         </el-button>
       </div>
@@ -62,127 +68,168 @@
             class="lg:hidden" />
 
           <!-- list section [PC] -->
-          <BasicTable
-            class="hidden lg:block"
-            :table-data="formatPaginationTableData"
-            :columns="state.columns"
-            :loading="state.loading"
-            :total="state.pagination.total"
-            :take="state.pagination.take"
-            v-model:page="state.pagination.page">
-            <template #id="{ row }">
-              <p class="tracking-wider">#{{ row.id }}</p>
-            </template>
-            <template #name="{ row }">
-              <p class="tracking-wider">{{ row.name }} {{ row.phone }}</p>
-            </template>
-            <template #rcvname="{ row }">
-              <p class="tracking-wider">{{ row.rcvname }} {{ row.rcvphone }}</p>
-            </template>
-            <template #date_completed="{ row }">
-              <p
-                class="flex items-center gap-x-1"
-                :class="{
-                  ' text-green-500': state.selectedStatus == 'completed',
-                  ' text-orange-500': state.selectedStatus == 'cancelled',
-                }">
-                <el-icon>
-                  <SuccessFilled v-show="state.selectedStatus == 'completed'" />
-                  <CircleCloseFilled v-show="state.selectedStatus == 'cancelled'" />
-                </el-icon>
-                <span class="text-gray-500">
-                  {{ formatStatusDate(row) }}
-                </span>
-              </p>
-            </template>
-            <template #ttlamt="{ row }">
-              <p
-                class="text-right"
-                :class="{ 'text-primary-500': Number(row.ttlamt) > 0 }">
-                {{ Number(row.ttlamt).toLocaleString('zh-CN') }}
-              </p>
-            </template>
-            <template #action="{ row }">
-              <div
-                v-show="state.selectedStatus == 'null'"
-                class="
-                  flex
-                  items-center
-                  gap-x-1
-                  text-xs text-gray-300
-                  cursor-default
-                ">
-                <button
-                  class="cursor-pointer hover:opacity-70 text-primary-500"
-                  @click="
-                    actions.handlePreOrderStatus({
-                      id: row.id,
-                      type: 'completed',
-                    })
+          <div class="hidden lg:block">
+            <BasicTable
+              v-show="state.listType == 'table'"
+              :table-data="formatPaginationTableData"
+              :columns="state.columns"
+              :loading="state.loading"
+              :total="state.pagination.total"
+              :take="state.pagination.take"
+              v-model:page="state.pagination.page">
+              <template #id="{ row }">
+                <p class="tracking-wider">#{{ row.id }}</p>
+              </template>
+              <template #name="{ row }">
+                <p class="tracking-wider">{{ row.name }} {{ row.phone }}</p>
+              </template>
+              <template #rcvname="{ row }">
+                <p class="tracking-wider">
+                  {{ row.rcvname }} {{ row.rcvphone }}
+                </p>
+              </template>
+              <template #date_completed="{ row }">
+                <p
+                  class="flex items-center gap-x-1"
+                  :class="{
+                    ' text-green-500': state.selectedStatus == 'completed',
+                    ' text-orange-500': state.selectedStatus == 'cancelled',
+                  }">
+                  <el-icon>
+                    <SuccessFilled
+                      v-show="state.selectedStatus == 'completed'" />
+                    <CircleCloseFilled
+                      v-show="state.selectedStatus == 'cancelled'" />
+                  </el-icon>
+                  <span class="text-gray-500">
+                    {{ formatStatusDate(row) }}
+                  </span>
+                </p>
+              </template>
+              <template #ttlamt="{ row }">
+                <p
+                  class="text-right"
+                  :class="{ 'text-primary-500': Number(row.ttlamt) > 0 }">
+                  {{ Number(row.ttlamt).toLocaleString('zh-CN') }}
+                </p>
+              </template>
+              <template #action="{ row }">
+                <div
+                  v-show="state.selectedStatus == 'null'"
+                  class="
+                    flex
+                    items-center
+                    gap-x-1
+                    text-xs text-gray-300
+                    cursor-default
                   ">
-                  完成
-                </button>
-                /
-                <button
-                  class="cursor-pointer hover:opacity-70 text-gray-500"
-                  @click="
-                    actions.handlePreOrderStatus({
-                      id: row.id,
-                      type: 'cancelled',
-                    })
+                  <button
+                    class="cursor-pointer hover:opacity-70 text-primary-500"
+                    @click="
+                      actions.handlePreOrderStatus({
+                        id: row.id,
+                        type: 'completed',
+                      })
+                    ">
+                    完成
+                  </button>
+                  /
+                  <button
+                    class="cursor-pointer hover:opacity-70 text-gray-500"
+                    @click="
+                      actions.handlePreOrderStatus({
+                        id: row.id,
+                        type: 'cancelled',
+                      })
+                    ">
+                    取消
+                  </button>
+                  /
+                  <button
+                    class="cursor-pointer hover:opacity-70 text-gray-500"
+                    @click="
+                      actions.handlePreOrderManage({
+                        visible: true,
+                        id: row.id,
+                      })
+                    ">
+                    修改
+                  </button>
+                  /
+                  <button
+                    class="cursor-pointer hover:opacity-70 text-gray-500"
+                    @click="actions.handlePushDetail(row.id)">
+                    詳情
+                  </button>
+                </div>
+                <div
+                  v-show="state.selectedStatus != 'null'"
+                  class="
+                    flex
+                    items-center
+                    gap-x-1
+                    text-xs text-gray-300
+                    cursor-default
                   ">
-                  取消
-                </button>
-                /
-                <button
-                  class="cursor-pointer hover:opacity-70 text-gray-500"
-                  @click="
-                    actions.handlePreOrderManage({ visible: true, id: row.id })
-                  ">
-                  修改
-                </button>
-                /
-                <button
-                  class="cursor-pointer hover:opacity-70 text-gray-500"
-                  @click="actions.handlePushDetail(row.id)">
-                  詳情
-                </button>
+                  <el-popconfirm
+                    title="確定要恢復此訂單嗎?"
+                    width="200px"
+                    @confirm="
+                      actions.handlePreOrderStatus({
+                        id: row.id,
+                        type: state.selectedStatus,
+                        action: 'reset_order',
+                      })
+                    ">
+                    <template #reference>
+                      <button
+                        class="
+                          cursor-pointer
+                          hover:opacity-70
+                          text-primary-500
+                        ">
+                        恢復
+                      </button>
+                    </template>
+                  </el-popconfirm>
+                  /
+                  <button
+                    class="cursor-pointer hover:opacity-70 text-gray-500"
+                    @click="actions.handlePushDetail(row.id)">
+                    詳情
+                  </button>
+                </div>
+              </template>
+            </BasicTable>
+            
+            <!-- grid table -->
+            <div
+              class="grid grid-cols-3 border-2"
+              v-show="state.listType == 'grid'">
+              <div class="border-r-2 p-1">
+                <div class="h-[500px] overflow-y-auto">
+                  <PreOrderCard
+                    :show-action="false"
+                    @click="actions.handleSelectPreOrder(order)"
+                    class="cursor-pointer"
+                    v-for="order in state.tableData"
+                    :key="order.id"
+                    :status="state.selectedStatus"
+                    :order="order"
+                    :type2name="state.type2name" />
+                </div>
               </div>
-              <div
-                v-show="state.selectedStatus != 'null'"
-                class="
-                  flex
-                  items-center
-                  gap-x-1
-                  text-xs text-gray-300
-                  cursor-default
-                ">
-                <el-popconfirm
-                  title="確定要恢復此訂單嗎?"
-                  width="200px"
-                  @confirm="
-                    actions.handlePreOrderStatus({
-                      id: row.id,
-                      type: state.selectedStatus,
-                      action: 'reset_order',
-                    })
-                  ">
-                  <template #reference>
-                    <button
-                      class="cursor-pointer hover:opacity-70 text-primary-500">
-                      恢復
-                    </button>
-                  </template>
-                </el-popconfirm>
-                /
-                <button
-                  class="cursor-pointer hover:opacity-70 text-gray-500"
-                  @click="actions.handlePushDetail(row.id)">
-                  詳情
-                </button>
+              <div class="col-span-2 border">
+                <small>{{ state.selectedPreOrder.id }}</small>
+                <div class="h-[500px] overflow-y-auto">
+                  <!-- 訂購人、收貨人資料 -->
+                  <BookingInfoCard :info="state.selectedPreOrder" />
+                  <RcvInfoCard :info="state.selectedPreOrder" />
+                  <PayInfoCard :info="state.selectedPreOrder" />
+                </div>
               </div>
-            </template>
-          </BasicTable>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -241,6 +288,9 @@ import CardTwoCol from '@/components/Card/CardTwoCol.vue'
 import PreOrderForm from '@/components/Form/PreOrderForm.vue'
 import UploadFile from '@/components/Upload/UploadFile.vue'
 import CreatePreOrderDialog from '@/components/Dialog/CreatePreOrderDialog.vue'
+import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
+import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
+import PayInfoCard from '@/components/Card/PayInfoCard.vue'
 
 import { uniqWith, isEqual, pickBy, isEmpty, add } from 'lodash-es'
 import dayjs from 'dayjs'
@@ -248,6 +298,8 @@ const { proxy } = getCurrentInstance()
 const router = useRouter()
 const refTable = ref(null)
 const state = reactive({
+  selectedPreOrder: {},
+  listType: 'table',
   loading: false,
   showSetting: true,
   showSettingMobile: false,
@@ -780,6 +832,10 @@ const actions = {
    */
   handleSubFileUpdate: list => {
     state.editSubFiles = list
+  },
+
+  handleSelectPreOrder: product => {
+    state.selectedPreOrder = product
   },
 }
 </script>

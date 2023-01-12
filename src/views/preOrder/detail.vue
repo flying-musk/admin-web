@@ -6,14 +6,69 @@
       <iframe src="https://embed.lottiefiles.com/animation/97930"></iframe>
     </div>
     <div class="rounded bg-white" v-show="!state.loading">
-      <div class="space-y-1 detail-page relative">
-        <el-page-header
-          @back="actions.handleGoBack"
-          class="p-1 border-b-2"
+      <div class="space-y-1 detail-page">
+        <div
+          class="
+            px-3
+            py-2
+            from-primary-50
+            to-primary-400
+            bg-gradient-to-tr
+            flex
+            items-center
+            justify-between
+            rounded-t
+          "
           :class="{
-            ' border-green-500 ': !!state.editProductModel?.date_completed,
-            'border-orange-500': !!state.editProductModel?.date_cancelled,
+            '   from-green-300 to-green-500':
+              !!state.editProductModel?.date_completed,
+            '  from-orange-300 to-orange-500':
+              !!state.editProductModel?.date_cancelled,
           }">
+          <small
+            class="
+              px-2
+              text-primary-500
+              bg-white
+              border-primary-50 border
+              shadow
+              rounded-full
+              tracking-widest
+            "
+            :class="{
+              '  text-green-500  border-green-50 ':
+                !!state.editProductModel?.date_completed,
+              ' text-orange-500 border-orange-50':
+                !!state.editProductModel?.date_cancelled,
+            }">
+            {{
+              !!state.editProductModel?.date_completed
+                ? '已完成'
+                : !!state.editProductModel?.date_cancelled
+                ? '已取消'
+                : '處理中'
+            }}
+          </small>
+          <div class="text-xs">
+            <p class="flex items-center text-gray-50 gap-x-1">
+              <el-icon
+                v-show="
+                  !!state.editProductModel?.date_cancelled ||
+                  !!state.editProductModel?.date_completed
+                ">
+                <Timer />
+              </el-icon>
+              <span class="min-w-fit">{{
+                !!state.editProductModel?.date_cancelled
+                  ? state.editProductModel?.date_cancelled
+                  : !!state.editProductModel?.date_completed
+                  ? state.editProductModel?.date_completed
+                  : state.editProductModel?.paystatus
+              }}</span>
+            </p>
+          </div>
+        </div>
+        <el-page-header @back="actions.handleGoBack" class="p-1">
           <template #title>
             <p class="hidden sm:flex text-sm">返回</p>
           </template>
@@ -36,26 +91,30 @@
                   state.editProductModel?.dateadd
                 }}</span>
               </p>
-              <p
-                class="flex items-center text-orange-500 gap-x-2"
-                v-show="!!state.editProductModel?.date_cancelled">
-                <el-icon><CircleCloseFilled /></el-icon>
-                <span class="min-w-fit text-gray-500">{{
-                  state.editProductModel?.date_cancelled
-                }}</span>
-              </p>
-              <p
-                class="flex items-center text-green-500 gap-x-2"
-                v-show="!!state.editProductModel?.date_completed">
-                <el-icon><SuccessFilled /></el-icon>
-                <span class="min-w-fit text-gray-500">{{
-                  state.editProductModel?.date_completed
-                }}</span>
-              </p>
             </div>
           </template>
         </el-page-header>
 
+        <div class="bg-gray-100 space-y-1 p-1" v-if="false">
+          <div class="flex items-center gap-x-1">
+            <div
+              class="
+                w-5
+                h-5
+                text-xs
+                rounded-full
+                flex
+                justify-center
+                items-center
+                border border-primary-500
+                bg-white
+                text-primary-500
+              ">
+              送
+            </div>
+            {{ state.editProductModel?.mbid }}
+          </div>
+        </div>
         <div class="bg-gray-100 space-y-1">
           <div class="bg-gray-200">
             <div class="flex items-center divide-x-2 py-1 shadow bg-white">
@@ -79,7 +138,6 @@
               v-show="state.selectedSubList?.length == 0 && state.isDisabled">
             </el-empty>
             <div
-              v-show="!state.isDisabled"
               class="
                 grid grid-cols-1
                 sm:grid-cols-2
@@ -92,7 +150,7 @@
               ">
               <!-- 新增商品彈窗 -->
               <CreatePreOrderSubDialog
-                v-if="state.selectedSubList?.length < 6"
+                v-if="state.selectedSubList?.length < 6 && !state.isDisabled"
                 :id="route.params.id"
                 :selected="state.selectedSubList"
                 @fetch-cart="actions.handleGetSubProducts(route.params.id)" />
@@ -348,88 +406,10 @@
           </div>
 
           <!-- 點位資料 -->
-          <div class="space-y-1 py-2 border-t border-b bg-white">
-            <SubTitle title="點位資料" />
-            <div
-              class="grid md:grid-cols-2 lg:grid-cols-3 text-xs text-gray-500">
-              <CardTwoCol
-                :item="{
-                  label: '送單人編號',
-                  value: state.editProductModel.mbid,
-                }" />
-
-              <CardTwoCol
-                :item="{
-                  label: '訂購人編號',
-                  value: state.editProductModel.ordermbid,
-                }" />
-              <CardTwoCol
-                :item="{
-                  label: '線位',
-                  value: ' ',
-                }">
-                <el-tag
-                  :type="state.editProductModel.leg == 1 ? 'danger' : 'success'"
-                  effect="plain"
-                  round
-                  size="small"
-                  v-show="!!state.editProductModel.leg">
-                  <p class="tracking-widest">
-                    {{ state.editProductModel.leg == 1 ? '左線' : '右線' }}
-                  </p>
-                </el-tag>
-              </CardTwoCol>
-              <CardTwoCol
-                :item="{
-                  label: '推薦人編號',
-                  value: state.editProductModel.rmbid,
-                }" />
-              <CardTwoCol
-                :item="{
-                  label: '安置人編號',
-                  value: state.editProductModel.umbid,
-                }" />
-              <CardTwoCol
-                :item="{
-                  label: '培訓人編號',
-                  value: state.editProductModel.smbid,
-                }" />
-            </div>
-          </div>
+          <PosInfoCard :info="state.editProductModel" />
 
           <!-- 收款資料 -->
-          <div class="space-y-1 py-2 border-t border-b bg-white">
-            <SubTitle title="收款資料" />
-            <div
-              class="grid md:grid-cols-2 lg:grid-cols-3 text-xs text-gray-500">
-              <CardTwoCol
-                :item="{
-                  label: '收款狀態',
-                  value: ' ',
-                }">
-                <el-tag
-                  effect="plain"
-                  round
-                  size="small"
-                  v-show="!!state.editProductModel.paystatus">
-                  <p class="tracking-widest">
-                    {{ state.editProductModel.paystatus }}
-                  </p>
-                </el-tag>
-              </CardTwoCol>
-              <CardTwoCol
-                :item="{
-                  label: '收款日期',
-                  value: state.editProductModel.payrcvday,
-                }" />
-
-              <CardTwoCol
-                :item="{
-                  label: '收款詳情',
-                  value: state.editProductModel.paydetail,
-                }" />
-            </div>
-          </div>
+          <PayInfoCard :info="state.editProductModel" />
 
           <!-- 訂單備註 -->
           <div class="space-y-1 py-2 border-t border-b bg-white">
@@ -477,6 +457,8 @@ import UploadFile from '@/components/Upload/UploadFile.vue'
 import ScrollToTop from '@/components/Button/ScrollToTop.vue'
 import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
 import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
+import PosInfoCard from '@/components/Card/PosInfoCard.vue'
+import PayInfoCard from '@/components/Card/PayInfoCard.vue'
 import CreatePreOrderSubDialog from '@/components/Dialog/CreatePreOrderSubDialog.vue'
 
 const { proxy } = getCurrentInstance()

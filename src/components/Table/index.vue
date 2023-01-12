@@ -6,8 +6,7 @@
       class="default-table"
       stripe
       border
-      default-expand-all
-      max-height="800"
+      max-height="600"
       ref="refTable"
       :header-cell-style="mainTableStyle.header"
       :row-style="mainTableStyle.row"

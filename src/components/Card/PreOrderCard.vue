@@ -29,6 +29,7 @@
           <p class="sm:text-xl sm:font-bold">#{{ order.id }}</p>
         </div>
         <p
+          v-show="showAction"
           class="text-xs min-w-fit flex items-center gap-x-1"
           :class="{
             'text-green-500': status == 'completed',
@@ -43,7 +44,8 @@
             {{ order?.date_cancelled || order?.date_completed }}
           </span>
         </p>
-        <div :class="{ hidden: status != 'null' }">
+
+        <div :class="{ hidden: status != 'null' }" v-show="showAction">
           <el-tag
             size="small"
             effect="plain"
@@ -70,7 +72,7 @@
                 flex-1
                 text-gray-500
               ">
-              <span>訂購人</span>
+              <span>送單人</span>
               <span class="text-gray-400">{{ order.mbid }}</span>
             </p>
           </div>
@@ -118,7 +120,9 @@
             </p>
           </div>
 
-          <div class="flex flex-row text-sm" v-show="Number(order?.ttlamt) > 0">
+          <div
+            class="flex flex-row text-sm"
+            v-show="Number(order?.ttlamt) > 0 && showAction">
             <span class="flex items-center mr-2">
               <el-icon><Box /></el-icon>
             </span>
@@ -164,7 +168,16 @@
               :selected="state.selectedSubList"
               :type2name="type2name" />
             <p
-              class="flex shadow bg-gray-100 items-center justify-center gap-x-1 text-xs p-1"
+              class="
+                flex
+                shadow
+                bg-gray-100
+                items-center
+                justify-center
+                gap-x-1
+                text-xs
+                p-1
+              "
               @click="state.show = false">
               <span>收合</span>
               <el-icon> <ArrowUp /></el-icon>
@@ -172,7 +185,7 @@
           </div>
         </div>
         <div class="flex flex-col w-full relative bottom-0">
-          <div class="flex justify-end p-2 border-t">
+          <div class="flex justify-end p-2 border-t" v-show="showAction">
             <el-button
               v-show="status == 'null'"
               size="small"
@@ -215,6 +228,32 @@
               >查看詳情</el-button
             >
           </div>
+          <div class="flex justify-between p-2 border-t" v-show="!showAction">
+            <el-tag
+              size="small"
+              effect="plain"
+              round
+              :type="formatType(order?.ttlamt, order?.payrcvday)">
+              {{ formatTypeTitle(order?.ttlamt, order?.paystatus) }}
+            </el-tag>
+            <p
+              class="text-xs min-w-fit flex items-center gap-x-1"
+              :class="{
+                'text-green-500': status == 'completed',
+                'text-orange-500': status == 'cancelled',
+              }"
+              v-if="status != 'null'">
+              <el-icon v-show="status == 'completed'"
+                ><SuccessFilled
+              /></el-icon>
+              <el-icon v-show="status == 'cancelled'"
+                ><CircleCloseFilled
+              /></el-icon>
+              <span class="text-gray-400">
+                {{ order?.date_cancelled || order?.date_completed }}
+              </span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -238,6 +277,10 @@ const props = defineProps({
   type2name: {
     type: Object,
     default: () => {},
+  },
+  showAction: {
+    type: Boolean,
+    default: true,
   },
 })
 const emit = defineEmits(['go-detail', 'on-edit', 'change-status'])
