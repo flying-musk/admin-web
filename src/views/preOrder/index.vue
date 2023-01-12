@@ -207,8 +207,9 @@
               class="grid grid-cols-3 border-2"
               v-show="state.listType == 'grid'">
               <div class="border-r-2 p-1 relative">
-                <div class="h-[60vh] overflow-y-auto" v-loading="state.loading">
+                <div class="h-[60vh] overflow-y-auto" v-loading="state.loading" id="listContainer">
                   <PreOrderCard
+                    id="listBox"
                     :show-action="false"
                     @click="actions.handleSelectPreOrder(order)"
                     class="cursor-pointer shadow"
@@ -256,17 +257,17 @@
                     text-gray-500
                     tracking-500
                   "
-                  v-show="!state.selectedPreOrder.id">
+                  v-show="!state.selectedPreOrder?.id">
                   <p>點選左側列單查看詳情</p>
                 </div>
                 <div
                   class="h-[60vh] w-full overflow-y-auto"
                   id="detailBox"
-                  v-show="!!state.selectedPreOrder.id">
+                  v-show="!!state.selectedPreOrder?.id">
                   <!-- 詳情 -->
                   <Detail
-                    v-if="!!state.selectedPreOrder.id"
-                    :id="state.selectedPreOrder.id" />
+                    v-if="!!state.selectedPreOrder?.id"
+                    :id="state.selectedPreOrder?.id" />
                 </div>
               </div>
             </div>
@@ -634,6 +635,7 @@ const actions = {
 
   handleTabClick: tab => {
     state.selectedStatus = tab.props.name
+    state.selectedPreOrder = null
     actions.handlePreOrderList()
   },
   handleCurrentChange: val => {
@@ -895,9 +897,11 @@ const actions = {
    */
   handleListScrollTop: () => {
     nextTick(() => {
-      const list = document.getElementById('listBox')
-      if (!list) return
-      list.scrollIntoView(true)
+      const listContainer = document.getElementById('listContainer')
+      const listBox = document.getElementById('listBox')
+      if (!listBox) return
+      listContainer.scrollIntoView(true)
+      listBox.scrollIntoView(true)
     })
   },
   /**
@@ -908,8 +912,6 @@ const actions = {
       const detail = document.getElementById('detailBox')
       if (!detail) return
       const detailPage = document.getElementById('pre-order-detail')
-      console.log(detail)
-      console.log(detailPage)
       detail.scrollIntoView(true)
       detailPage.scrollIntoView(true)
     })
