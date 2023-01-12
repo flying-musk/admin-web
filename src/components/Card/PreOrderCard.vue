@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col border rounded-lg overflow-hidden bg-white mb-2">
+  <div
+    class="flex flex-col border rounded-lg overflow-hidden bg-white mb-2">
     <div class="grid grid-cols-1 sm:grid-cols-3">
       <div
         class="
