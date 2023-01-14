@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-model="selectedDate"
+    v-model="propsDate"
     value-key="value"
     placeholder="天數"
     size="small"
@@ -22,4 +22,11 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:selectedDate','on-change'])
+
+const propsDate = computed({
+  get: () => props.selectedDate,
+  set: val => {
+    emit('update:selectedDate', val)
+  },
+})
 </script>
