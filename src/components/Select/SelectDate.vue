@@ -1,21 +1,25 @@
 <template>
   <el-select
-    v-model="dates"
+    v-model="selectedDate"
     value-key="value"
     placeholder="天數"
     size="small"
     class="md:max-w-[130px] select-date md:px-3"
     @change="emit('on-change')">
     <template #prefix>最近</template>
-    <el-option v-for="i in dates" :key="i" :label="`${i} 天`" :value="i" />
+    <el-option v-for="i in dateOptions" :key="i" :label="`${i} 天`" :value="i" />
   </el-select>
 </template>
 <script setup>
 const props = defineProps({
-  dates: {
+  selectedDate: {
     type: Number,
     default: 31,
   },
+  dateOptions:{
+    type: Number,
+    default: 31,
+  }
 })
 const emit = defineEmits(['on-change'])
 </script>
