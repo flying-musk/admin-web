@@ -63,36 +63,23 @@
               rounded
               text-gray-500
             ">
-            <div class="flex justify-center items-center tracking-wider text-primary-500">
+            <div
+              class="
+                flex
+                justify-center
+                items-center
+                tracking-wider
+                text-primary-500
+              ">
               <el-icon :size="20"><InfoFilled /></el-icon>
             </div>
-            <p>請選擇送單人或輸入送單人編號</p>
+            <p>請輸入送單人編號</p>
           </div>
-          <div class="flex gap-x-6 pb-3">
-            <div
-              class="flex gap-x-2 items-center cursor-pointer"
-              @click="state.selectedType = 'history'">
-              <RadioItem :selected="state.selectedType == 'history'" />
-              選擇送單人
-            </div>
-            <div
-              class="flex gap-x-2 items-center cursor-pointer"
-              @click="state.selectedType = 'custom'">
-              <RadioItem :selected="state.selectedType == 'custom'" />
-              自訂
-            </div>
-          </div>
-          <div class="px-4">
-            <SelectPos
-              v-show="state.selectedType == 'history'"
-              v-model:mbid="state.history_mbid" />
-            <el-input
-              v-show="state.selectedType == 'custom'"
-              v-model="state.custom_mbid"
-              prefix-icon="User"
-              clearable
-              placeholder="請輸入訂購人編號"></el-input>
-          </div>
+          <el-input
+            v-model="state.mbid"
+            prefix-icon="User"
+            clearable
+            placeholder="請輸入送單人編號"></el-input>
         </div>
 
         <!-- 訂購商品 -->
@@ -191,9 +178,21 @@
 
       <!-- 完成資料 -->
       <div v-if="state.activeStep == 4">
-        <div class="flex flex-col gap-y-2 my-3 w-full mx-auto justify-center max-w-[200px] text-center tracking-wider text-gray-500">
+        <div
+          class="
+            flex flex-col
+            gap-y-2
+            my-3
+            w-full
+            mx-auto
+            justify-center
+            max-w-[200px]
+            text-center
+            tracking-wider
+            text-gray-500
+          ">
           <iframe src="https://embed.lottiefiles.com/animation/96237"></iframe>
-          <h5 class="leading-6 text-lg  font-extrabold">完成資料</h5>
+          <h5 class="leading-6 text-lg font-extrabold">完成資料</h5>
           <small class="leading-5 text-sm text-thin">已新增預收單</small>
           <el-button type="primary" @click="actions.handlePushDetail"
             >查看詳情</el-button
@@ -258,7 +257,7 @@ import { ReadJson } from '@/api/read_json'
 import { PreOrderApiHandler } from '@/api/pre_order'
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
-import { pickBy,isEmpty } from 'lodash-es'
+import { pickBy, isEmpty } from 'lodash-es'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -267,8 +266,7 @@ const store = useStore()
 const paymentCard = ref(null)
 const state = reactive({
   dialogVisible: false,
-  history_mbid: store.state.changeRoleInfo.changeRoleInfo.mbid,
-  custom_mbid: null,
+  mbid: null,
   selectedType: 'history',
   activeStep: 0,
   productOptions: [],
@@ -349,12 +347,11 @@ const actions = {
    * @description  新增
    */
   handleCreate: async () => {
-    const mbid =
-      state.selectedType == 'history' ? state.history_mbid : state.custom_mbid
+    const mbid = state.mbid
     if (!mbid) {
       proxy.$message({
         type: 'error',
-        message: '請輸入訂購人編號！',
+        message: '請輸入送單人編號！',
       })
       return
     }
@@ -422,7 +419,7 @@ const actions = {
     const formatData = pickBy(paymentCard.value.model)
     console.log(formatData)
 
-    if(isEmpty(formatData)) {
+    if (isEmpty(formatData)) {
       state.activeStep += 1
       return
     }
