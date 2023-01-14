@@ -21,5 +21,5 @@ const props = defineProps({
     default: 31,
   }
 })
-const emit = defineEmits(['on-change'])
+const emit = defineEmits(['update:selectedDate','on-change'])
 </script>
