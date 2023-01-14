@@ -66,14 +66,14 @@
             <div class="flex justify-center items-center tracking-wider text-primary-500">
               <el-icon :size="20"><InfoFilled /></el-icon>
             </div>
-            <p>請選擇訂購人或輸入訂購人編號</p>
+            <p>請選擇送單人或輸入送單人編號</p>
           </div>
           <div class="flex gap-x-6 pb-3">
             <div
               class="flex gap-x-2 items-center cursor-pointer"
               @click="state.selectedType = 'history'">
               <RadioItem :selected="state.selectedType == 'history'" />
-              選擇訂購人
+              選擇送單人
             </div>
             <div
               class="flex gap-x-2 items-center cursor-pointer"

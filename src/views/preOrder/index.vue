@@ -265,7 +265,7 @@
                   id="detailBox"
                   v-show="!!state.selectedPreOrder?.id">
                   <!-- 詳情 -->
-                  <Detail
+                  <DetailCard
                     v-if="!!state.selectedPreOrder?.id"
                     :id="state.selectedPreOrder?.id" />
                 </div>
@@ -340,7 +340,7 @@ import CreatePreOrderDialog from '@/components/Dialog/CreatePreOrderDialog.vue'
 import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
 import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
 import PayInfoCard from '@/components/Card/PayInfoCard.vue'
-import Detail from '@/views/preOrder/detail.vue'
+import DetailCard from '@/components/Card/DetailCard.vue'
 
 import { uniqWith, isEqual, pickBy, isEmpty, add } from 'lodash-es'
 import dayjs from 'dayjs'

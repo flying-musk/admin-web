@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="flex flex-col border rounded-lg overflow-hidden bg-white mb-2">
+  <div class="flex flex-col border rounded-lg overflow-hidden bg-white mb-2">
     <div class="grid grid-cols-1 sm:grid-cols-3">
       <div
         class="
@@ -75,6 +74,26 @@
               ">
               <span>送單人</span>
               <span class="text-gray-400">{{ order.mbid }}</span>
+            </p>
+          </div>
+
+          <div class="flex flex-row text-sm">
+            <span class="flex items-center mr-2">
+              <el-icon>
+                <User />
+              </el-icon>
+            </span>
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>訂購人</span>
+              <span class="text-gray-400">{{ order.name || '-' }}</span>
             </p>
           </div>
 
