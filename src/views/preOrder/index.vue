@@ -340,7 +340,7 @@ import CreatePreOrderDialog from '@/components/Dialog/CreatePreOrderDialog.vue'
 import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
 import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
 import PayInfoCard from '@/components/Card/PayInfoCard.vue'
-import Detail from '@/views/PreOrder/detail.vue'
+import Detail from '@/views/preOrder/detail.vue'
 
 import { uniqWith, isEqual, pickBy, isEmpty, add } from 'lodash-es'
 import dayjs from 'dayjs'
