@@ -1,5 +1,8 @@
 <template>
-  <div class="flex flex-col border rounded-lg overflow-hidden bg-white mb-2">
+  <div class="flex flex-col border overflow-hidden bg-white mb-2
+  "
+  @click="emit('go-detail', order?.id)"
+  >
     <div class="grid grid-cols-1 sm:grid-cols-3">
       <div
         class="
@@ -9,7 +12,7 @@
           border-b
           sm:border-b-0
           items-center
-          p-2
+          p-1
           sm:px-4 sm:h-full sm:justify-center
         ">
         <div
@@ -26,7 +29,7 @@
             sm:justify-center
           ">
           <small>單號</small>
-          <p class="sm:text-xl sm:font-bold">#{{ order.id }}</p>
+          <p class="sm:text-xl sm:font-bold text-primary-500">#{{ order.id }}</p>
         </div>
         <p
           v-show="showAction"
@@ -157,7 +160,7 @@
               ">
               <span>品項</span>
               <el-button text bg size="small">
-                <p class="pr-1" @click="actions.handleShowSubProduct">
+                <p class="pr-1" @click.stop="actions.handleShowSubProduct">
                   查看品項
                 </p>
                 <el-icon>
@@ -167,11 +170,11 @@
             </p>
           </div>
           <div class="border" v-show="state.show">
-            <div class="flex items-center divide-x-2 py-1 shadow bg-white">
+            <div class="flex items-center justify-between py-1 shadow text-xs bg-gray-100 ">
               <small class="border-l-2 border-primary-500 px-2"
                 >品項共 {{ state?.selectedSubList.length }} 筆</small
               >
-              <div class="flex justify-end gap-x-3 tracking-wider text-xs pl-2">
+              <div class="flex justify-end gap-x-3 tracking-wider  pr-2 divide-x-2 ">
                 <p>
                   總PV：<span class="text-primary-500 font-bold">{{
                     totalPV
@@ -198,7 +201,7 @@
                 text-xs
                 p-1
               "
-              @click="state.show = false">
+              @click.stop="state.show = false">
               <span>收合</span>
               <el-icon> <ArrowUp /></el-icon>
             </p>
@@ -210,7 +213,7 @@
               v-show="status == 'null'"
               size="small"
               round
-              @click="
+              @click.stop="
                 emit('change-status', { id: order?.id, type: 'completed' })
               "
               >完成</el-button
@@ -219,7 +222,7 @@
               v-show="status == 'null'"
               size="small"
               round
-              @click="
+              @click.stop="
                 emit('change-status', { id: order?.id, type: 'cancelled' })
               "
               >取消</el-button
@@ -228,14 +231,14 @@
               v-show="status == 'null'"
               size="small"
               round
-              @click="emit('on-edit', { visible: true, id: order?.id })"
+              @click.stop="emit('on-edit', { visible: true, id: order?.id })"
               >修改訂單</el-button
             >
             <el-button
               v-show="status != 'null'"
               size="small"
               round
-              @click="
+              @click.stop="
                 emit('change-status', {
                   id: order?.id,
                   type: status,
@@ -244,9 +247,9 @@
               "
               >恢復訂單</el-button
             >
-            <el-button size="small" round @click="emit('go-detail', order?.id)"
+            <!-- <el-button size="small" round @click="emit('go-detail', order?.id)"
               >查看詳情</el-button
-            >
+            > -->
           </div>
           <div class="flex justify-between p-2 border-t" v-show="!showAction">
             <el-tag

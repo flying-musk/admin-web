@@ -1,0 +1,12 @@
+# mbtax_verify yrmo 稅務表格（依月分）
+@hostname = https://mlg3.wulidev.com
+@role = sys
+@action = mbtax_verify
+POST {{hostname}}/api/{{role}}/{{action}}.php
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3JpZCI6ImNrc3VubnkiLCJ0YWJsZSI6InN5c3VzZXIiLCJleHAiOjE2NjkwODkwNDd9.aMVXl4USIEYWLbrUOKPe57OgCDPKgs4RW5WbjI-IlKQ
+
+{
+    "action":"list_all",
+    "yrmo":"2023-02"
+}

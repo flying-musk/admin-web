@@ -1,6 +1,6 @@
 <template>
   <div id="pre-order" class="h-full">
-    <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
+    <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md" v-if="false">
       <!-- header -->
       <header class="flex items-center justify-between">
         <TitleWithCount title="預收訂單" :total="state.pagination.total">
@@ -58,17 +58,17 @@
             @go-detail="actions.handlePushDetail"
             @on-edit="actions.handlePreOrderManage"
             class="lg:hidden" />
-          <div
+
+          <ScrollToTop
+            @click.prevent="actions.handleScrollToTop"
+            class="lg:hidden" />
+            <div
             v-if="state?.tableData.length == 0 && !state.loading"
             class="flex justify-center items-center">
             <el-empty></el-empty>
           </div>
-          <ScrollToTop
-            @click.prevent="actions.handleScrollToTop"
-            class="lg:hidden" />
-
           <!-- list section [PC] -->
-          <div class="hidden lg:block">
+          <div v-else class="hidden lg:block">
             <BasicTable
               v-show="state.listType == 'table'"
               :table-data="formatPaginationTableData"
@@ -78,15 +78,10 @@
               :take="state.pagination.take"
               v-model:page="state.pagination.page">
               <template #id="{ row }">
-                <p class="tracking-wider">#{{ row.id }}</p>
+                <router-link class="tracking-wider" :to="`preOrder/${row.id}`">#{{ row.id }}</router-link>
               </template>
               <template #name="{ row }">
                 <p class="tracking-wider">{{ row.name }} {{ row.phone }}</p>
-              </template>
-              <template #rcvname="{ row }">
-                <p class="tracking-wider">
-                  {{ row.rcvname }} {{ row.rcvphone }}
-                </p>
               </template>
               <template #date_completed="{ row }">
                 <p
@@ -204,10 +199,13 @@
 
             <!-- grid table -->
             <div
-              class="grid grid-cols-3 border-2"
+              class="flex border-2"
               v-show="state.listType == 'grid'">
-              <div class="border-r-2 p-1 relative">
-                <div class="h-[60vh] overflow-y-auto" v-loading="state.loading" id="listContainer">
+              <div class="border-r-2 p-1 relative min-w-[400px] flex-grow-0">
+                <div
+                  class="h-[60vh] overflow-y-auto"
+                  v-loading="state.loading"
+                  id="listContainer">
                   <PreOrderCard
                     id="listBox"
                     :show-action="false"
@@ -226,8 +224,8 @@
                       bg-primary-500 bg-opacity-70
                       z-[8]
                       rounded-full
-                      w-[24px]
-                      h-[24px]
+                      w-[32px]
+                      h-[32px]
                       sticky
                       bottom-[3%]
                       left-[3%]
@@ -247,7 +245,7 @@
                   </button>
                 </div>
               </div>
-              <div class="col-span-2 border">
+              <div class="flex-grow border">
                 <div
                   class="
                     flex
@@ -349,7 +347,7 @@ const router = useRouter()
 const refTable = ref(null)
 const state = reactive({
   selectedPreOrder: {},
-  listType: 'grid',
+  listType: 'table',
   loading: false,
   showSetting: true,
   showSettingMobile: false,
@@ -406,7 +404,6 @@ const state = reactive({
     { label: '單號', prop: 'id', formatter: true, width: '60' },
     { label: '送單人', prop: 'mbid', width: '120' },
     { label: '訂購人', prop: 'name', formatter: true },
-    { label: '收貨人', prop: 'rcvname', formatter: true },
     { label: '入單日期', prop: 'dateadd', width: '120' },
     { label: '收款日期', prop: 'payrcvday', width: '120' },
     {

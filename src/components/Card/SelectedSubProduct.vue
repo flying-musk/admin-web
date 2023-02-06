@@ -3,8 +3,8 @@
     class="lg:border bg-white rounded shadow"
     v-for="product in selected"
     :key="product.id">
-    <div class="grid grid-cols-1" >
-      <div class="flex gap-y-2 border-b items-center pr-2 py-1">
+    <div class="grid grid-cols-1">
+      <div class="flex gap-y-2 border-y shadow items-center pr-2 py-1">
         <div
           class="
             tracking-widest
@@ -16,7 +16,7 @@
             w-full
           ">
           <small
-            class="bg-primary-500 text-white rounded-r-full py-[0.5px] px-2"
+            class="text-primary-500 bg-white rounded-r py-[0.5px] px-2"
             >{{ type2name[product?.type] }}</small
           >
         </div>
@@ -78,7 +78,79 @@
               >
             </p>
           </div>
-
+          <div class="flex flex-row text-sm">
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>儀器機碼</span>
+              <span class="text-gray-400"> {{ product?.rcvemail }}</span>
+            </p>
+          </div>
+          <div class="flex flex-row text-sm">
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>收貨人姓名</span>
+              <span class="text-gray-400"> {{ product?.rcvname }}</span>
+            </p>
+          </div>
+          <div class="flex flex-row text-sm">
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>收貨人手機</span>
+              <span class="text-gray-400"> {{ product?.rcvphone }}</span>
+            </p>
+          </div>
+          <div class="flex flex-row text-sm">
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>收貨人信箱</span>
+              <span class="text-gray-400"> {{ product?.rcvemail }}</span>
+            </p>
+          </div>
+          <div class="flex flex-row text-sm">
+            <p
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+              ">
+              <span>收貨人地址</span>
+              <span class="text-gray-400">
+                {{ product?.shipadd1 }}<br />
+                {{ product?.shipadd2 }}
+              </span>
+            </p>
+          </div>
           <div class="flex flex-row text-sm">
             <p
               class="
