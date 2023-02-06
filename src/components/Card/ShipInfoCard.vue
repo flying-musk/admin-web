@@ -1,41 +1,32 @@
 <template>
   <div class="bg-white rounded space-y-2 py-2">
-    <SubTitle title="收貨人資料" />
+    <SubTitle title="物流資料" />
     <div class="text-xs text-gray-500 flex flex-col md:flex-row">
       <CardTwoCol
         :item="{
-          label: '姓名',
-          value: name,
+          label: '出貨日期',
+          value: info.shipdate,
         }">
         <template #icon>
-          <el-icon> <User /></el-icon>
+          <el-icon> <Calendar /></el-icon>
         </template>
       </CardTwoCol>
       <CardTwoCol
         :item="{
-          label: '手機',
-          value: info.phone,
+          label: '出貨方式',
+          value: info.express_co,
         }">
         <template #icon>
-          <el-icon> <Phone /></el-icon>
+          <el-icon> <Van /></el-icon>
         </template>
       </CardTwoCol>
 
       <CardTwoCol
         :item="{
-          label: 'E-mail',
-          value: info.email,
+          label: '快遞單號',
+          value: info.trackno,
         }">
         <template #icon> <Message /></template>
-      </CardTwoCol>
-      <CardTwoCol
-        :item="{
-          label: '地址',
-          value: shipadd,
-        }">
-        <template #icon>
-          <el-icon> <Location /></el-icon>
-        </template>
       </CardTwoCol>
     </div>
   </div>
@@ -46,6 +37,7 @@ import CardTwoCol from '@/components/Card/CardTwoCol.vue'
 
 import { computed } from 'vue'
 import { useVariables } from '@/hooks/useVariables'
+import { Calendar } from '@element-plus/icons-vue'
 const { variables } = useVariables()
 
 const props = defineProps({

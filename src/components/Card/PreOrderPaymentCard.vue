@@ -1,5 +1,80 @@
 <template>
-  <div>
+      <div class="col-span-5 sm:col-span-3 border">
+        <p class="bg-gray-50 p-1 shadow racking-wider">收款資料</p>
+        <div class="flex flex-col col-span-3">
+          <div class="flex flex-col space-y-2 p-2 text-gray-600">
+            <div
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+                gap-x-3
+              ">
+              <p class="min-w-fit">收款日期</p>
+              <el-date-picker
+                v-model="model.payrcvday"
+                type="date"
+                :editable="false"
+                clearable
+                placeholder="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                style="width: 100%" />
+            </div>
+
+            <div
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+                gap-x-3
+              ">
+              <p class="min-w-fit">收款狀況</p>
+              <el-select
+                v-model="model.paystatus"
+                filterable
+                clearable
+                default-first-option
+                :reserve-keyword="false"
+                style="width: 100%"
+                placeholder="請選擇收款狀況">
+                <el-option
+                  v-for="payItem in state.payOptions"
+                  :key="payItem.value"
+                  :label="payItem.label"
+                  :value="payItem.value" />
+              </el-select>
+            </div>
+
+            <div
+              class="
+                flex
+                items-center
+                justify-between
+                text-xs
+                flex-1
+                text-gray-500
+                gap-x-3
+              ">
+              <p class="min-w-fit">訂單備註</p>
+              <el-input
+                class="text"
+                type="textarea"
+                v-model="model.remark"
+                clearable
+                :autosize="{ minRows: 2, maxRows: 5 }"
+                placeholder="請輸入備註"
+                resize="none" />
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- <div>
     <div class="flex justify-end gap-x-3 tracking-wider pb-2 pr-1">
       <p>
         總PV：<span class="text-primary-500 font-bold text-lg">{{
@@ -246,7 +321,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script setup>

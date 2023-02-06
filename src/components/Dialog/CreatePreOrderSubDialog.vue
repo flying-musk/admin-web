@@ -1,7 +1,26 @@
 <template>
   <div>
-    <div
-      v-show="selected?.length < 6"
+    <button
+        class="
+          flex
+          items-center
+          justify-center
+          text-gray-700
+          p-1
+          border
+          rounded-full
+          shadow
+          bg-gray-50
+          hover:bg-opacity-50
+          hover:text-primary-50
+          transition
+          duration-100
+        "
+      @click="actions.handleDialog(true)"
+        >
+        <el-icon><Edit /></el-icon>
+      </button>
+    <!-- <div
       class="
         border
         flex
@@ -12,12 +31,13 @@
         border-dashed
         cursor-pointer
         bg-gray-50
-        min-h-[100px]
+        min-h-[120px]
+        w-[120px]
         h-full
       "
       @click="actions.handleDialog(true)">
       <el-icon :size="32"><Plus /></el-icon>
-    </div>
+    </div> -->
     <el-dialog
       v-model="state.dialogVisible"
       align-center

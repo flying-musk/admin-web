@@ -16,7 +16,7 @@
       <el-table-column
         type="index"
         align="center"
-        width="35"
+        width="55"
         fixed="left"
         :index="handleIndex" />
       <slot name="custom"></slot>

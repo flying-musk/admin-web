@@ -7,7 +7,9 @@
     </div>
     <div class="rounded bg-white" v-show="!state.loading">
       <div class="space-y-1 detail-page">
+        <!-- <StatusBarCard /> -->
         <div
+        v-if="false"
           class="
             px-3
             py-2
@@ -70,7 +72,7 @@
         </div>
         <el-page-header @back="actions.handleGoBack" class="p-1">
           <template #icon>
-            <el-icon :class="{ 'ml-3': !!props.id }">
+<el-icon>            <el-icon :class="{ 'ml-3': !!props.id }">
               <Back v-show="!props.id" />
               <Refresh v-show="!!props.id" />
             </el-icon>
@@ -122,8 +124,17 @@
           </div>
         </div>
         <div class="bg-gray-100 space-y-1">
-          <div class="bg-gray-200">
-            <div class="flex items-center divide-x-2 py-1 shadow bg-white">
+          <div class="bg-gray-100 border">
+            <div
+              class="
+                flex
+                items-center
+                justify-between
+                pr-2
+                py-1
+                shadow
+                bg-white
+              ">
               <SubTitle :title="`商品（${state.selectedSubList?.length}筆）`" />
               <div class="flex justify-end gap-x-3 tracking-wider text-xs pl-2">
                 <p>
@@ -144,15 +155,10 @@
               v-show="state.selectedSubList?.length == 0 && state.isDisabled">
             </el-empty>
             <div
-              class="
-                grid grid-cols-1
-                sm:grid-cols-2
-                md:gird-cols-3
-                xl:grid-cols-5
-                gap-2
-                p-2
-                lg:bg-white
-              ">
+              class="grid grid-cols-1 sm:grid-cols-2 md:gird-cols-3 gap-y-1"
+              :class="{
+                'lg:gird-cols-4 xl:grid-cols-5 lg:bg-white': !props.id,
+              }">
               <!-- 新增商品彈窗 -->
               <CreatePreOrderSubDialog
                 v-if="state.selectedSubList?.length < 6 && !state.isDisabled"
@@ -160,7 +166,7 @@
                 :selected="state.selectedSubList"
                 @fetch-cart="actions.handleGetSubProducts(route.params.id)" />
               <div
-                class="lg:border bg-white rounded shadow"
+                class="lg:border bg-white rounded "
                 v-for="product in state.selectedSubList"
                 :key="product.id">
                 <div class="grid grid-cols-1">
@@ -464,6 +470,7 @@ import RcvInfoCard from '@/components/Card/RcvInfoCard.vue'
 import BookingInfoCard from '@/components/Card/BookingInfoCard.vue'
 import PosInfoCard from '@/components/Card/PosInfoCard.vue'
 import PayInfoCard from '@/components/Card/PayInfoCard.vue'
+import StatusBarCard from '@/components/Card/StatusBarCard.vue'
 import CreatePreOrderSubDialog from '@/components/Dialog/CreatePreOrderSubDialog.vue'
 const props = defineProps({
   id: {

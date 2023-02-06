@@ -8,7 +8,7 @@
           value: name,
         }">
         <template #icon>
-          <User />
+          <el-icon> <User /></el-icon>
         </template>
       </CardTwoCol>
       <CardTwoCol
@@ -17,7 +17,7 @@
           value: info.phone,
         }">
         <template #icon>
-          <Phone />
+          <el-icon> <Phone /></el-icon>
         </template>
       </CardTwoCol>
 
@@ -34,7 +34,7 @@
           value: info.sex,
         }">
         <template #icon>
-          <Male />
+          <el-icon> <Male /></el-icon>
         </template>
       </CardTwoCol>
       <CardTwoCol
@@ -43,7 +43,7 @@
           value: ccodeTitle,
         }">
         <template #icon>
-          <WindPower />
+          <el-icon> <WindPower /></el-icon>
         </template>
       </CardTwoCol>
       <CardTwoCol
@@ -52,7 +52,7 @@
           value: info.birthday,
         }">
         <template #icon>
-          <Calendar />
+          <el-icon> <Calendar /></el-icon>
         </template>
       </CardTwoCol>
       <CardTwoCol
@@ -61,7 +61,7 @@
           value: add,
         }">
         <template #icon>
-          <Location />
+          <el-icon> <Location /></el-icon>
         </template>
       </CardTwoCol>
     </div>
@@ -83,9 +83,11 @@ const props = defineProps({
 })
 const name = computed(() => {
   const hasName = !!props.info.first_name || !!props.info.last_name
-  return (
-    hasName ? `${props.info.first_name} ${props.info.last_name}`: props.info?.name? props.info?.name :  '-'
-  )
+  return hasName
+    ? `${props.info.first_name} ${props.info.last_name}`
+    : props.info?.name
+    ? props.info?.name
+    : '-'
 })
 
 const ccodeTitle = computed(() => {

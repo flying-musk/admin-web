@@ -1,10 +1,13 @@
-# login
+ # @description login 登入
+ # @param {string}  cat   角色 (member / agent / sysuser)
+ # @param {string}  id    帳號
+ # @param {string}  pwd   密碼
 @hostname = https://mlg3.wulidev.com
 POST {{hostname}}/api/login.php
 Content-Type: application/json
 
 {
-    "cat": "agent",
+    "cat": "sysuser",
     "id": "cksunny",
     "pwd": "xqq8yvh"
 }

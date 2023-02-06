@@ -1,129 +1,127 @@
 <template>
-  <div class="pb-[50px]">
-    <PreOrderForm ref="refForm" v-model:editData="state.editProductModel" />
-    <footer
-      class="
-        fixed
-        bottom-0
-        left-0
-        fixed-bottom
-        w-full
-        border-t
-        bg-white
-        py-2
-        px-4
-      ">
-      <div class="flex items-center justify-end">
-        <el-button @click="router.replace({ path: '/preOrder' })" bg text
-          >下次再預訂</el-button
-        >
-        <el-button
-          type="primary"
-          v-loading="state.loading"
-          @click="actions.handleSubmit">
-          <div class="flex items-center gap-x-1">
-            <p class="tracking-widest">新增預收訂單</p>
-            <el-icon>
-              <ArrowRightBold />
-            </el-icon>
-          </div>
-        </el-button>
+  <div class="sm:bg-white shadow">
+    <header>
+      <StatusBar
+        :data="{
+          id: state.id,
+          status: '處理中',
+        }" />
+      <PageHeader :data="{ mbid: state.editProductModel.mbid }" />
+    </header>
+
+    <main class="flex flex-col md:flex-row gap-2 sm:p-2">
+      <div class="space-y-2 w-full sm:w-1/3">
+        <OrderMemberCard />
+        <PosMemberCard />
+        <PaymentCard
+            ref="paymentCard"
+            :pre-order-id="state.id"
+            :format-type="state.type2name"
+            :list-child="state.listChild"
+            @fetch-cart="actions.handleFetchCart" />
+   
+                  <!-- 附件 -->
+                  <div class="bg-white">
+              <SubTitle :title="`附件（${state.editModelFiles?.length}筆）`" />
+              <UploadFile
+                class="p-2"
+                v-model:list="state.editModelFiles"
+                title="附件"
+                :id="state.editProductModel.id"
+                :disabled="state.isDisabled" />
+            </div>   </div>
+      <div class="flex-grow">
+          <SelectedSubProductCard :id="state.id" />
       </div>
-    </footer>
+    </main>
   </div>
 </template>
 <script setup>
+import StatusBar from '@/components/Header/StatusBar.vue'
+import PageHeader from '@/components/Header/PageHeader.vue'
+import OrderMemberCard from '@/components/Card/OrderMemberCard.vue'
+import PosMemberCard from '@/components/Card/PosMemberCard.vue'
+import SelectedSubProductCard from '@/components/Card/SelectedSubProductCard.vue'
+import CardTwoCol from '@/components/Card/CardTwoCol.vue'
+import SelectedSubProduct from '@/components/Card/SelectedSubProduct.vue'
+import PaymentCard from '@/components/Card/PaymentCard.vue'
+import UploadFile from '@/components/Upload/UploadFile.vue'
+
 import { PreOrderApiHandler } from '@/api/pre_order'
-import { ref, reactive, onMounted, getCurrentInstance, computed } from 'vue'
-import PreOrderForm from '@/components/Form/PreOrderForm.vue'
-import { useRouter } from 'vue-router'
+import { reactive, onMounted, getCurrentInstance } from 'vue'
 import { isEmpty } from 'lodash-es'
+import { useRoute, useRouter } from 'vue-router'
+
 const { proxy } = getCurrentInstance()
 const router = useRouter()
-const refForm = ref(null)
+const route = useRoute()
 const state = reactive({
+  id: route.params.id,
   loading: false,
-  editProductModel: {
-    posType: 'mbid',
-  },
-  memberOptions: [],
+  editProductModel: {},
 })
-
+onMounted(() => {
+  if (!state.id) {
+    router.go(-1)
+  } else {
+    actions.handleFetchPreOrder()
+  }
+})
 const actions = {
   /**
-   * @description 新增預收訂單
-   * @param {string}  action  new
-   * @param {number}  mbid    送單人會員編號
-   * @param {number}  order_mbid  訂購人會員編號
+   * @description 取得子訂單內容
    */
-  handleSubmit: async () => {
-    const isValid = await refForm.value?.handleValidForm()
-    if (!isValid) return
-    const {
-      mbid,
-      order_mbid,
-      name,
-      first_name,
-      last_name,
-      rcvname,
-      first_rcvname,
-      last_rcvname,
-      add,
-      add1,
-      add2,
-      shipadd,
-      shipadd1,
-      shipadd2,
-      rmbid,
-      rmbid_name,
-      rmbid_phone,
-      umbid,
-      umbid_name,
-      umbid_phone,
-      smbid,
-      smbid_name,
-      smbid_phone,
-      posType,
-      ...rest
-    } = state.editProductModel
-    const format_add = [add1, add2]
-    const format_shipAdd = [shipadd1, shipadd2]
-    const format_rmbid = `${rmbid_name} ${rmbid_phone}`
-    const format_umbid = `${umbid_name} ${umbid_phone}`
-    const format_smbid = `${smbid_name} ${smbid_phone}`
-    const format_name = `${first_name} ${last_name}`
-    const format_rcvname = `${first_rcvname} ${last_rcvname}`
-    const has_name = !isEmpty(first_name) && !isEmpty(last_name)
-    const has_rcvname = !isEmpty(first_rcvname) && !isEmpty(last_rcvname)
-    const has_add = !isEmpty(add1) && !isEmpty(add2)
-    const has_shipadd = !isEmpty(shipadd1) && !isEmpty(shipadd2)
+  handleFetchPreOrder: async (showLoading = true) => {
     const params = {
-      action: 'new',
-      mbid,
-      order_mbid,
-      data: {
-        name: has_name ? format_name : null,
-        rcvname: has_rcvname ? format_rcvname : null,
-        add: has_add ? format_add : null,
-        shipadd: has_shipadd ? format_shipAdd : null,
-        rmbid: posType == 'mbid' ? rmbid : format_rmbid,
-        umbid: posType == 'mbid' ? umbid : format_umbid,
-        smbid: posType == 'mbid' ? smbid : format_smbid,
-        ...rest,
-      },
+      action: 'listbyid',
+      id: state.id,
     }
-    state.loading = true
+    state.loading = showLoading
     const { code, data, msg } = await PreOrderApiHandler(params)
-    state.loading = false
+    setTimeout(() => {
+      state.loading = false
+    }, 500)
     if (code > 0) {
-      proxy.$message({
-        type: 'success',
-        message: msg,
-      })
-      const pre_order_id = data.pre_order_id
-      setTimeout(() => {
-        router.replace({ path: `/preOrder/${pre_order_id}` })
-      }, 100)
+      const { name = '', rcvname, smbid, umbid, rmbid, ...rest } = data
+      const first_name = name?.split(' ')[0] || ''
+      const last_name = name?.split(' ')[1] || ''
+      const first_rcvname = rcvname?.split(' ')[0] || ''
+      const last_rcvname = rcvname?.split(' ')[1] || ''
+      const smbid_name = smbid?.split(' ')[0] || ''
+      const smbid_phone = smbid?.split(' ')[1] || ''
+      const umbid_name = umbid?.split(' ')[0] || ''
+      const umbid_phone = umbid?.split(' ')[1] || ''
+      const rmbid_name = rmbid?.split(' ')[0] || ''
+      const rmbid_phone = rmbid?.split(' ')[1] || ''
+      const format_rmbid = `${rmbid_name} ${rmbid_phone}`
+      const format_umbid = `${umbid_name} ${umbid_phone}`
+      const format_smbid = `${smbid_name} ${smbid_phone}`
+      const has_rmbid = !isEmpty(rmbid_name) && !isEmpty(rmbid_phone)
+      const has_umbid = !isEmpty(umbid_name) && !isEmpty(umbid_phone)
+      const has_smbid = !isEmpty(smbid_name) && !isEmpty(smbid_phone)
+      const formatPostType = !isEmpty(rmbid_phone) ? 'phone' : 'mbid'
+
+      state.editProductModel = {
+        first_name,
+        last_name,
+        first_rcvname,
+        last_rcvname,
+        smbid: has_smbid ? format_smbid : smbid,
+        smbid_name: smbid_phone ? smbid_name : null,
+        smbid_phone,
+        umbid: has_umbid ? format_umbid : umbid,
+        umbid_name: umbid_phone ? umbid_name : null,
+        umbid_phone,
+        rmbid: has_rmbid ? format_rmbid : rmbid,
+        rmbid_name: rmbid_phone ? rmbid_name : null,
+        rmbid_phone,
+        posType: formatPostType,
+        ...rest,
+      }
+      const is_cancelled = !!state.editProductModel?.date_cancelled
+      const is_completed = !!state.editProductModel?.date_completed
+      state.isDisabled = is_cancelled || is_completed
+      // actions.handleGetFiles(id)
     } else {
       proxy.$message({
         type: 'error',
