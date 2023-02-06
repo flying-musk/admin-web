@@ -84,21 +84,16 @@
         <template #member="{ row }">
           <div class="text-xs leading-5 flex items-center gap-x-1 w-full">
             <div
-              v-for="(value, key, index) in row.member"
+              v-for="(value, key) in row.member"
               :key="key"
-              class="flex">
-              <div class="flex items-center gap-x-1">
-                <span class="text-gray-400"
-                  >{{ actions.handleFormatMemberLabel(key) }}：</span
-                ><span>{{ value || '-' }}</span>
-              </div>
-              <div
-                class="text-gray-300"
-                :class="{
-                  hidden: index == Object.keys(row.member).length - 1,
-                }">
-                ｜
-              </div>
+              class="flex  items-center">
+                <div class="flex flex-col px-2">
+                  <span class="tracking-widest font-thin"
+                  >{{ actions.handleFormatMemberLabel(key) }}
+                  </span
+                >
+                <span>{{ value || '-' }}</span>
+                </div>
             </div>
           </div>
         </template>
@@ -197,9 +192,10 @@ const state = reactive({
       prop: 'member',
       sortable: true,
       formatter: true,
-      width: '800',
     },
-    { label: '文件名稱', prop: 'name', sortable: true, formatter: true },
+    { label: '文件名稱', prop: 'name', sortable: true, formatter: true,
+    width: '280',
+  },
     {
       label: '狀態',
       prop: 'status',
