@@ -1,7 +1,7 @@
 <template>
   <el-page-header @back="actions.handleGoBack" class="p-1">
     <template #icon>
-<el-icon>      <el-icon>
+<el-icon>
         <Back />
       </el-icon>
     </template>

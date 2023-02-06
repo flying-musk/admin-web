@@ -1,6 +1,6 @@
 <template>
   <div id="pre-order" class="h-full">
-    <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md" v-if="false">
+    <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
       <!-- header -->
       <header class="flex items-center justify-between">
         <TitleWithCount title="預收訂單" :total="state.pagination.total">

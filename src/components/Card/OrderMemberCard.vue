@@ -23,15 +23,7 @@
         </p>
         <div class="mt-3">
           <a
-            class="
-              border
-              rounded-full
-              py-1
-              px-3
-              text-xs
-              font-semibold
-              text-gray-100
-            ">
+            class="border rounded-full py-1 px-3 text-xs font-semibold text-gray-100">
             訂購人
           </a>
         </div>
@@ -43,7 +35,7 @@
             value: info?.phone,
           }">
           <template #icon>
-<el-icon>            <Phone />
+            <el-icon> <Phone /> </el-icon>
           </template>
         </CardTwoCol>
         <CardTwoCol
@@ -51,7 +43,9 @@
             label: 'E-mail',
             value: info?.email,
           }">
-          <template #icon> <Message /></template>
+          <template #icon>
+            <el-icon> <Message /> </el-icon
+          ></template>
         </CardTwoCol>
         <CardTwoCol
           :item="{
@@ -59,7 +53,7 @@
             value: shipadd,
           }">
           <template #icon>
-<el-icon>            <Location />
+            <el-icon> <Location /></el-icon>
           </template>
         </CardTwoCol>
       </div>
@@ -74,28 +68,28 @@
   </div>
 </template>
 <script setup>
-import SubTitle from '@/components/Text/SubTitle.vue'
-import CardTwoCol from '@/components/Card/CardTwoCol.vue'
+  import SubTitle from '@/components/Text/SubTitle.vue'
+  import CardTwoCol from '@/components/Card/CardTwoCol.vue'
 
-import { computed } from 'vue'
-import { useVariables } from '@/hooks/useVariables'
-const { variables } = useVariables()
+  import { computed } from 'vue'
+  import { useVariables } from '@/hooks/useVariables'
+  const { variables } = useVariables()
 
-const props = defineProps({
-  info: {
-    type: Object,
-    default: () => {},
-  },
-})
-const name = computed(() => {
-  const hasName = !!props.info?.first_rcvname || !!props.info?.last_rcvname
-  return hasName
-    ? `${props.info?.first_rcvname} ${props.info?.last_rcvname}`
-    : '-'
-})
+  const props = defineProps({
+    info: {
+      type: Object,
+      default: () => {},
+    },
+  })
+  const name = computed(() => {
+    const hasName = !!props.info?.first_rcvname || !!props.info?.last_rcvname
+    return hasName
+      ? `${props.info?.first_rcvname} ${props.info?.last_rcvname}`
+      : '-'
+  })
 
-const shipadd = computed(() => {
-  const hasShipAdd = !!props.info?.shipadd1 || !!props.info?.shipadd2
-  return hasShipAdd ? `${props.info?.shipadd1} ${props.info?.shipadd2}` : '-'
-})
+  const shipadd = computed(() => {
+    const hasShipAdd = !!props.info?.shipadd1 || !!props.info?.shipadd2
+    return hasShipAdd ? `${props.info?.shipadd1} ${props.info?.shipadd2}` : '-'
+  })
 </script>
