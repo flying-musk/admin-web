@@ -7,7 +7,8 @@ import './assets/style/main.scss'
 import './assets/style/element-variables.scss'
 import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
-
+import JsonCSV from 'vue-json-csv'
+app.component('downloadCsv', JsonCSV)
 // 权限控制
 import './permission'
 import router from './router'
