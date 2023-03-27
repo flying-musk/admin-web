@@ -26,11 +26,12 @@
       <el-skeleton :loading="state.loading" animated :throttle="500" class="space-y-3">
         <template #template>
           <div class="flex flex-col md:flex-row  gap-3 items-center bg-white rounded-lg shadow-md shadow-gray-400/20 p-6">
-            <el-skeleton-item variant="text" class="md:mr-3"/>
+            <el-skeleton-item variant="text" class="md:mr-3" />
             <el-skeleton-item variant="h1" style="width: 10%" />
           </div>
           <div class="hidden md:flex flex-row gap-x-3 py-3">
-            <div class="w-1/3 bg-white rounded-lg border shadow-gray-400/20 p-3" v-for="(cardItem, index) in 3" :key="index">
+            <div class="w-1/3 bg-white rounded-lg border shadow-gray-400/20 p-3" v-for="(cardItem, index) in 3"
+              :key="index">
               <div class="block">
                 <el-skeleton-item variant="text" style="width:20%" />
               </div>
@@ -54,8 +55,8 @@
             <div
               class="flex flex-col md:flex-row gap-3 items-center shadow-md  bg-white md:bg-gray-50 justify-between py-2 px-3 rounded-lg tracking-wide">
               <p class="text-primary-500 text-sm" v-text="state.count.msg"></p>
-              <download-csv :name="formatFileName" :data="state.csv" v-if="hasData" class="w-fit">
-                <el-button auto-insert-space icon="Download" type="primary">
+              <download-csv :name="formatFileName" :data="state.csv" class="w-fit">
+                <el-button auto-insert-space icon="Download" type="primary" :disabled="!hasData">
                   下載
                 </el-button>
               </download-csv>
