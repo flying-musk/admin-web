@@ -23,7 +23,7 @@ export const useScrollbar = tagsItem => {
   }
 
   const moveToTarget = currentTag => {
-    const $wrap = scrollContainer.value.wrap$
+    const $wrap = scrollContainer.value.wrapRef
     const tagList = tagsItem.value
 
     let firstTag = null
@@ -36,7 +36,7 @@ export const useScrollbar = tagsItem => {
     if (firstTag === currentTag) {
       doScroll(0)
     } else if (lastTag === currentTag) {
-      doScroll($wrap.children[0].scrollWidth - $wrap.offsetWidth)
+      doScroll($wrap?.children[0].scrollWidth - $wrap?.offsetWidth)
     } else {
       const el = currentTag.$el.nextElementSibling
 
