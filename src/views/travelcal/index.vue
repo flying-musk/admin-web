@@ -2,30 +2,66 @@
   <div id="travelcal-setting" class="h-full reactive">
     <!-- 旅游统计 -->
     <div class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
-      <header class="flex items-center justify-between">
-        <div class="flex items-center gap-x-3">
+      <header class="flex justify-center md:justify-start items-center">
+        <div class="flex flex-col md:flex-row md:items-center gap-y-3 md:gap-x-3">
           <SubTitle title="旅游统计" class="min-w-fit" />
-          <el-date-picker v-model="state.selectedDate" type="daterange" range-separator="-" start-placeholder="起始日期"
-            format="YYYY-MM-DD" value-format="YYYY-MM-DD" end-placeholder="結束日期" :disabled-date="disabledDate"
-            size="small" @change="actions.handleFetchAll" />
+          <el-radio-group v-model="state.selectedDateType" @change="actions.handleChangeSelectedDate">
+            <el-radio-button label="week">近七天</el-radio-button>
+            <el-radio-button label="month">上個月</el-radio-button>
+            <el-radio-button label="season">前三個月</el-radio-button>
+            <el-radio-button label="custom">自訂區間</el-radio-button>
+          </el-radio-group>
+          <Transition name="bounce" :duration="550">
+            <div v-show="state.selectedDateType === 'custom'">
+              <el-date-picker v-model="state.selectedDate" type="daterange" range-separator="-" start-placeholder="起始日期"
+              :editable="false"
+                format="YYYY-MM-DD" value-format="YYYY-MM-DD" end-placeholder="結束日期" :disabled-date="disabledDate"
+                @change="actions.handleFetchAll" />
+            </div>
+          </Transition>
+
+          <!-- <el-button type="primary" size="large" plain @click="actions.handleFetchAll"
+            :icon="state.loading ? 'Refresh' : 'Search'" auto-insert-space :disabled="state.loading">查詢</el-button> -->
         </div>
       </header>
-      <div class=" space-y-3 md:space-y-6">
-        <div class="flex gap-3 items-center border bg-primary-700  justify-between py-2 px-3 rounded-lg tracking-wide">
-          <p class="text-gray-50 text-sm" v-text="state.count.msg"></p>
-          <download-csv :name="formatFileName" :data="state.csv" v-if="hasData" class="w-fit">
-            <el-button auto-insert-space>
-              下載
-            </el-button>
-          </download-csv>
-        </div>
-        <div class="grid md:grid-cols-3 gap-3">
-          <div class=" col-span-1" v-for="(value, name) in  state.count.data" :key="name">
-            <CardDetailMainSection :title="name" :value="value" />
+      <el-skeleton :loading="state.loading" animated :throttle="500" class="space-y-3">
+        <template #template>
+          <div class="flex flex-col space-y-3 items-center bg-white rounded-lg shadow-md shadow-gray-400/20 p-6">
+            <el-skeleton-item variant="text" style="margin-right:8px" />
+            <el-skeleton-item variant="h1" style="width: 30%" />
           </div>
-        </div>
+          <div class="flex flex-col md:flex-row justify-center text-center bg-white rounded-lg  shadow-gray-400/20 p-3"
+            v-for="(cardItem, index) in 3" :key="index">
+            <div class="block">
+              <el-skeleton-item variant="text" style="width:20%" />
+            </div>
+            <div class="block pt-3">
+              <el-skeleton-item variant="h1" style="width: 40%" />
+            </div>
+          </div>
+        </template>
+        <template #default>
+          <div class="space-y-3 md:space-y-6">
+            <div
+              class="flex flex-col md:flex-row gap-3 items-center shadow-md  bg-white md:bg-gray-50 justify-between py-2 px-3 rounded-lg tracking-wide">
+              <p class="text-primary-500 text-sm" v-text="state.count.msg"></p>
+              <download-csv :name="formatFileName" :data="state.csv" v-if="hasData" class="w-fit">
+                <el-button auto-insert-space icon="Download" type="primary">
+                  下載
+                </el-button>
+              </download-csv>
+            </div>
+            <div class="grid md:grid-cols-3 gap-3">
+              <div class=" col-span-1" v-for="(value, name) in  state.count.data" :key="name">
+                <CardDetailMainSection :title="name" :value="value" />
+              </div>
+            </div>
 
-      </div>
+          </div>
+        </template>
+      </el-skeleton>
+
+
     </div>
   </div>
 </template>
@@ -38,6 +74,7 @@ import dayjs from 'dayjs'
 const { proxy } = getCurrentInstance()
 const state = reactive({
   loading: false,
+  selectedDateType: 'custom',
   selectedDate: [dayjs()
     .subtract(1, 'year')
     .format('YYYY-MM-DD'),
@@ -73,6 +110,25 @@ const disabledDate = (time) => {
 }
 
 const actions = {
+  handleChangeSelectedDate: (value) => {
+    const dateMap = {
+      week: dayjs()
+        .subtract(7, 'day')
+        .format('YYYY-MM-DD'),
+      month: dayjs()
+        .subtract(1, 'month')
+        .format('YYYY-MM-DD'),
+      season: dayjs()
+        .subtract(3, 'month')
+        .format('YYYY-MM-DD'),
+      custom: dayjs()
+        .subtract(1, 'year')
+        .format('YYYY-MM-DD'),
+    }
+
+    state.selectedDate = [dateMap[value], dayjs().format('YYYY-MM-DD')]
+    actions.handleFetchAll()
+  },
   /**
    * @description TravelcalApiHandler 旅遊
    * @param {date}  date_begin   起始日期
@@ -87,7 +143,7 @@ const actions = {
     const { code, data = {}, msg } = await TravelcalApiHandler(params)
     setTimeout(() => {
       state.loading = false
-    }, 500)
+    }, 1500)
     if (code === 1) {
       state.count =
       {
@@ -104,11 +160,11 @@ const actions = {
   },
 
   /**
- * @description TravelcalApiHandler 旅遊
- * @param {string}  action   getclsinfo
- * @param {date}  date_begin   起始日期
- * @param {date}  date_end    結束日期
- */
+   * @description TravelcalApiHandler 旅遊
+   * @param {string}  action   getclsinfo
+   * @param {date}  date_begin   起始日期
+   * @param {date}  date_end    結束日期
+   */
   handleDownload: async () => {
     const noDate = !date_begin.value || !date_end.value
     const noData = !hasData.value
@@ -122,7 +178,7 @@ const actions = {
     const res = await TravelcalApiHandler(params)
     setTimeout(() => {
       state.loading = false
-    }, 500)
+    }, 1500)
     console.log(typeof res)
     const data = res.split(/[\n]/)
     const header = data[1].split(',')
@@ -139,3 +195,27 @@ const actions = {
   }
 }
 </script>
+
+<style scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.25);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
