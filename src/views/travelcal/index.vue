@@ -189,7 +189,6 @@ const actions = {
     setTimeout(() => {
       state.loading = false
     }, 1500)
-    console.log(typeof res)
     const data = res.split(/[\n]/)
     const header = data[1].split(',')
     const content = data.splice(2, data.length)
@@ -200,7 +199,6 @@ const actions = {
         return obj;
       }, {})
     });
-    console.log(data)
     state.csv = formatData
   }
 }
