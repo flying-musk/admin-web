@@ -14,9 +14,8 @@
           <Transition name="bounce" :duration="550">
             <div v-show="state.selectedDateType === 'custom'">
               <el-date-picker v-model="state.selectedDate" type="daterange" range-separator="-" start-placeholder="起始日期"
-              :editable="false"
-                format="YYYY-MM-DD" value-format="YYYY-MM-DD" end-placeholder="結束日期" :disabled-date="disabledDate"
-                @change="actions.handleFetchAll" />
+                :editable="false" format="YYYY-MM-DD" value-format="YYYY-MM-DD" end-placeholder="結束日期"
+                :disabled-date="disabledDate" @change="actions.handleFetchAll" />
             </div>
           </Transition>
 
@@ -26,11 +25,21 @@
       </header>
       <el-skeleton :loading="state.loading" animated :throttle="500" class="space-y-3">
         <template #template>
-          <div class="flex flex-col space-y-3 items-center bg-white rounded-lg shadow-md shadow-gray-400/20 p-6">
-            <el-skeleton-item variant="text" style="margin-right:8px" />
-            <el-skeleton-item variant="h1" style="width: 30%" />
+          <div class="flex flex-col md:flex-row  gap-3 items-center bg-white rounded-lg shadow-md shadow-gray-400/20 p-6">
+            <el-skeleton-item variant="text" class="md:mr-3"/>
+            <el-skeleton-item variant="h1" style="width: 10%" />
           </div>
-          <div class="flex flex-col md:flex-row justify-center text-center bg-white rounded-lg  shadow-gray-400/20 p-3"
+          <div class="hidden md:flex flex-row gap-x-3 py-3">
+            <div class="w-1/3 bg-white rounded-lg border shadow-gray-400/20 p-3" v-for="(cardItem, index) in 3" :key="index">
+              <div class="block">
+                <el-skeleton-item variant="text" style="width:20%" />
+              </div>
+              <div class="block pt-3">
+                <el-skeleton-item variant="h1" style="width: 40%" />
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col md:hidden justify-center text-center bg-white rounded-lg  shadow-gray-400/20 p-3"
             v-for="(cardItem, index) in 3" :key="index">
             <div class="block">
               <el-skeleton-item variant="text" style="width:20%" />
