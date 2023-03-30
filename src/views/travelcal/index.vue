@@ -23,7 +23,7 @@
             :icon="state.loading ? 'Refresh' : 'Search'" auto-insert-space :disabled="state.loading">查詢</el-button> -->
         </div>
       </header>
-      <el-skeleton :loading="state.loading" animated :throttle="500" class="space-y-3">
+      <el-skeleton :loading="state.loading" animated class="space-y-3">
         <template #template>
           <div class="flex flex-col md:flex-row  gap-3 items-center bg-white rounded-lg shadow-md shadow-gray-400/20 p-6">
             <el-skeleton-item variant="text" class="md:mr-3" />
@@ -84,7 +84,7 @@ import dayjs from 'dayjs'
 import { pickBy } from 'lodash-es'
 const { proxy } = getCurrentInstance()
 const state = reactive({
-  loading: false,
+  loading: true,
   selectedDateType: 'custom',
   selectedDate: [dayjs()
     .subtract(1, 'year')
@@ -180,16 +180,12 @@ const actions = {
     const noDate = !date_begin.value || !date_end.value
     const noData = !hasData.value
     if (noDate || noData) return
-    state.loading = true
     const params = {
       action: 'getclsinfo',
       date_begin: date_begin.value,
       date_end: date_end.value,
     }
     const res = await TravelcalApiHandler(params)
-    setTimeout(() => {
-      state.loading = false
-    }, 1500)
     const data = res.split(/[\n]/)
     const header = data[1].split(',')
     const content = data.splice(2, data.length)
