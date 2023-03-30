@@ -1,6 +1,5 @@
 <template>
   <div id="travelcal-setting" class="h-full reactive">
-    <pre>{{ state.csv }}</pre>
     <!-- 旅游统计 -->
     <div class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
       <header class="flex justify-center md:justify-start items-center">
