@@ -81,6 +81,7 @@ import { TravelcalApiHandler } from '@/api/travelcal'
 import SubTitle from '@/components/Text/SubTitle.vue'
 import CardDetailMainSection from '@/components/Card/CardDetailMainSection.vue'
 import dayjs from 'dayjs'
+import { pickBy } from 'lodash-es'
 const { proxy } = getCurrentInstance()
 const state = reactive({
   loading: false,
@@ -197,10 +198,11 @@ const actions = {
          row = row.replace(/\"/g, "")
         const formatContent = row.split(',')
         obj[key] = formatContent[index];
-        return obj;
+        return pickBy(obj);
       }, {})
     });
     state.csv = formatData
+    console.log(state.csv)
   }
 }
 </script>
