@@ -41,6 +41,7 @@ export default ({ mode }) => {
     base: './',
     build: {
       outDir: `dist${process.env.VITE_OUTPUT_URL}`,
+      assetsDir: `dist/${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
       chunkSizeWarningLimit: 50000,
       terserOptions: {
