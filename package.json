@@ -4,11 +4,14 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "dev:agent": "vite --mode agent",
+    "prod": "vite --mode production",
+    "dev:agent": "vite --mode testAgent",
+    "prod:agent": "vite --mode agent",
     "report": "vite build --mode development",
     "preview": "vite preview",
     "build:agent": "vite build --mode testAgent",
     "build:admin": "vite build --mode development",
+    "build:dev": "concurrently \"npm run build:agent\" \"npm run build:admin\"",
     "build:prod": "concurrently \"npm run build:prod:agent\" \"npm run build:prod:admin\"",
     "build:prod:agent": "vite build --mode agent",
     "build:prod:admin": "vite build"
