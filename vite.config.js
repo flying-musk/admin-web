@@ -38,6 +38,7 @@ export default ({ mode }) => {
         rewrite: path => path.replace(/^\/api/, ''),
       },
     },
+    base: './',
     build: {
       outDir: `dist${process.env.VITE_OUTPUT_URL}`,
       minify: 'terser',
