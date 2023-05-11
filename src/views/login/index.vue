@@ -64,7 +64,7 @@ export default defineComponent({
       siteKey: '6LfjGXoUAAAAAJFgeFh_a0qUDVFGXT30YLwdarMM',
       model: {
         id: 'cksunny',
-        pwd: 'qfnacrtq',
+        pwd: 'xs38f5bk',
       },
       rules: {
         id: [{ required: true, message: '請輸入帳號', trigger: 'blur' }],
