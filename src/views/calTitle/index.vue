@@ -1,89 +1,50 @@
 <template>
   <div id="special-setting" class="specialSetting h-full reactive">
     <el-row :gutter="8" class="h-full">
-      <el-col
-        :span="24"
-        :sm="16"
-        :lg="18"
-        class="table-animation">
+      <el-col :span="24" :sm="16" :lg="18" class="table-animation">
         <!-- 晉升計算清單 -->
-        <div
-          class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
+        <div class="flex flex-col gap-y-3 md:bg-white md:h-full md:p-3 rounded-md">
           <header class="flex items-center justify-between">
             <div class="flex items-center gap-x-3 month-container">
               <SubTitle title="晉升計算清單" class="min-w-fit" />
-              <el-radio-group
-                class="month-group"
-                v-model="state.selectedDate"
-                @change="actions.handleChangeDate">
-                <el-radio-button
-                  v-for="(date, i) in state.dateOptions"
-                  :key="i"
-                  :label="date">
-                  {{ formatMonth(date) }}
-                  <span
-                    class="font-normal"
-                    :class="
-                      state.selectedDate === date
-                        ? 'text-gray-100'
-                        : 'text-gray-400 hover:text-primary-500'
-                    "
-                    >{{ date }}（{{ state.list[date]?.length || 0 }}）</span
-                  >
+              <el-radio-group class="month-group" v-model="state.selectedDate" @change="actions.handleChangeDate">
+                <el-radio-button v-for="(date, i) in state.dateOptions" :key="i" :label="date">
+                  {{ formatMonth(date) }}月
+                  <span class="font-normal" :class="state.selectedDate === date
+                      ? 'text-gray-100'
+                      : 'text-gray-400 hover:text-primary-500'
+                    ">{{ date }}（{{ state.list[date]?.length || 0 }}）</span>
                 </el-radio-button>
               </el-radio-group>
             </div>
 
             <div class="hidden md:block">
-              <DeleteButton
-                v-show="
-                  !isEmpty(state.dateOptions) &&
-                  state.selectedDate === state.dateOptions[0]
-                "
-                action="刪除計算"
-                :msg="`確定要刪除 ${state.dateOptions[0]} 晉升計算請單嗎？`"
-                @on-submit="actions.handleDelete" />
+              <DeleteButton v-show="!isEmpty(state.dateOptions) &&
+                state.selectedDate === state.dateOptions[0]
+                " action="刪除計算" :msg="`確定要刪除 ${state.dateOptions[0]} 晉升計算請單嗎？`" @on-submit="actions.handleDelete" />
             </div>
           </header>
           {{ formatData?.pvjson }}
           <!-- 晉升計算清單 -->
           <el-table :data="formatData" size="small" v-loading="state.loading">
-            <el-table-column
-              type="index"
-              align="center"
-              width="35"
-              fixed="left" />
+            <el-table-column type="index" align="center" width="35" fixed="left" />
             <el-table-column prop="mbid" label="編號" width="60" />
             <el-table-column prop="name" label="姓名" />
             <el-table-column prop="phone" label="電話" width="100" />
             <el-table-column label="階級紀錄">
               <el-table-column prop="title" label="階級" />
               <el-table-column prop="class" label="等級" width="60" />
-              <el-table-column
-                prop="star"
-                label="星級"
-                width="45"
-                align="right" />
+              <el-table-column prop="star" label="星級" width="45" align="right" />
             </el-table-column>
             <el-table-column label="PV 紀錄">
-              <el-table-column
-                align="right"
-                width="90"
-                v-for="item in formatData[0].pvjson"
-                :key="item.time"
-                :prop="item.time"
-                :label="item.time" />
+              <el-table-column align="right" width="90" v-for="item in formatData[0].pvjson" :key="item.time"
+                :prop="item.time" :label="item.time" />
             </el-table-column>
           </el-table>
           <!-- table  -->
-          <BasicTable
-            :columns="state.columns"
-            :table-data="formatData"
-            :loading="state.loading"
-            v-if="false">
+          <BasicTable :columns="state.columns" :table-data="formatData" :loading="state.loading" v-if="false">
             <template #class="{ row }">
-              <p
-                class="
+              <p class="
                   mx-3
                   bg-opacity-20
                   rounded
@@ -95,10 +56,7 @@
             </template>
             <template #pvjson="{ row }">
               <el-table-column label="Address Info">
-                <el-table-column
-                  prop="pv_json1"
-                  :label="row.pv_json1"
-                  width="120" />
+                <el-table-column prop="pv_json1" :label="row.pv_json1" width="120" />
                 <el-table-column prop="city" label="City" width="120" />
                 <el-table-column prop="address" label="Address" />
                 <el-table-column prop="zip" label="Zip" width="120" />
@@ -116,8 +74,7 @@
               </div>
             </template>
             <template #title="{ row }">
-              <p
-                class="
+              <p class="
                   mx-3
                   bg-opacity-20
                   rounded
@@ -128,12 +85,9 @@
               </p>
             </template>
             <template #status="{ row }">
-              <div
-                class="flex justify-center items-baseline gap-x-1"
-                v-show="row.alert">
+              <div class="flex justify-center items-baseline gap-x-1" v-show="row.alert">
                 <span class="flex items-center h-[10px] w-[10px]">
-                  <span
-                    class="
+                  <span class="
                       animate-ping
                       absolute
                       inline-flex
@@ -143,8 +97,7 @@
                       bg-red-300
                       opacity-75
                     "></span>
-                  <span
-                    class="
+                  <span class="
                       relative
                       inline-flex
                       rounded-full
@@ -158,16 +111,13 @@
           </BasicTable>
         </div>
       </el-col>
-      <el-col
-        :span="24"
-        :sm="8"
-        :md="8"
-        :lg="6">
-        {{ state.selectedDate }}
-        {{ state.dateOptions[0] }}
-        <SetCalTitleCard
-          :yrmo="state.selectedDate == state.dateOptions[0]? formatNextMonth(state.dateOptions[0] || ''): dayjs(state.selectedDate).format('YYYY-MM')"
-          @on-refresh="actions.handleGetCalTitle" />
+      <el-col :span="24" :sm="8" :md="8" :lg="6">
+        <SetCalTitleCard :can-submit="false" :yrmo="formatMonth(state.selectedDate)"
+          @on-refresh="actions.handleGetCalTitle" class="mb-3" />
+
+        <SetCalTitleCard v-show="state.selectedDate == state.dateOptions[0]"
+          :yrmo="formatNextMonth(state.dateOptions[0] || '')" @on-refresh="actions.handleGetCalTitle" />
+
       </el-col>
     </el-row>
   </div>
@@ -210,7 +160,7 @@ const formatMonth = computed(() => date => {
   const day = Number(value[2])
   const calculatorMonth = maxDay > day ? month - 1 : month
   // return `${year}-${calculatorMonth}`
-  return `${calculatorMonth}月`
+  return `${year}-${calculatorMonth}`
 })
 
 const formatNextMonth = computed(() => date => {
@@ -372,7 +322,7 @@ const actions = {
     }
     return format
   },
-  handleFormatDate: date => {},
+  handleFormatDate: date => { },
 
   handleDelete: async () => {
     state.loading = true
@@ -414,6 +364,7 @@ const actions = {
 .month-container {
   overflow: hidden;
 }
+
 .month-group.el-radio-group {
   display: flex;
   flex-direction: row;
@@ -428,10 +379,12 @@ const actions = {
 .select-date :deep(.el-input__inner) {
   color: $mainColor;
 }
+
 .table-animation {
   // transition: all 0.5s ease-in;
   // transition-delay: 0.5s;
 }
+
 // slide-fade
 .slide-fade-enter-active {
   animation: slide-in 0.5s ease-in forwards;
@@ -454,6 +407,7 @@ const actions = {
     -o-transform: translateX(30px);
     // opacity: 0;
   }
+
   to {
     transform: translateX(0);
     -webkit-transform: translateX(0);
@@ -472,6 +426,7 @@ const actions = {
     -ms-transform: translateX(0);
     -o-transform: translateX(0);
   }
+
   to {
     transform: translateX(30px);
     -webkit-transform: translateX(30px);

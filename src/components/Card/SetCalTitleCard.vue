@@ -1,6 +1,8 @@
 <template>
   <div class="bg-white tracking-wider text-gray-500 text-xs rounded-md border-2" disabled>
-    <header class="
+    <header
+    :class="{'bg-primary-500 text-white ':canSubmit}"
+    class="
         bg-gray-50
         text-gray-700
         py-2
@@ -13,9 +15,12 @@
         cursor-pointer
       " @click="state.isCollapse = !state.isCollapse">
       <h3 class="flex-1">
+        <span v-show="canSubmit">[下期]</span>
         {{ yrmo }}月份計算
         <small class="px-2 font-light">共
-          <span class="text-primary-500 font-medium text-sm">{{
+          <span
+          :class="{'text-white ':canSubmit}"
+          class="text-primary-500 font-medium text-sm">{{
             formatData.length
           }}</span>
           筆</small>
@@ -359,9 +364,11 @@
             p-3
             border-t-2
             mt-3
+          
           ">
-          <el-button @click="state.dialogVisible = false" bg text>下次再結算</el-button>
-          <el-button type="primary" @click="actions.handleSubmit(1)">
+          <el-button @click="state.dialogVisible = false" bg text>
+            {{canSubmit?'下次再結算':'關閉'}}</el-button>
+          <el-button type="primary" @click="actions.handleSubmit(1)" v-show="canSubmit">
             確認結算
           </el-button>
         </span>
@@ -383,6 +390,10 @@ const props = defineProps({
   yrmo: {
     type: String,
     default: '',
+  },
+   canSubmit: {
+    type: Boolean,
+    default: true,
   },
 })
 
