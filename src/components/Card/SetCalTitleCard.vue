@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="bg-white tracking-wider text-gray-500 text-xs rounded-md border-2"
-    disabled>
-    <header
-      class="
+  <div class="bg-white tracking-wider text-gray-500 text-xs rounded-md border-2" disabled>
+    <header class="
         bg-gray-50
         text-gray-700
         py-2
@@ -14,17 +11,14 @@
         flex
         items-center
         cursor-pointer
-      "
-      @click="state.isCollapse = !state.isCollapse">
+      " @click="state.isCollapse = !state.isCollapse">
       <h3 class="flex-1">
         {{ yrmo }}月份計算
-        <small class="px-2 font-light"
-          >共
+        <small class="px-2 font-light">共
           <span class="text-primary-500 font-medium text-sm">{{
             formatData.length
           }}</span>
-          筆</small
-        >
+          筆</small>
       </h3>
 
       <el-icon>
@@ -57,12 +51,13 @@
         <div class="flex items-center justify-between p-1">
           <div class="flex items-center gap-x-1">
             <div class="flex items-center gap-x-1 text-yellow-500">
-              <el-icon><WarningFilled /></el-icon>
+              <el-icon>
+                <WarningFilled />
+              </el-icon>
               <p class="tracking-widest text-gray-700">提醒清單</p>
             </div>
             <span class="flex items-center h-[8px] w-[8px]">
-              <span
-                class="
+              <span class="
                   animate-ping
                   absolute
                   inline-flex
@@ -72,8 +67,7 @@
                   bg-red-300
                   opacity-75
                 "></span>
-              <span
-                class="
+              <span class="
                   relative
                   inline-flex
                   rounded-full
@@ -83,36 +77,25 @@
                 "></span>
             </span>
           </div>
-          <small class="px-2 font-light"
-            >共
+          <small class="px-2 font-light">共
             <span class="text-primary-500 font-medium text-sm">{{
               alertData.length
             }}</span>
-            筆</small
-          >
+            筆</small>
         </div>
-        <CardTwoCol
-          class="py-1 m-1 text-xs shadow bg-primary-500 bg-opacity-10"
-          :item="{
-            label: '會員編號',
-            value: `${yrmo}月 PV`,
-          }" />
+        <CardTwoCol class="py-1 m-1 text-xs shadow bg-primary-500 bg-opacity-10" :item="{
+              label: '會員編號',
+              value: `${yrmo}月 PV`,
+            }" />
         <div class="max-h-[400px] overflow-y-scroll mx-1">
-          <el-tooltip
-            v-for="(alert, i) in alertData"
-            :key="i"
-            placement="left"
-            :content="`${alert.name} ${alert.phone}`">
-            <CardTwoCol
-              class="
+          <el-tooltip v-for="(alert, i) in alertData" :key="i" placement="left" :content="`${alert.name} ${alert.phone}`">
+            <CardTwoCol class="
                 text-gray-500 text-xs
                 py-1
                 m-1
                 cursor-default
                 hover:text-white hover:bg-primary-50
-              "
-              :class="{ 'bg-primary-500 bg-opacity-5': i % 2 !== 0 }"
-              :item="{
+              " :class="{ 'bg-primary-500 bg-opacity-5': i % 2 !== 0 }" :item="{
                 label: `${i + 1 >= 10 ? i + 1 : `0${i + 1}`}. ${alert.mbid}`,
                 value: `${alert.pvjson[2].pv}`,
               }" />
@@ -123,120 +106,76 @@
       <div class="m-1 border-b" v-show="false">
         <div class="flex items-center justify-between p-1">
           <div class="flex items-center gap-x-1 text-green-500">
-            <el-icon><SuccessFilled /></el-icon>
+            <el-icon>
+              <SuccessFilled />
+            </el-icon>
             <p class="tracking-widest text-gray-700">晉升清單</p>
           </div>
 
-          <small class="px-2 font-light"
-            >共
+          <small class="px-2 font-light">共
             <span class="text-primary-500 font-medium text-sm">{{
               Object.keys(state.confirm.accept).length
             }}</span>
-            筆</small
-          >
+            筆</small>
         </div>
       </div>
 
       <div class="m-1 border-b" v-show="false">
         <div class="flex items-center justify-between p-1">
           <div class="flex items-center gap-x-1 text-red-500">
-            <el-icon><CircleCloseFilled /></el-icon>
+            <el-icon>
+              <CircleCloseFilled />
+            </el-icon>
             <p class="tracking-widest text-gray-700">駁回清單</p>
           </div>
-          <small class="px-2 font-light"
-            >共
+          <small class="px-2 font-light">共
             <span class="text-primary-500 font-medium text-sm">{{
               Object.keys(state.confirm.reject).length
             }}</span>
-            筆</small
-          >
+            筆</small>
         </div>
       </div>
-      <el-form
-        class="form p-2 mt-2"
-        :model="state.model"
-        hide-required-asterisk
-        scroll-to-error
-        ref="refForm">
-        <el-button
-          :loading="state.loading"
-          size="default"
-          type="primary"
-          class="w-full"
-          plain
-          auto-insert-space
+      <el-form class="form p-2 mt-2" :model="state.model" hide-required-asterisk scroll-to-error ref="refForm">
+        <el-button :loading="state.loading" size="default" type="primary" class="w-full" plain auto-insert-space
           @click="actions.handleSubmit">
           {{ btnText }}
         </el-button>
       </el-form>
     </div>
 
-    <el-dialog
-      v-model="state.dialogVisible"
-      :fullscreen="true"
-      center
-      class="previewDialog p-3">
+    <el-dialog v-model="state.dialogVisible" :fullscreen="true" center class="previewDialog p-3">
       <el-row :gutter="12">
         <el-col :span="24" :sm="18">
           <div>
             <div class="flex items-center justify-between my-3">
               <SubTitle :title="state.confirm.title" />
-              <small class="px-2 font-light"
-                >共
+              <small class="px-2 font-light">共
                 <span class="text-primary-500 font-medium text-sm">{{
                   formatData.length
                 }}</span>
-                筆</small
-              >
+                筆</small>
             </div>
             <!-- 晉升計算清單 -->
-            <el-table
-              :data="formatData"
-              size="small"
-              max-height="630"
-              ref="refTable"
-              class="cal-table"
-              stripe
-              highlight-current-row
-              @current-change="actions.handleCurrentChange">
-              <el-table-column
-                type="index"
-                align="center"
-                width="35"
-                fixed="left" />
+            <el-table :data="formatData" size="small" max-height="630" ref="refTable" class="cal-table" stripe
+              highlight-current-row @current-change="actions.handleCurrentChange">
+              <el-table-column type="index" align="center" width="35" fixed="left" />
               <el-table-column prop="mbid" label="編號" width="80" />
               <el-table-column prop="name" label="姓名" />
               <el-table-column prop="phone" label="電話" width="125" />
               <el-table-column label="階級紀錄">
                 <!-- <el-table-column prop="title" label="階級" /> -->
                 <el-table-column prop="class" label="等級" width="80" />
-                <el-table-column
-                  prop="star"
-                  label="星級"
-                  width="45"
-                  align="right" />
+                <el-table-column prop="star" label="星級" width="45" align="right" />
               </el-table-column>
               <el-table-column label="PV 紀錄">
-                <el-table-column
-                  align="right"
-                  v-for="item in formatData[0].pvjson"
-                  :key="item.time"
-                  :prop="item.time"
-                  :label="item.time"
-                  width="100" />
+                <el-table-column align="right" v-for="item in formatData[0].pvjson" :key="item.time" :prop="item.time"
+                  :label="item.time" width="100" />
               </el-table-column>
-              <el-table-column
-                label="提醒"
-                props="status"
-                width="50"
-                fixed="right">
+              <el-table-column label="提醒" props="status" width="50" fixed="right">
                 <template #default="{ row }">
-                  <div
-                    class="flex justify-center items-baseline gap-x-1"
-                    v-show="row.alert">
+                  <div class="flex justify-center items-baseline gap-x-1" v-show="row.alert">
                     <span class="flex items-center h-[10px] w-[10px]">
-                      <span
-                        class="
+                      <span class="
                           animate-ping
                           absolute
                           inline-flex
@@ -246,8 +185,7 @@
                           bg-red-300
                           opacity-75
                         "></span>
-                      <span
-                        class="
+                      <span class="
                           relative
                           inline-flex
                           rounded-full
@@ -288,8 +226,7 @@
               <div class="flex items-center gap-x-1">
                 <SubTitle title="提醒清單" />
                 <span class="flex items-center h-[8px] w-[8px]">
-                  <span
-                    class="
+                  <span class="
                       animate-ping
                       absolute
                       inline-flex
@@ -299,8 +236,7 @@
                       bg-red-300
                       opacity-75
                     "></span>
-                  <span
-                    class="
+                  <span class="
                       relative
                       inline-flex
                       rounded-full
@@ -311,138 +247,106 @@
                 </span>
               </div>
 
-              <small class="px-2 font-light"
-                >共
+              <small class="px-2 font-light">共
                 <span class="text-primary-500 font-medium text-sm">{{
                   alertData.length
                 }}</span>
-                筆</small
-              >
+                筆</small>
             </div>
             <div v-show="!isEmpty(alertData)">
-              <CardTwoCol
-                class="py-1 m-1 text-xs shadow bg-primary-500 bg-opacity-10"
-                :item="{
-                  label: '會員編號',
-                  value: 'PV 提醒',
-                }" />
+              <CardTwoCol class="py-1 m-1 text-xs shadow bg-primary-500 bg-opacity-10" :item="{
+                label: '會員編號',
+                value: 'PV 提醒',
+              }" />
               <div class="max-h-[200px] overflow-y-scroll">
-                <CardTwoCol
-                  v-for="(alert, i) in alertData"
-                  :key="i"
-                  @click="actions.handleSetCurrent(alert.mbid)"
-                  class="
+                <CardTwoCol v-for="(alert, i) in alertData" :key="i" @click="actions.handleSetCurrent(alert.mbid)" class="
                     cursor-pointer
                     text-gray-500 text-xs
                     hover:text-white hover:bg-primary-50
                     rounded
                     py-1
                     m-1
-                  "
-                  :class="{
+                  " :class="{
                     'bg-primary-500 bg-opacity-5': i % 2 !== 0,
                     'text-white bg-primary-500 bg-opacity-90':
                       state.currentRow == alert.mbid,
-                  }"
-                  :item="{
-                    label: `${i + 1 >= 10 ? i + 1 : `0${i + 1}`}. ${
-                      alert.mbid
-                    }`,
-                    value: `${alert.pvjson[2].pv}`,
-                  }" />
+                  }" :item="{
+  label: `${i + 1 >= 10 ? i + 1 : `0${i + 1}`}. ${alert.mbid
+    }`,
+  value: `${alert.pvjson[2].pv}`,
+}" />
               </div>
             </div>
           </div>
           <div class="mb-3 border shadow gap-y-3">
             <div class="flex items-center justify-between p-2 shadow">
               <SubTitle title="晉升清單" />
-              <small class="px-2 font-light"
-                >共
+              <small class="px-2 font-light">共
                 <span class="text-primary-500 font-medium text-sm">{{
                   Object.keys(state.confirm.accept).length
                 }}</span>
-                筆</small
-              >
+                筆</small>
             </div>
-            <div
-              class="max-h-[200px] overflow-y-scroll"
-              v-show="!isEmpty(state.confirm.accept)">
-              <CardTwoCol
-                v-for="(accept, i) in Object.keys(state.confirm.accept)"
-                @click="actions.handleSetCurrent(accept)"
-                class="
+            <div class="max-h-[200px] overflow-y-scroll" v-show="!isEmpty(state.confirm.accept)">
+              <CardTwoCol v-for="(accept, i) in Object.keys(state.confirm.accept)"
+                @click="actions.handleSetCurrent(accept)" class="
                   cursor-pointer
                   text-gray-500 text-xs
                   hover:text-white hover:bg-primary-50
                   rounded
                   py-1
                   m-1
-                "
-                :class="{
+                " :class="{
                   'bg-primary-500 bg-opacity-5': i % 2 !== 0,
                   'text-white bg-primary-500 bg-opacity-90':
                     state.currentRow == accept,
-                }"
-                :key="i"
-                :item="{
-                  label: `${
-                    i + 1 >= 10 ? i + 1 : `0${i + 1}`
-                  }. ${accept} ${actions.handleFormatTitle(
-                    state.confirm.accept[accept].oldTitle
-                  )} `,
-                  value: `${actions.handleFormatTitle(
-                    state.confirm.accept[accept].newTitle
-                  )}`,
-                }" />
+                }" :key="i" :item="{
+  label: `${i + 1 >= 10 ? i + 1 : `0${i + 1}`
+    }. ${accept} ${actions.handleFormatTitle(
+      state.confirm.accept[accept].oldTitle
+    )} `,
+  value: `${actions.handleFormatTitle(
+    state.confirm.accept[accept].newTitle
+  )}`,
+}" />
             </div>
           </div>
           <div class="mb-3 border shadow">
             <div class="flex items-center justify-between p-2 shadow">
               <SubTitle title="駁回清單" />
-              <small class="px-2 font-light"
-                >共
+              <small class="px-2 font-light">共
                 <span class="text-primary-500 font-medium text-sm">{{
                   Object.keys(state.confirm.reject).length
                 }}</span>
-                筆</small
-              >
+                筆</small>
             </div>
 
-            <div
-              class="max-h-[200px] overflow-y-scroll"
-              v-show="!isEmpty(state.confirm.reject)">
-              <CardTwoCol
-                v-for="(reject, i) in Object.keys(state.confirm.reject)"
-                :key="i"
-                @click="actions.handleSetCurrent(reject)"
-                class="
+            <div class="max-h-[200px] overflow-y-scroll" v-show="!isEmpty(state.confirm.reject)">
+              <CardTwoCol v-for="(reject, i) in Object.keys(state.confirm.reject)" :key="i"
+                @click="actions.handleSetCurrent(reject)" class="
                   cursor-pointer
                   text-gray-500 text-xs
                   hover:text-white hover:bg-primary-50
                   rounded
                   py-1
                   m-1
-                "
-                :class="{
+                " :class="{
                   'bg-primary-500 bg-opacity-5': i % 2 !== 0,
                   'text-white bg-primary-500 bg-opacity-90':
                     state.currentRow == reject,
-                }"
-                :item="{
-                  label: `${
-                    i + 1 >= 10 ? i + 1 : `0${i + 1}`
-                  }. ${reject} ${actions.handleFormatTitle(
-                    state.confirm.reject[reject]?.oldTitle
-                  )}`,
-                  value: `${state.confirm.reject[reject].reason}`,
-                }" />
+                }" :item="{
+  label: `${i + 1 >= 10 ? i + 1 : `0${i + 1}`
+    }. ${reject} ${actions.handleFormatTitle(
+      state.confirm.reject[reject]?.oldTitle
+    )}`,
+  value: `${state.confirm.reject[reject].reason}`,
+}" />
             </div>
           </div>
         </el-col>
       </el-row>
       <template #footer>
-        <span
-          class="
+        <span class="
             dialog-footer
             flex
             justify-end
@@ -456,9 +360,7 @@
             border-t-2
             mt-3
           ">
-          <el-button @click="state.dialogVisible = false" bg text
-            >下次再結算</el-button
-          >
+          <el-button @click="state.dialogVisible = false" bg text>下次再結算</el-button>
           <el-button type="primary" @click="actions.handleSubmit(1)">
             確認結算
           </el-button>
@@ -617,10 +519,17 @@ const actions = {
             state.dialogVisible = dialogVisible
           }
         } else {
-          proxy.$message({
-            type: 'error',
-            message: msg,
-          })
+          state.confirm = {
+            title: '',
+            lists: [],
+            promo: {},
+            accept: {},
+            reject: [],
+          },
+            proxy.$message({
+              type: 'error',
+              message: msg,
+            })
         }
         setTimeout(() => {
           state.loading = false
@@ -656,8 +565,8 @@ const actions = {
 </script>
 <style lang="scss">
 .cal-table {
-  .el-table__body tr.current-row > td {
-    background-color: #7888F4  !important;
+  .el-table__body tr.current-row>td {
+    background-color: #7888F4 !important;
     color: white;
   }
 }
