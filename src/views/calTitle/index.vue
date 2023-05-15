@@ -3,24 +3,8 @@
     <el-row :gutter="8" class="h-full">
       <el-col
         :span="24"
-        :sm="
-          !isEmpty(state.dateOptions) &&
-          state.selectedDate === state.dateOptions[0]
-            ? 16
-            : 24
-        "
-        :md="
-          !isEmpty(state.dateOptions) &&
-          state.selectedDate === state.dateOptions[0]
-            ? 16
-            : 24
-        "
-        :lg="
-          !isEmpty(state.dateOptions) &&
-          state.selectedDate === state.dateOptions[0]
-            ? 18
-            : 24
-        "
+        :sm="16"
+        :lg="18"
         class="table-animation">
         <!-- 晉升計算清單 -->
         <div
@@ -178,13 +162,11 @@
         :span="24"
         :sm="8"
         :md="8"
-        :lg="6"
-        v-show="
-          !isEmpty(state.dateOptions) &&
-          state.selectedDate === state.dateOptions[0]
-        ">
+        :lg="6">
+        {{ state.selectedDate }}
+        {{ state.dateOptions[0] }}
         <SetCalTitleCard
-          :yrmo="formatNextMonth(state.dateOptions[0] || '')"
+          :yrmo="state.selectedDate == state.dateOptions[0]? formatNextMonth(state.dateOptions[0] || ''): dayjs(state.selectedDate).format('YYYY-MM')"
           @on-refresh="actions.handleGetCalTitle" />
       </el-col>
     </el-row>
@@ -200,6 +182,8 @@ import SubTitle from '@/components/Text/SubTitle.vue'
 import SetCalTitleCard from '@/components/Card/SetCalTitleCard.vue'
 import CardTwoCol from '@/components/Card/CardTwoCol.vue'
 import { uniqWith, isEqual, isEmpty } from 'lodash-es'
+import dayjs from 'dayjs'
+
 const { proxy } = getCurrentInstance()
 const state = reactive({
   loading: false,
