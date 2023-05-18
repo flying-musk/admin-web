@@ -1,6 +1,5 @@
 <template>
   <div class="login">
-    <div>{{ recaptchaToken }}</div>
     <el-form class="form" :model="model" :rules="rules" ref="loginForm">
       <h1 class="title">
         <!-- 管理界面 以及 代理商界面  -->
@@ -121,7 +120,7 @@
               } else {
                 proxy.$message({
                   type: 'error',
-                  message: msg,
+                  message: msg==='captcha response failed'? '請驗證您不是機器人。' : msg,
                 })
               }
               state.loading = false
