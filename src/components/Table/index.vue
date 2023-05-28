@@ -6,19 +6,15 @@
       class="default-table"
       stripe
       border
-      max-height="600"
+      max-height="420"
       ref="refTable"
       :header-cell-style="mainTableStyle.header"
       :row-style="mainTableStyle.row"
       :row-class-name="mainTableStyle.tableRowClassName"
       :cell-class-name="mainTableStyle.tableColClassName"
-      v-loading="loading">
-      <el-table-column
-        type="index"
-        align="center"
-        width="55"
-        fixed="left"
-        :index="handleIndex" />
+      v-loading="loading"
+    >
+      <el-table-column type="index" align="center" width="55" fixed="left" :index="handleIndex" />
       <slot name="custom"></slot>
       <el-table-column
         v-for="{
@@ -37,7 +33,8 @@
         :width="width"
         :fixed="fixed"
         :sort-orders="['descending', 'ascending']"
-        :sortable="sortable || false">
+        :sortable="sortable || false"
+      >
         <template v-if="formatter" #default="scope">
           <slot v-if="formatter" :name="prop" :row="scope.row"></slot>
         </template>
@@ -51,7 +48,8 @@
         @current-change="handleCurrentChange"
         layout="prev, pager, next"
         :page-size="take"
-        :total="total" />
+        :total="total"
+      />
     </section>
   </div>
 </template>
