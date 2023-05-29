@@ -1,9 +1,12 @@
 <template>
   <div id="money" class="h-full reactive">
     <!-- 金流管理 -->
-    <div class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
-      <header class="flex justify-between items-center">
-        <div class="flex flex-col md:flex-row md:items-center gap-y-3 md:gap-x-3">
+    <div
+      class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
+      <header
+        class="flex justify-between md:items-center flex-col md:flex-row gap-y-3">
+        <div
+          class="flex flex-col md:flex-row md:items-center gap-y-3 md:gap-x-3">
           <SubTitle title="金流管理" class="min-w-fit" />
         </div>
         <div class="flex flex-col md:flex-row md:justify-between gap-3">
@@ -13,14 +16,12 @@
             placeholder="會員編號"
             clearable
             filterable
-            class="w-full md:w-fit"
-          >
+            class="w-full md:w-fit">
             <el-option
               v-for="item in state.searchOptions"
               :key="item.memberId"
               :label="item.memberId"
-              :value="item.memberId"
-            >
+              :value="item.memberId">
               <div class="flex justify-between">
                 <span>{{ item.memberId }}</span>
                 <span>{{ item.name }}</span>
@@ -33,96 +34,129 @@
             :disabled="state.search === ''"
             auto-insert-space
             @click="actions.searchClick"
-          >搜尋</el-button>
+            >搜尋</el-button
+          >
           <div>
-            <el-button bg auto-insert-space class="w-full md:w-fit" @click="actions.resetClick">重置</el-button>
+            <el-button
+              bg
+              auto-insert-space
+              class="w-full md:w-fit"
+              @click="actions.resetClick"
+              >重置</el-button
+            >
           </div>
-          <small class="text-gray-500 self-end min-w-[96px] text-right">{{ state.message }}</small>
+          <small class="text-gray-500 self-end min-w-[96px] text-right">{{
+            state.message
+          }}</small>
         </div>
       </header>
       <el-skeleton :loading="state.loading" animated>
         <template #template>
-          <div class="flex flex-row gap-x-3">
+          <div class="grid md:grid-cols-4 gap-3">
             <div
-              class="w-1/4 bg-white rounded-lg border shadow-gray-400/20 p-3 flex justify-between items-center h-[54px]"
+              class="bg-white rounded-lg border shadow-gray-400/20 p-3 flex justify-between items-center h-[54px]"
               v-for="(cardItem, index) in 4"
-              :key="index"
-            >
-              <el-skeleton-item variant="text" style="width:20%" />
+              :key="index">
+              <el-skeleton-item variant="text" style="width: 20%" />
               <el-skeleton-item variant="h1" style="width: 40%" />
             </div>
           </div>
         </template>
         <template #default>
           <div class="grid md:grid-cols-4 gap-3">
-            <MoneyCard title="總支出" :value="state.totalOut" />
-            <MoneyCard title="總收入" :value="state.totalIn" />
-            <MoneyCard title="總轉出" :value="state.totalTrans" />
-            <MoneyCard title="總結餘" :value="state.balance" />
+            <MoneyCard
+              title="總支出"
+              :value="state.totalOut"
+              :decrease="true" />
+            <MoneyCard title="總收入" :value="state.totalIn" :increase="true" />
+            <MoneyCard
+              title="總轉出"
+              :value="state.totalTrans"
+              :decrease="true" />
+            <MoneyCard title="總結餘" :value="state.balance" :increase="true" />
           </div>
           <BasicTable
             :columns="state.columns"
             :table-data="paginatedTableData"
             :total="state.pagination.total"
             :take="state.pagination.take"
-            v-model:page="state.pagination.page"
-          >
+            v-model:page="state.pagination.page">
             <template #mbid="{ row }">
               <p>
-                <el-link class="link" @click="actions.linkClick(row.mbid)">{{row.mbid}}</el-link>
+                <el-link class="link" @click="actions.linkClick(row.mbid)">{{
+                  row.mbid
+                }}</el-link>
               </p>
             </template>
             <template #amtout="{ row }">
-              <p
-                :class="{ decrease: row.amtout > 0 }"
-              >{{actions.convertNumberToCurrencyString(row.amtout)}}</p>
+              <p :class="{ decrease: row.amtout > 0 }">
+                {{ actions.convertNumberToCurrencyString(row.amtout) }}
+              </p>
             </template>
             <template #amtin="{ row }">
-              <p
-                :class="{ increase: row.amtin > 0 }"
-              >{{actions.convertNumberToCurrencyString(row.amtin)}}</p>
+              <p :class="{ increase: row.amtin > 0 }">
+                {{ actions.convertNumberToCurrencyString(row.amtin) }}
+              </p>
             </template>
             <template #transfer="{ row }">
-              <p
-                :class="{ decrease: row.transfer > 0 }"
-              >{{actions.convertNumberToCurrencyString(row.transfer)}}</p>
+              <p :class="{ decrease: row.transfer > 0 }">
+                {{ actions.convertNumberToCurrencyString(row.transfer) }}
+              </p>
             </template>
             <template #bal="{ row }">
-              <p
-                :class="{ increase: row.bal > 0, decrease: row.bal < 0 }"
-              >{{actions.convertNumberToCurrencyString(row.bal)}}</p>
+              <p :class="{ increase: row.bal > 0, decrease: row.bal < 0 }">
+                {{ actions.convertNumberToCurrencyString(row.bal) }}
+              </p>
             </template>
             <template #operation="{ row }">
               <p>
-                <el-link class="link" @click="actions.linkClick(row.operation)">查看</el-link>
+                <el-link class="link" @click="actions.linkClick(row.operation)"
+                  >查看</el-link
+                >
               </p>
             </template>
           </BasicTable>
         </template>
       </el-skeleton>
-      <el-dialog v-model="state.isDialogVisible" width="80vw" align-center>
-        <div class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
+      <el-dialog
+        v-model="state.isDialogVisible"
+        width="80vw"
+        align-center
+        @close="actions.dialogClose">
+        <div
+          class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
           <div class="grid md:grid-cols-3 gap-3">
-            <MoneyCard title="總支出" :value="state.individualMember.totalOut" />
-            <MoneyCard title="總收入" :value="state.individualMember.totalIn" />
-            <MoneyCard title="總結餘" :value="state.individualMember.balance" />
+            <MoneyCard
+              title="總支出"
+              :decrease="true"
+              :value="state.individualMember.totalOut" />
+            <MoneyCard
+              title="總收入"
+              :value="state.individualMember.totalIn"
+              :increase="true" />
+            <MoneyCard
+              title="總結餘"
+              :value="state.individualMember.balance"
+              :increase="true" />
           </div>
           <BasicTable
+            :loading="state.individualMember.loading"
             :columns="state.individualMember.columns"
-            :table-data="state.individualMember.tableData"
-          >
+            :table-data="state.individualMember.tableData">
             <template #amtout="{ row }">
-              <p
-                :class="{ decrease: row.amtout > 0 }"
-              >{{actions.convertNumberToCurrencyString(row.amtout)}}</p>
+              <p :class="{ decrease: row.amtout > 0 }">
+                {{ actions.convertNumberToCurrencyString(row.amtout) }}
+              </p>
             </template>
             <template #amtin="{ row }">
-              <p
-                :class="{ increase: row.amtin > 0 }"
-              >{{actions.convertNumberToCurrencyString(row.amtin)}}</p>
+              <p :class="{ increase: row.amtin > 0 }">
+                {{ actions.convertNumberToCurrencyString(row.amtin) }}
+              </p>
             </template>
           </BasicTable>
-          <small class="text-gray-500 self-end text-[13px]">{{ state.individualMember.message }}</small>
+          <small class="text-gray-500 self-end text-[13px]">{{
+            state.individualMember.message
+          }}</small>
         </div>
       </el-dialog>
     </div>
@@ -202,6 +236,7 @@ const state = reactive({
   ],
   tableData: [],
   individualMember: {
+    loading: true,
     totalIn: '0.00',
     totalOut: '0.00',
     balance: '0.00',
@@ -276,7 +311,9 @@ const actions = {
           name: item.name,
         }
       })
-      state.message = msg
+      state.message = msg.replace(/\d+(?= 筆)/g, match =>
+        parseInt(match).toLocaleString()
+      )
       state.pagination.total = detail.length
       state.tableData = detail.map(item => {
         return {
@@ -314,8 +351,13 @@ const actions = {
       },
       msg,
     } = await MoneyApiHandler(params)
+    setTimeout(() => {
+      state.individualMember.loading = false
+    }, 500)
     if (code === 1) {
-      state.individualMember.message = msg
+      state.individualMember.message = msg.replace(/\d+(?= 筆)/g, match =>
+        parseInt(match).toLocaleString()
+      )
       state.individualMember.totalIn =
         actions.convertNumberToCurrencyString(Total_in)
       state.individualMember.totalOut =
@@ -354,6 +396,9 @@ const actions = {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
     }).format(number)
+  },
+  dialogClose: () => {
+    state.individualMember.loading = true
   },
 }
 </script>
