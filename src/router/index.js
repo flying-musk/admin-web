@@ -13,6 +13,7 @@ import preOrder from './modules/preOrder'
 import tax from './modules/tax'
 import travelcal from './modules/travelcal'
 import money from './modules/money'
+import manageMember from './modules/manageMember'
 
 /* 菜单栏的路由 */
 // 固定菜单
@@ -26,7 +27,7 @@ export const fixedRoutes = [
 ]
 // 动态菜单
 export const asyncRoutes = import.meta.env.VITE_BBT_ROLE === 'agent' ? [...preOrder] : [...specialSetting,
-...calTitle, ...tax, ...travelcal, ...money]
+...calTitle, ...tax, ...travelcal, ...money,...manageMember]
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
