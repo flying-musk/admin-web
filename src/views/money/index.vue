@@ -124,6 +124,12 @@
         align-center
         @close="actions.dialogClose">
         <div
+          v-if="state.individualMember.isDialogSimplified"
+          class="text-center">
+          {{ state.individualMember.message }}
+        </div>
+        <div
+          v-else
           class="flex flex-col gap-y-3 md:gap-y-6 md:bg-white md:h-full md:p-3 rounded-md">
           <div class="grid md:grid-cols-3 gap-3">
             <MoneyCard
@@ -236,6 +242,7 @@ const state = reactive({
   ],
   tableData: [],
   individualMember: {
+    isDialogSimplified: false,
     loading: true,
     totalIn: '0.00',
     totalOut: '0.00',
@@ -343,36 +350,36 @@ const actions = {
       action: 'mbaccdetail',
       mbid: memberId,
     }
-    const {
-      code,
-      data: {
-        sum: { Bal, Total_in, Total_out },
-        detail,
-      },
-      msg,
-    } = await MoneyApiHandler(params)
+    const { code, data, msg } = await MoneyApiHandler(params)
+    const { sum, detail } = data || {}
+    const { Bal, Total_in, Total_out } = sum || {}
     setTimeout(() => {
       state.individualMember.loading = false
     }, 500)
     if (code === 1) {
-      state.individualMember.message = msg.replace(/\d+(?= 筆)/g, match =>
-        parseInt(match).toLocaleString()
-      )
-      state.individualMember.totalIn =
-        actions.convertNumberToCurrencyString(Total_in)
-      state.individualMember.totalOut =
-        actions.convertNumberToCurrencyString(Total_out)
-      state.individualMember.balance =
-        actions.convertNumberToCurrencyString(Bal)
-      state.individualMember.tableData = detail.map(item => {
-        return {
-          commit: item.commit,
-          type: item.type,
-          amtin: Number(item.amtin),
-          amtout: Number(item.amtout),
-          remark: item.remark,
-        }
-      })
+      state.individualMember.isDialogSimplified = data === undefined
+      if (data === undefined) {
+        state.individualMember.message = msg
+      } else {
+        state.individualMember.message = msg.replace(/\d+(?= 筆)/g, match =>
+          parseInt(match).toLocaleString()
+        )
+        state.individualMember.totalIn =
+          actions.convertNumberToCurrencyString(Total_in)
+        state.individualMember.totalOut =
+          actions.convertNumberToCurrencyString(Total_out)
+        state.individualMember.balance =
+          actions.convertNumberToCurrencyString(Bal)
+        state.individualMember.tableData = detail.map(item => {
+          return {
+            commit: item.commit,
+            type: item.type,
+            amtin: Number(item.amtin),
+            amtout: Number(item.amtout),
+            remark: item.remark,
+          }
+        })
+      }
     } else {
       proxy.$message({
         type: 'error',
