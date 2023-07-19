@@ -98,31 +98,44 @@
           state.loginForm.validate(async valid => {
             if (valid) {
               state.loading = true
-              const { code, data, msg } = await Login({
-                ...state.model,
-                'g-recaptcha-response': state.recaptchaToken,
-              })
-              if (code === 1) {
-                proxy.$message({
-                  type: 'success',
-                  message: '登入成功',
-                  duration: 1000,
-                })
-                const targetPath = decodeURIComponent(route.query.redirect)
-                if (targetPath.startsWith('http')) {
-                  window.location.href = targetPath
-                } else if (targetPath.startsWith('/')) {
-                  router.push(targetPath)
-                } else {
-                  router.push('/')
-                }
-                store.dispatch('app/setToken', msg)
+              const targetPath = decodeURIComponent(route.query.redirect)
+              if (targetPath.startsWith('http')) {
+                window.location.href = targetPath
+              } else if (targetPath.startsWith('/')) {
+                router.push(targetPath)
               } else {
-                proxy.$message({
-                  type: 'error',
-                  message: msg==='captcha response failed'? '請驗證您不是機器人。' : msg,
-                })
+                router.push('/')
               }
+              store.dispatch('app/setToken', '...')
+              // skip login api just for now
+              // const { code, data, msg } = await Login({
+              //   ...state.model,
+              //   'g-recaptcha-response': state.recaptchaToken,
+              // })
+              // if (code === 1) {
+              //   proxy.$message({
+              //     type: 'success',
+              //     message: '登入成功',
+              //     duration: 1000,
+              //   })
+              //   const targetPath = decodeURIComponent(route.query.redirect)
+              //   if (targetPath.startsWith('http')) {
+              //     window.location.href = targetPath
+              //   } else if (targetPath.startsWith('/')) {
+              //     router.push(targetPath)
+              //   } else {
+              //     router.push('/')
+              //   }
+              //   store.dispatch('app/setToken', msg)
+              // } else {
+              //   proxy.$message({
+              //     type: 'error',
+              //     message:
+              //       msg === 'captcha response failed'
+              //         ? '請驗證您不是機器人。'
+              //         : msg,
+              //   })
+              // }
               state.loading = false
             }
           })
