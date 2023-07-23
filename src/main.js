@@ -6,7 +6,7 @@ import ElementPlus from 'element-plus'
 import './assets/style/main.scss'
 import './assets/style/element-variables.scss'
 import 'dayjs/locale/zh-cn'
-import locale from 'element-plus/lib/locale/lang/zh-cn'
+import locale from 'element-plus/es/locale/lang/zh-cn'
 import JsonCSV from 'vue-json-csv'
 app.component('downloadCsv', JsonCSV)
 // 权限控制
@@ -32,11 +32,9 @@ Object.entries(Components).forEach(([key, component]) => {
   app.component(key, component)
 })
 
-
-directives.forEach((directive) => {
+directives.forEach(directive => {
   app.directive(directive.name, directive)
 })
-
 
 app
   .use(ElementPlus, {

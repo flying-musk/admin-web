@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :locale="locale">
+  <el-config-provider>
     <router-view />
   </el-config-provider>
 </template>
@@ -8,16 +8,9 @@
   import { defineComponent } from 'vue'
   import { ElConfigProvider } from 'element-plus'
 
-  import zhCn from 'element-plus/lib/locale/lang/zh-cn'
-
   export default defineComponent({
     components: {
       [ElConfigProvider.name]: ElConfigProvider,
-    },
-    data() {
-      return {
-        locale: zhCn,
-      }
     },
   })
 </script>
