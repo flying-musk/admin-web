@@ -6,10 +6,8 @@ import request from '@/utils/request'
  */
 export const MoneyApiHandler = data => {
   return request({
-    url: 'api/sys/epdata.php',
+    url: 'money',
     method: 'post',
     data,
   })
 }
-
-
