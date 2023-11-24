@@ -1,89 +1,47 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-import store from '@/store'
-import router from '@/router'
 
-const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_WEB_URL,
-  timeout: 10000,
-  // withCredentials: true,
+const instance = axios.create({
+  baseURL: import.meta.env.VITE_APP_WEB_URL, // Replace with your API base URL
+  timeout: 5000, // Set a timeout for requests
+  headers: {
+    'Content-Type': 'application/json',
+    // You can add more headers here if needed
+  },
 })
 
-service.interceptors.request.use(
+// Request interceptor
+instance.interceptors.request.use(
   config => {
-    const { authorization } = store.state.app
-    if (authorization) {
-      config.headers.Authorization = `${authorization}`
-      // config.headers.Authorization = `Bearer ${authorization.token}`
-    }
+    // You can modify the request config here (e.g., add headers)
+    // config.headers['Authorization'] = 'Bearer ' + getToken();
     return config
   },
   error => {
-    // console.log(error);
     return Promise.reject(error)
   }
 )
 
-service.interceptors.response.use(
+// Response interceptor
+instance.interceptors.response.use(
   response => {
+    console.log('response in request.js', response)
+    // You can modify the response data here
     return response.data
   },
-  async error => {
-    if (error.response && error.response.status === 401) {
-      const { authorization } = store.state.app
-      if (!authorization || !authorization.refresh_token) {
-        if (router.currentRoute.value.name === 'login') {
-          return Promise.reject(error)
-        }
-        const redirect = encodeURIComponent(window.location.href)
-        router.push(`/login?redirect=${redirect}`)
-        // clear token
-        store.dispatch('app/clearToken')
-        setTimeout(() => {
-          ElMessage.closeAll()
-          try {
-            ElMessage.error(error.response.data.msg)
-          } catch (err) {
-            ElMessage.error(error.message)
-          }
-        })
-        return Promise.reject(error)
-      }
-      // if has refresh_token, require refresh token
-      try {
-        const res = await axios({
-          method: 'PUT',
-          url: '/api/authorizations',
-          timeout: 10000,
-          headers: {
-            Authorization: `Bearer ${authorization.refresh_token}`,
-          },
-        })
-
-        store.commit('app/setToken', {
-          token: res.data.data.token, // new token
-          refresh_token: authorization.refresh_token, // old refresh_token
-        })
-
-        return service(error.config)
-      } catch (err) {
-        const redirect = encodeURIComponent(window.location.href)
-        router.push(`/login?redirect=${redirect}`)
-
-        store.dispatch('app/clearToken')
-        return Promise.reject(error)
-      }
-    }
-
-    ElMessage.closeAll()
-    try {
-      ElMessage.error(error.response.data.msg)
-    } catch (err) {
-      ElMessage.error(error.message)
-    }
-
+  error => {
+    // You can handle errors here
     return Promise.reject(error)
   }
 )
 
-export default service
+export default function request(options) {
+  return instance(options)
+    .then(response => {
+      return response
+    })
+    .catch(error => {
+      // Handle errors globally here
+      console.error('Request error:', error)
+      throw error
+    })
+}
