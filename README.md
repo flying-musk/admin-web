@@ -33,6 +33,8 @@ npm run prod:agent (正式 - 經銷商界面)
 npm run build:dev (測試)
 ```
 
+當想要deploy to github page時跑下面這行
+並且把/dist/admin貼上去
 ```
 npm run build:prod (正式)
 ```
