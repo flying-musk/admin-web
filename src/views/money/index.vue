@@ -196,7 +196,6 @@ const state = reactive({
       prop: 'mbid',
       align: 'left',
       sortable: true,
-      width: '100',
       formatter: true,
     },
     {
@@ -204,7 +203,6 @@ const state = reactive({
       prop: 'name',
       sortable: false,
       align: 'center',
-      width: '100',
     },
     {
       label: '支出 (¥)',
@@ -238,6 +236,7 @@ const state = reactive({
       label: '操作',
       prop: 'operation',
       formatter: true,
+      align: 'center',
     },
   ],
   tableData: [],
@@ -289,12 +288,12 @@ const paginatedTableData = computed(() => {
 const actions = {
   /**
    * @description MoneyApiHandler 金流縂明細
-   * @param {string}  action  accSum
+   * @param {string}  action  all
    */
   handleFetchAll: async () => {
     state.loading = true
     const params = {
-      action: 'accSum',
+      action: 'all',
     }
     const {
       code,
@@ -347,7 +346,7 @@ const actions = {
    */
   handleFetchIndividual: async memberId => {
     const params = {
-      action: 'mbaccdetail',
+      action: 'individual',
       mbid: memberId,
     }
     const { code, data, msg } = await MoneyApiHandler(params)
