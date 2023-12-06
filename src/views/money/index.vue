@@ -341,7 +341,7 @@ const actions = {
   },
   /**
    * @description MoneyApiHandler 金流個別會員明細
-   * @param {string}  action  mbaccdetail
+   * @param {string}  action  individual
    * @param {string}  mbid  353526
    */
   handleFetchIndividual: async memberId => {
